@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import Header from '../../components/Header/Header'; 
 import ReusableSection from '../../components/ReuasbleSection/ReuseSection'; 
 import LeftImagesRightTextSection from '../../components/ReuasbleSection/ReuseableLeftandRight';
@@ -6,6 +6,7 @@ import OneImageRightTextSection from '../../components/ReuasbleSection/OneImageR
 import VideosSection from '../../components/ReuasbleSection/VideosSection';
 import CardsSection from '../../components/ReuasbleSection/CardsSection';
 import Footer from '../../components/Footer/Footer';
+import LoginPage from '../LoginPage/LoginPage';
 
 const cardsData = [
   {
@@ -32,12 +33,23 @@ const cardsData = [
 
 
 function LandingPage() {
+  const [showLoginPopup, setShowLoginPopup] = useState(false); // State to control popup visibility
+
+  // Function to show the login popup
+  const handleLoginClick = () => {
+    setShowLoginPopup(true);
+  };
+
+  // Function to close the login popup
+  const handleClosePopup = () => {
+    setShowLoginPopup(false);
+  };
   return (
     <div>
       
-      <Header />
+      <Header onLoginClick={handleLoginClick} />
 
-      
+      <LoginPage show={showLoginPopup} onClose={handleClosePopup} /> 
       <ReusableSection
         title="Explore Egypt's Wonders"
         description="Experience the breathtaking landscapes and historical landmarks of Egypt."
