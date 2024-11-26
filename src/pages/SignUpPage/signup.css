@@ -1,0 +1,118 @@
+/* Style for the overlay and the popup card */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-card {
+    background: #fff;
+    padding: 25px; /* Decreased padding to make the card smaller */
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Slightly deeper shadow for more depth */
+    width: 700px; /* Decreased width for a more compact look */
+    text-align: center;
+    position: relative;
+  }
+  
+  
+  /* Close button style */
+  .close-button {
+    position: absolute;
+    top: 15px; /* Increased distance from top */
+    right: 15px; /* Increased distance from right */
+    background: none;
+    border: none;
+    font-size: 1.8rem; /* Slightly larger close button */
+    cursor: pointer;
+  }
+  
+  /* Blurring effect for the landing page */
+  .landing-page.blurred {
+    filter: blur(5px);
+    opacity: 0.5;
+    pointer-events: none; /* Prevent interactions with the background */
+  }
+  
+  /* Form row styles */
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align labels and input fields to the left */
+    margin-bottom: 15px; /* Increased space between form rows */
+  }
+  
+  .form-row label {
+    font-weight: bold;
+    margin-bottom: 8px; /* Increased margin for better spacing */
+    font-size: 1.1rem; /* Slightly larger label text */
+    text-align: left; /* Ensure label is aligned to the left */
+  }
+  
+  .form-row input {
+    width: 100%; /* Make input fields fill the container */
+    padding: 6px; /* Increase padding inside input fields */
+    font-size: 1.1rem; /* Slightly larger font size inside input fields */
+    border-radius: 5px; /* Slightly rounded input fields */
+    border: 1px solid #ccc; /* Ensure a visible border */
+  }
+  
+  /* Style for the submit button */
+  button {
+    font-size: 1.2rem; /* Slightly larger font size for the button */
+    padding: 12px; /* Increase padding for better button size */
+  }
+  
+  /* 'or login with' section styles */
+  .or-login-with {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .or-login-with .line {
+    width: 40%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 0 10px;
+  }
+  
+  /* Social login buttons */
+  .social-login {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Add gap between the social login buttons */
+  }
+  
+  /* Style for each social button */
+  .social-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: white;
+    background-color: #ccc; /* Default color */
+    border: none;
+    cursor: pointer;
+  }
+  
+  .social-btn.google-btn {
+    background-color: #db4437; /* Google Red */
+  }
+  
+  .social-btn.facebook-btn {
+    background-color: #3b5998; /* Facebook Blue */
+  }
+  

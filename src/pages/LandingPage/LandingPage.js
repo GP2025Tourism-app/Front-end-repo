@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import Header from '../../components/Header/Header'; 
 import ReusableSection from '../../components/ReuasbleSection/ReuseSection'; 
 import LeftImagesRightTextSection from '../../components/ReuasbleSection/ReuseableLeftandRight';
@@ -6,6 +6,9 @@ import OneImageRightTextSection from '../../components/ReuasbleSection/OneImageR
 import VideosSection from '../../components/ReuasbleSection/VideosSection';
 import CardsSection from '../../components/ReuasbleSection/CardsSection';
 import Footer from '../../components/Footer/Footer';
+import LoginPage from '../LoginPage/LoginPage';
+import SignUpPage from "../SignUpPage/SignUpPage";
+
 
 const cardsData = [
   {
@@ -32,12 +35,29 @@ const cardsData = [
 
 
 function LandingPage() {
+  const [showLoginPopup, setShowLoginPopup] = useState(false); // State to control popup visibility
+  const [showsignupPopup, setShowsignupPopup] = useState(false);
+  // Function to show the login popup
+  const handleLoginClick = () => {
+    setShowLoginPopup(true);
+  };
+  const handlesignupClick = () => {
+    setShowsignupPopup(true);
+  };
+
+  // Function to close the login popup
+  const handleClosePopup = () => {
+    setShowLoginPopup(false);
+    setShowsignupPopup(false);
+  };
+
   return (
     <div>
       
-      <Header />
+      <Header onLoginClick={handleLoginClick}  onSinupClick={handlesignupClick}/>
 
-      
+      <LoginPage show={showLoginPopup} onClose={handleClosePopup} /> 
+      <SignUpPage show={showsignupPopup} onClose={handleClosePopup} /> 
       <ReusableSection
         title="Explore Egypt's Wonders"
         description="Experience the breathtaking landscapes and historical landmarks of Egypt."
