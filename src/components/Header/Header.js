@@ -7,7 +7,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 
 const backgroundImageUrl = "https://via.placeholder.com/1920x1080";
 
-function Header({ onLoginClick }) {
+function Header({ onLoginClick , onSinupClick}) {
   return (
     <div
       style={{
@@ -68,6 +68,7 @@ function Header({ onLoginClick }) {
                 <Button
                   variant="secondary"
                   className="ms-2"
+                  onClick={onSinupClick}
                   style={{
                     backgroundColor: "#6c757d",
                     border: "none",
