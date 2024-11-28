@@ -1,6 +1,7 @@
 {
   "name": "gp-frontend",
   "version": "0.1.0",
+  "homepage": "https://Mariamelsaadany25.github.io/Front-end-repo",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.1",
@@ -23,7 +24,9 @@
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -42,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0"
   }
 }
