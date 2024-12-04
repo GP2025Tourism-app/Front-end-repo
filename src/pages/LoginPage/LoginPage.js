@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; 
 import "./LoginPage.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 function LoginPage({ show, onClose }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     // Disable scrolling on the body when the popup is shown
     if (show) {
@@ -17,19 +19,43 @@ function LoginPage({ show, onClose }) {
     }
   }, [show]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+
+    if (!username || !password) {
       setError("Both fields are required.");
       return;
     }
-    setError(""); // Clear error if the form is valid
-    // Handle login logic here
-    console.log("Logging in with:", email, password);
-    onClose(); // Close the popup after submitting
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:8080/login", {
+        username,
+        password,
+      });
+
+      if (response.status === 200) {
+        console.log("Login successful:", response.data);
+        // Perform further actions like saving the token or redirecting the user
+        onClose(); // Close the popup after successful login
+      }
+    } catch (err) {
+      console.error("Error during login:", err);
+      if (err.response) {
+        // Server responded with an error
+        setError(err.response.data.message || "Login failed. Please try again.");
+      } else {
+        // Network or other errors
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (!show) return null; // Do not render if not visible
+  if (!show) return null; 
 
   return (
     <div className="popup-overlay">
@@ -38,15 +64,15 @@ function LoginPage({ show, onClose }) {
           &times;
         </button>
         <h3>Login</h3>
-        {error && <div className="error-message">{error}</div>} {/* Display error message */}
+        {error && <div className="error-message">{error}</div>} 
         <Form onSubmit={handleSubmit}>
           <div className="form-row">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Username</Form.Label>
             <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="username"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className="form-row">
@@ -58,8 +84,8 @@ function LoginPage({ show, onClose }) {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <Button variant="primary" type="submit" block>
-            Login
+          <Button variant="primary" type="submit" style={{ display: "block", width: "100%" }} disabled={loading}>
+              {loading ? "logging in..." : "Login"}
           </Button>
         </Form>
 
@@ -79,7 +105,6 @@ function LoginPage({ show, onClose }) {
             <i className="fab fa-facebook-f"></i> {/* Facebook icon */}
           </button>
         </div>
-
       </div>
     </div>
   );

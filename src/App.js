@@ -1,5 +1,6 @@
 // src/App.js
 import React from "react";
+import './index.css';
 import LandingPage from "./pages/LandingPage/LandingPage"; // Import the Header component
 
 function App() {

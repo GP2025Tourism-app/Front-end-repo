@@ -7,14 +7,14 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 
 const backgroundImageUrl = "https://via.placeholder.com/1920x1080";
 
-function Header({ onLoginClick , onSinupClick}) {
+function Header({ onLoginClick, onSinupClick }) {
   return (
     <div
       style={{
         backgroundImage: `url(${backgroundImageUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "100vh",
+        height: "100vh", // Ensure the header takes full screen height
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -83,8 +83,15 @@ function Header({ onLoginClick , onSinupClick}) {
       </Navbar>
 
       {/* Header Main Content */}
-      <div style={{ textAlign: "center", zIndex: 1, position: "relative" }}>
-        <h1 style={{ color: "#000", fontSize: "4rem", fontWeight: "bold" }}>
+      <div style={{ textAlign: "center", zIndex: 1, position: "relative", padding: "0 20px" }}>
+        <h1
+          style={{
+            color: "#000",
+            fontSize: "4rem",
+            fontWeight: "bold",
+            margin: "0",
+          }}
+        >
           Discover Egypt Like Never Before
         </h1>
         <p

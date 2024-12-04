@@ -1,4 +1,3 @@
-// CardsSection.js
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 
@@ -19,24 +18,22 @@ function CardsSection({ title, description, cards }) {
         {title}
       </h2>
 
-      {/* Cards */}
+      {/* Cards Container with Horizontal Scroll */}
       <div
         style={{
-
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',  // 4 cards per row
-          gridGap: '20px',
-          width: '100%',  // Ensure full width for the grid container
+          display: 'flex',
+          overflowX: 'auto',  // Enables horizontal scrolling
+          paddingBottom: '20px',  // To prevent content being cut off at the bottom
+          gap: '20px',  // Space between cards
+          width: '100%',  // Ensure full width
         }}
       >
         {cards.map((card, index) => (
           <div
             key={index}
             style={{
-              position: 'relative',
-              width: '100%',
-              height: 'auto',
-         // Lift 1st and 3rd cards
+              minWidth: '250px',  // Ensures each card has a consistent width
+              flex: '0 0 auto',   // Prevent cards from shrinking or growing
             }}
           >
             <Card style={{ width: '100%' }}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"; 
 import "./signup.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -6,10 +7,12 @@ import Button from "react-bootstrap/Button";
 function SignUpPage({ show, onClose }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (show) {
@@ -19,26 +22,49 @@ function SignUpPage({ show, onClose }) {
     }
   }, [show]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+
+    if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
-    
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
     setError(""); // Clear error if form is valid
-    // Handle sign-up logic here
-    console.log("Signing up with:", firstName, lastName, email, password);
-    onClose(); // Close the popup after submitting
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:8080/register", {
+        firstName,          
+        lastName,          
+        username,          
+        email,              
+        password,           
+      });
+
+      
+      if (response.status === 200) {
+        console.log("User registered successfully:", response.data);
+        onClose(); // Close the popup after successful sign-up
+      }
+    } catch (err) {
+      console.error("Error during sign-up:", err);
+      if (err.response) {
+        setError(err.response.data.message || "Sign-up failed. Please try again.");
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (!show) return null;
+  if (!show) return null; // Do not render if not visible
 
   return (
     <div className="popup-overlay">
@@ -66,6 +92,16 @@ function SignUpPage({ show, onClose }) {
               placeholder="Enter your last name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
+
+          <div className="form-row">
+            <Form.Label>Username</Form.Label> {/* New field for username */}
+            <Form.Control
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
@@ -99,9 +135,10 @@ function SignUpPage({ show, onClose }) {
             />
           </div>
 
-          <Button variant="primary" type="submit" block>
-            Sign Up
+          <Button variant="primary" type="submit" style={{ display: "block", width: "100%" }} disabled={loading}>
+              {loading ? "Signing up..." : "Sign Up"}
           </Button>
+
         </Form>
 
         <div className="or-login-with">

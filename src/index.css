@@ -11,3 +11,51 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* styles.css */
+
+/* Default font sizes */
+body {
+  font-size: 16px; /* Base font size */
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px; /* Decrease base font size for mobile */
+  }
+
+  h1 {
+    font-size: 2rem; /* Smaller font for h1 */
+  }
+
+  h2 {
+    font-size: 1.8rem; /* Smaller font for h2 */
+  }
+
+  h3 {
+    font-size: 1.6rem; /* Smaller font for h3 */
+  }
+
+  p {
+    font-size: 1rem; /* Smaller font for paragraph */
+  }
+
+  /* You can add more specific adjustments here for other elements */
+}
+
