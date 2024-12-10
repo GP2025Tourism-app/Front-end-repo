@@ -5,8 +5,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 function SignUpPage({ show, onClose }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
   const [username, setUsername] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,7 @@ function SignUpPage({ show, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
+    if (!firstname || !lastname || !username || !email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
@@ -39,9 +39,9 @@ function SignUpPage({ show, onClose }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/register", {
-        firstName,          
-        lastName,          
+      const response = await axios.post("http://localhost:8080/api/auth/signup", {
+        firstname,          
+        lastname,          
         username,          
         email,              
         password,           
@@ -80,8 +80,8 @@ function SignUpPage({ show, onClose }) {
             <Form.Control
               type="text"
               placeholder="Enter your first name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={firstname}
+              onChange={(e) => setfirstname(e.target.value)}
             />
           </div>
           
@@ -90,8 +90,8 @@ function SignUpPage({ show, onClose }) {
             <Form.Control
               type="text"
               placeholder="Enter your last name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={lastname}
+              onChange={(e) => setlastname(e.target.value)}
             />
           </div>
 

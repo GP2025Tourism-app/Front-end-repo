@@ -31,7 +31,7 @@ function LoginPage({ show, onClose }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/login", {
+      const response = await axios.post("http://localhost:8080/api/auth/signin", {
         username,
         password,
       });
