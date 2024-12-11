@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; 
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./signup.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -13,6 +14,8 @@ function SignUpPage({ show, onClose }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     if (show) {
@@ -47,10 +50,10 @@ function SignUpPage({ show, onClose }) {
         password,           
       });
 
-      
       if (response.status === 200) {
         console.log("User registered successfully:", response.data);
         onClose(); // Close the popup after successful sign-up
+        navigate("/questionnaire"); // Navigate to the questionnaire page
       }
     } catch (err) {
       console.error("Error during sign-up:", err);

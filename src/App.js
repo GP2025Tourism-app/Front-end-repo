@@ -1,19 +1,18 @@
-// src/App.js
-import React from "react";
-import './index.css';
-import LandingPage from "./pages/LandingPage/LandingPage"; // Import the Header component
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LandingPage from './pages/LandingPage/LandingPage';
+import SignUpPage from './pages/SignUpPage/SignUpPage';
+import QuestionnairePage from './pages/Questionnaire/QuestionnairePage';
+import React from 'react';
 
 function App() {
   return (
-    <div>
-      {/* Render the Header component */}
-      <LandingPage />
-
-      {/* Add other components or content here */}
-      <main>
-
-      </main>
-    </div>
+    <Router basename="/Front-end-repo">
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/questionnaire" element={<QuestionnairePage />} />
+      </Routes>
+    </Router>
   );
 }
 

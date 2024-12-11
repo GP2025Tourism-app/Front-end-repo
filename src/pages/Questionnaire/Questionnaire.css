@@ -1,0 +1,272 @@
+.questionnaire-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center;       
+  min-height: 100vh; 
+  background-color: #17A2B8;  
+  position: relative;
+}
+
+.questionnaire-container .background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; 
+  background-image: url('../../assets/images/Questionnairebg.png'); 
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+}
+
+.questionnaire-card {
+  background-color: white; 
+  border-radius: 20px !important; 
+  width: 80%;  
+  max-width: 700px; 
+  min-height: 550px;
+  height: auto;
+  padding: 20px;
+  margin-top: 50px;
+  z-index: 10; 
+}
+
+.question-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #17A2B8;
+}
+
+.next-button {
+  margin-top: 20px;
+}
+
+.card-question-title {
+  font-size: 30px !important;
+  font-weight: bold;
+  color: #17A2B8 !important;
+  padding-bottom: 20px !important;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;  
+  width: 100%;
+  margin-top: 20px;
+}
+
+.intro-title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: left;
+  color: #17A2B8 !important;
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+.intro-description {
+  font-size: 18px;
+  text-align: left;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.start-button {
+  width: 100px;
+  padding-bottom: 5px;
+  background-color: #17A2B8 !important;
+}
+
+.skip-button {
+  text-align: left !important;
+  margin-bottom: 20px;
+  color: #17A2B8 !important;
+}
+
+button {
+  margin: 5px; 
+}
+
+.navbar {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000; 
+}
+
+.next-button {
+  background-color: #17A2B8 !important;
+}
+
+
+
+/* For screens smaller than 768px (tablets and smaller devices) */
+@media (max-width: 768px) {
+  .questionnaire-container {
+    height: 100vh; 
+  }
+
+  .questionnaire-container .background {
+    height: 100%; 
+  }
+
+  .questionnaire-card {
+    width: 90%; 
+    padding: 15px; 
+  }
+
+  .intro-title {
+    font-size: 28px; 
+    padding-top: 70px;
+  }
+
+  .intro-description {
+    font-size: 16px; 
+  }
+
+  .buttons {
+    align-items: center; 
+  }
+
+  .start-button {
+    width: 120px;
+  }
+
+  .skip-button {
+    font-size: 14px; 
+  }
+
+  .next-button {
+    width: 100%; 
+  }
+}
+
+/* For screens smaller than 480px (mobile devices) */
+@media (max-width: 480px) {
+  .questionnaire-container {
+    height: 100vh; 
+  }
+
+  .questionnaire-container .background {
+    height: 100%;
+  }
+
+  .questionnaire-card {
+    width: 95%; 
+    padding: 10px; 
+  }
+
+  .intro-title {
+    font-size: 24px; 
+    padding-top: 50px;
+  }
+
+  .intro-description {
+    font-size: 14px; 
+  }
+
+  .start-button {
+    width: 130px; 
+  }
+
+  .skip-button {
+    font-size: 12px; 
+  }
+
+  .next-button {
+    width: 100%; 
+  }
+}
+
+/* For screens larger than 1200px (larger desktops) */
+@media (min-width: 1200px) {
+  .questionnaire-card {
+    width: 60%;
+  }
+}
+
+.badge-option-container {
+  display: inline-block; 
+  margin: 5px; 
+}
+
+.badge-option-container-wrapper {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: flex-start;
+}
+
+@media (min-width: 576px) {
+  .badge-option-container {
+    width: calc(33.33% - 10px); 
+  }
+}
+
+@media (min-width: 768px) {
+  .badge-option-container {
+    width: calc(33.33% - 10px); 
+  }
+}
+
+@media (max-width: 576px) {
+  .options-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .badge-option-container {
+    width: calc(50% - 10px); 
+  }
+}
+
+.badge-option.btn.btn-primary {
+  width: max-content !important;
+}
+
+.badge-option {
+  transition: background-color 0.3s, color 0.3s; 
+  border: 1px solid #007bff;
+}
+
+.badge-option.selected {
+  background-color: #007bff; 
+  color: white; 
+}
+
+.badge-option {
+  background-color: white; 
+  color: #007bff; 
+}
+
+.badge-option.selected:hover {
+  background-color: #0056b3; 
+}
+
+
+.badge-option:hover:not(.selected) {
+  background-color: #e7f1ff; 
+}
+
+.question-subtitle {
+  margin-bottom: 40px !important;
+}
+
+.badge-option-container {
+  margin-bottom: 10px !important;
+}
+
+.pagination-container {
+  margin-bottom: 20px;
+}
+
+.page-item :active {
+  background-color: #17A2B8 !important;
+}
