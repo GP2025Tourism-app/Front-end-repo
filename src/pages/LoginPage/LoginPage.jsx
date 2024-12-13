@@ -38,8 +38,13 @@ function LoginPage({ show, onClose }) {
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
-        // Perform further actions like saving the token or redirecting the user
-        onClose(); // Close the popup after successful login
+              // Save the token to localStorage
+      const token = response.data.token; 
+      localStorage.setItem("authToken", token);
+
+      // Save user data if needed
+      localStorage.setItem("userData", JSON.stringify(response.data));
+      onClose(); // Close the popup after successful login
       }
     } catch (err) {
       console.error("Error during login:", err);

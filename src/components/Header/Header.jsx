@@ -4,14 +4,13 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-
-const backgroundImageUrl = "https://via.placeholder.com/1920x1080";
+import backgroundImage from "../../assets/images/LandingPage1.png";
 
 function Header({ onLoginClick, onSinupClick }) {
   return (
     <div
       style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh", // Ensure the header takes full screen height
@@ -22,8 +21,21 @@ function Header({ onLoginClick, onSinupClick }) {
         position: "relative",
       }}
     >
+      {/* Dark Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)", // Adjust opacity for darkness
+          zIndex: 1,
+        }}
+      />
+
       {/* Navbar Section */}
-      <Navbar expand="md" className="mb-3" style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+      <Navbar expand="md" className="mb-3" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 2 }}>
         <Container fluid>
           <Navbar.Brand href="#">
             <img
@@ -31,7 +43,7 @@ function Header({ onLoginClick, onSinupClick }) {
               alt="Logo"
               style={{ marginRight: "10px", width: "30px", height: "30px" }}
             />
-            <span style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#000" }}>Egypt Tours</span>
+            <span style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#fff" }}>Logo</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar-expand-md" />
           <Navbar.Offcanvas
@@ -44,13 +56,13 @@ function Header({ onLoginClick, onSinupClick }) {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-center flex-grow-1 pe-3">
-                <Nav.Link href="#about-us" style={{ color: "#000", fontSize: "1rem" }}>
+                <Nav.Link href="#about-us" style={{ color: "#fff", fontSize: "1rem" }}>
                   About Us
                 </Nav.Link>
-                <Nav.Link href="#blogs" style={{ color: "#000", fontSize: "1rem" }}>
+                <Nav.Link href="#blogs" style={{ color: "#fff", fontSize: "1rem" }}>
                   Blogs
                 </Nav.Link>
-                <Nav.Link href="#trips" style={{ color: "#000", fontSize: "1rem" }}>
+                <Nav.Link href="#trips" style={{ color: "#fff", fontSize: "1rem" }}>
                   Trips
                 </Nav.Link>
               </Nav>
@@ -60,7 +72,7 @@ function Header({ onLoginClick, onSinupClick }) {
                   variant="primary"
                   className="ms-2"
                   onClick={onLoginClick} // Trigger onLoginClick passed as prop
-                  style={{ backgroundColor: "#007bff", border: "none" }}
+                  style={{ backgroundColor: "#17A2B8", border: "none" }}
                 >
                   Login
                 </Button>
@@ -83,10 +95,10 @@ function Header({ onLoginClick, onSinupClick }) {
       </Navbar>
 
       {/* Header Main Content */}
-      <div style={{ textAlign: "center", zIndex: 1, position: "relative", padding: "0 20px" }}>
+      <div style={{ textAlign: "center", zIndex: 2, position: "relative", padding: "0 20px" }}>
         <h1
           style={{
-            color: "#000",
+            color: "#fff", // White text for visibility on dark background
             fontSize: "4rem",
             fontWeight: "bold",
             margin: "0",
@@ -96,7 +108,7 @@ function Header({ onLoginClick, onSinupClick }) {
         </h1>
         <p
           style={{
-            color: "#000",
+            color: "#fff", // White text for visibility
             fontSize: "1.2rem",
             marginTop: "20px",
             maxWidth: "600px",
@@ -111,7 +123,7 @@ function Header({ onLoginClick, onSinupClick }) {
             marginTop: "20px",
             fontSize: "1.2rem",
             padding: "10px 20px",
-            backgroundColor: "#007bff",
+            backgroundColor: "#17A2B8",
             border: "none",
           }}
         >

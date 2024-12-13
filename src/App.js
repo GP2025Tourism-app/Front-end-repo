@@ -1,16 +1,23 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import QuestionnairePage from './pages/Questionnaire/QuestionnairePage';
-import React from 'react';
+import ProtectedRoute from './ProtectedRoute'; // Import ProtectedRoute
 
 function App() {
   return (
     <Router basename="/Front-end-repo">
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/questionnaire" element={<QuestionnairePage />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/questionnaire"
+          element={<ProtectedRoute element={<QuestionnairePage />} />}
+        />
       </Routes>
     </Router>
   );

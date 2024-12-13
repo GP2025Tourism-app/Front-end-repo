@@ -1,23 +1,25 @@
 // ReusableSection.js
 import React from 'react';
+
 const getTextColor = (backgroundColor) => {
-    // If the background is white, set text color to black, otherwise set to white
-    return backgroundColor === '#fff' ? '#333' : '#fff';
-  };
-function ReusableSection({ title, description, images ,backgroundColor = '#757272'}) {
-    const textColor = getTextColor(backgroundColor);
+  // If the background is white, set text color to black, otherwise set to white
+  return backgroundColor === '#fff' ? '#333' : '#fff';
+};
+
+function ReusableSection({ title, description, images, backgroundColor = '#757272' }) {
+  const textColor = getTextColor(backgroundColor);
+  
   return (
-    
     <section
       style={{
-        marginTop: '50px',
+        marginTop: '30px',
         padding: '80px 20px',
         textAlign: 'center',
         backgroundColor: backgroundColor,
       }}
     >
       {/* Title */}
-      <h2 style={{ fontSize: '2.5rem', marginBottom: '20px',color: textColor, }}>{title}</h2>
+      <h2 style={{ fontSize: '2.5rem', marginBottom: '20px', color: textColor }}>{title}</h2>
 
       {/* Description */}
       <p
@@ -53,8 +55,8 @@ function ReusableSection({ title, description, images ,backgroundColor = '#75727
             src={images[0].src}
             alt={images[0].alt}
             style={{
-              width: '25%',
-              height: '80%',
+              width: '30%', // Increased width from 25% to 30%
+              height: '85%', // Increased height from 80% to 85%
               objectFit: 'cover',
               borderRadius: '8px',
             }}
@@ -67,8 +69,8 @@ function ReusableSection({ title, description, images ,backgroundColor = '#75727
               position: 'absolute',
               bottom: '-40px',
               left: '230px',
-              width: '25%',
-              height: '80%',
+              width: '30%', // Increased width from 25% to 30%
+              height: '85%', // Increased height from 80% to 85%
               objectFit: 'cover',
               borderRadius: '8px',
             }}
@@ -81,8 +83,8 @@ function ReusableSection({ title, description, images ,backgroundColor = '#75727
               position: 'absolute',
               bottom: '-40px',
               right: '230px',
-              width: '25%',
-              height: '80%',
+              width: '30%', // Increased width from 25% to 30%
+              height: '85%', // Increased height from 80% to 85%
               objectFit: 'cover',
               borderRadius: '8px',
             }}

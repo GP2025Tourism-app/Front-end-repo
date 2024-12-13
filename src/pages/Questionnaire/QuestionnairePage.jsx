@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
@@ -115,12 +116,50 @@ const Questionnaire = () => {
     });
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       console.log("User answers:", answers);
-      navigate("/"); 
+  
+      // Flatten the answers and prepare the preferences array
+      const flattenedPreferences = Object.values(answers).flat();
+      console.log("Payload:", { preferences: flattenedPreferences });
+  
+      const token = localStorage.getItem("authToken");
+      console.log("Questionnaire token", localStorage.getItem("authToken"));
+  
+      if (!token) {
+        console.error("No token found in localStorage");
+        navigate("/");
+        return;
+      }
+    
+      try {
+
+        const response = await axios.put(
+          "http://localhost:8080/api/user/preferences", 
+          { 
+            
+            preferences: flattenedPreferences }, 
+          
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,  
+              "Content-Type": "application/json",  
+            },
+          },
+          console.log("payload",{ preferences: flattenedPreferences }),
+          console.log("token",token)
+        );
+        
+        if (response.status === 200) {
+          console.log("Preferences saved successfully:", response.data);
+          navigate("/");  
+        }
+      } catch (err) {
+        console.error("Error saving preferences:", err.response?.data || err.message);
+      }
     }
   };
 

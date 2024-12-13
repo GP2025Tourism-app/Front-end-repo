@@ -62,9 +62,9 @@ function LandingPage() {
         title="Explore Egypt's Wonders"
         description="Experience the breathtaking landscapes and historical landmarks of Egypt."
         images={[
-          { src: 'https://via.placeholder.com/300x200', alt: 'Image 1' },
-          { src: 'https://via.placeholder.com/300x200', alt: 'Image 2' },
-          { src: 'https://via.placeholder.com/300x200', alt: 'Image 3' },
+          { src: 'https://www.wayfairertravel.com/hs-fs/hubfs/Imported%20sitepage%20images/simon-berger-boyXZfqpwpU-unsplash_giejym-1.jpg?width=1920&height=590&name=simon-berger-boyXZfqpwpU-unsplash_giejym-1.jpg', alt: 'Image 1' },
+          { src: 'https://betamedia.experienceegypt.eg/media/experienceegypt/img/Original/2022/8/7/2022_8_7_18_24_45_511.jpeg', alt: 'Image 2' },
+          { src: 'https://cdn.hassanallam.com/app/uploads/2022/03/DJI_0398-Enhanced-NR-2560x1706.jpg', alt: 'Image 3' },
         ]}
         backgroundColor="#fff"
       />

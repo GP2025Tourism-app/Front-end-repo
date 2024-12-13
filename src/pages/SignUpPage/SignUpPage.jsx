@@ -42,7 +42,8 @@ function SignUpPage({ show, onClose }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/api/auth/signup", {
+     
+      const signupResponse = await axios.post("http://localhost:8080/api/auth/signup", {
         firstname,          
         lastname,          
         username,          
@@ -50,15 +51,29 @@ function SignUpPage({ show, onClose }) {
         password,           
       });
 
-      if (response.status === 200) {
-        console.log("User registered successfully:", response.data);
-        onClose(); // Close the popup after successful sign-up
-        navigate("/questionnaire"); // Navigate to the questionnaire page
+      if (signupResponse.status === 200) {
+        console.log("User registered successfully:", signupResponse.data);
+
+        
+        const loginResponse = await axios.post("http://localhost:8080/api/auth/signin", {
+          username,  
+          password,  
+        });
+
+        if (loginResponse.status === 200) {
+         
+          const token = loginResponse.data.token;
+          localStorage.setItem('authToken', token);  
+          console.log("token", loginResponse.data.token);
+          console.log(localStorage.getItem("authToken"));
+         
+          navigate("/questionnaire");
+        }
       }
     } catch (err) {
-      console.error("Error during sign-up:", err);
+      console.error("Error during sign-up or login:", err);
       if (err.response) {
-        setError(err.response.data.message || "Sign-up failed. Please try again.");
+        setError(err.response.data.message || "Sign-up or login failed. Please try again.");
       } else {
         setError("An error occurred. Please try again later.");
       }
@@ -99,7 +114,7 @@ function SignUpPage({ show, onClose }) {
           </div>
 
           <div className="form-row">
-            <Form.Label>Username</Form.Label> {/* New field for username */}
+            <Form.Label>Username</Form.Label> 
             <Form.Control
               type="text"
               placeholder="Enter your username"
