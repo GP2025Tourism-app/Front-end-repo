@@ -155,7 +155,7 @@ const Questionnaire = () => {
         
         if (response.status === 200) {
           console.log("Preferences saved successfully:", response.data);
-          navigate("/");  
+          navigate("/homepage");  
         }
       } catch (err) {
         console.error("Error saving preferences:", err.response?.data || err.message);

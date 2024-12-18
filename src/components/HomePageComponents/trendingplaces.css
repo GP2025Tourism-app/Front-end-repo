@@ -1,0 +1,84 @@
+
+.trending-places {
+    padding: 20px;
+    padding-bottom: 25px;
+    border-bottom: 0.3px solid #D9D9D9;
+  }
+  
+  .trending-places-title {
+    text-align: left;
+    font-size: 23px;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 10px;
+  }
+  
+  .places-grid {
+    display: flex; 
+    gap: 20px;
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; 
+    padding-bottom: 20px; 
+    scroll-behavior: smooth; 
+  }
+  
+  
+  .places-grid::-webkit-scrollbar {
+    display: none; 
+  }
+  
+ 
+  .place-card {
+    position: relative;
+    width: 300px; 
+    height: 200px; /* Adjust the height of the cards */
+    overflow: hidden;
+    border-radius: 10px; /* Rounded corners for the cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Card shadow */
+    flex-shrink: 0; /* Prevent shrinking when the cards are in a flex container */
+    scroll-snap-align: center; /* Align each card to the center when scrolling */
+  }
+  
+  .place-image {
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: flex-end; /* Align text to the bottom */
+    justify-content: center;
+    position: relative;
+  }
+  
+  .place-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black overlay */
+    z-index: 1;
+  }
+  
+  .place-info {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 2; 
+  }
+  
+  .place-info h4 {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .place-info p {
+    font-size: 13px;
+    margin: 5px 0 0;
+  }
+  

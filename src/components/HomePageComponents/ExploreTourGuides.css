@@ -1,0 +1,79 @@
+
+.ExploreTourGuides {
+    padding: 20px;
+    padding-bottom: 25px;
+  }
+  
+  .ExploreTourGuides-title {
+    text-align: left;
+    font-size: 23px;
+    margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 10px;
+  }
+  
+  .ExploreTourGuides-grid {
+    display: flex; 
+    gap: 20px;
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; 
+    padding-bottom: 20px; 
+    scroll-behavior: smooth; 
+  }
+  
+  
+  .ExploreTourGuides-grid::-webkit-scrollbar {
+    display: none; 
+  }
+  
+ 
+  .ExploreTourGuides-card {
+    position: relative;
+    width: 220px; 
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; 
+    scroll-snap-align: center; 
+  }
+  
+  .ExploreTourGuides-image {
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: flex-end; 
+    justify-content: center;
+    position: relative;
+  }
+  
+  .ExploreTourGuides-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3); 
+    z-index: 1;
+  }
+  
+  .ExploreTourGuides-info {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 2; 
+  }
+  
+  .ExploreTourGuides-info h4 {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  
