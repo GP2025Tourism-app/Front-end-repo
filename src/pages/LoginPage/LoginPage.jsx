@@ -3,12 +3,15 @@ import axios from "axios";
 import "./LoginPage.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
+
 
 function LoginPage({ show, onClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Disable scrolling on the body when the popup is shown
@@ -44,6 +47,7 @@ function LoginPage({ show, onClose }) {
 
       // Save user data if needed
       localStorage.setItem("userData", JSON.stringify(response.data));
+      navigate('/homepage')
       onClose(); // Close the popup after successful login
       }
     } catch (err) {
