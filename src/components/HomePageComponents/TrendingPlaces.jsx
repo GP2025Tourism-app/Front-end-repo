@@ -7,38 +7,41 @@ function TrendingPlaces() {
   const [error, setError] = useState(null); 
 
   const cityId = "6761b725f094131ce8b66c38"; 
-  const token = localStorage.getItem("authToken"); // Retrieve the token from localStorage
+  const token = localStorage.getItem("authToken"); 
 
   useEffect(() => {
-    // Fetch data from API when the component loads
+   
     const fetchTrendingPlaces = async () => {
       try {
         setLoading(true); // Start loading
         const response = await fetch(`http://localhost:8080/api/cities/${cityId}/activities`, {
           method: "GET", 
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         
         if (!response.ok) {
-          throw new Error(`Error: ${response.status}`); // Handle non-200 responses
+          throw new Error(`Error: ${response.status}`); 
         }
         
-        const data = await response.json(); // Parse JSON data
-        setTrendingData(data); // Set the fetched data
+        const data = await response.json(); 
+        setTrendingData(data); 
       } catch (err) {
-        setError(err.message); // Capture error
+        setError(err.message); 
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false); 
       }
     };
 
-    if (token) { // Ensure there's a token in localStorage
+    if (token) { 
       fetchTrendingPlaces();
     } else {
-      setError("No token found in localStorage."); // Handle case when there's no token
+      setError("No token found in localStorage.");
     }
-  }, [cityId, token]); // Refetch if cityId or token changes
+  }, [cityId, token]); 
 
-  // Render loading or error state if necessary
+ 
   if (loading) {
     return <div className="loading">Loading Trending Places...</div>;
   }

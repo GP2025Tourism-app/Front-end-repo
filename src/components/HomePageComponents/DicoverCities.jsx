@@ -11,7 +11,14 @@ function DiscoverCities() {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/cities");
+        const token = localStorage.getItem('authToken');
+
+        const response = await axios.get("http://localhost:8080/api/cities", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         const citiesData = response.data.map((city) => ({
           name: city.city,
           image: city.images[0], 
@@ -28,7 +35,6 @@ function DiscoverCities() {
     fetchCities();
   }, []);
 
- 
   if (loading) {
     return <p>Loading cities...</p>;
   }
@@ -36,7 +42,6 @@ function DiscoverCities() {
   if (error) {
     return <p>{error}</p>;
   }
-
 
   return (
     <section className="Discover-cities">
