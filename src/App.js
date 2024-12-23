@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import QuestionnairePage from './pages/Questionnaire/QuestionnairePage';
-import ProtectedRoute from './ProtectedRoute'; // Import ProtectedRoute
+import ProtectedRoute from './ProtectedRoute'; 
 import HomePage from './pages/Homepage/HomePage';
+import ActivityPage from './pages/ActivityPage/ActivityPage';
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
          <Route
           path="/homepage"
           element={<ProtectedRoute element={<HomePage />} />}
+        />
+        <Route
+          path="/activity/:activityId"
+          element={<ProtectedRoute element={<ActivityPage/>} />}
         />
       </Routes>
     </Router>

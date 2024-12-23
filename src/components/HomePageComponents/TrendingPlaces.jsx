@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./trendingplaces.css";
 
 function TrendingPlaces() {
@@ -6,8 +7,9 @@ function TrendingPlaces() {
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
 
-  const cityId = "6761b725f094131ce8b66c38"; 
+  const cityId = "67684edf75fa800e5517a7c1"; 
   const token = localStorage.getItem("authToken"); 
+  const navigate = useNavigate();
 
   useEffect(() => {
    
@@ -49,13 +51,17 @@ function TrendingPlaces() {
   if (error) {
     return <div className="error">Error: {error}</div>;
   }
-
+  const handleCardClick = (activityId) => {
+    navigate(`/activity/${activityId}`); 
+  };
   return (
     <section className="trending-places">
       <h3 className="trending-places-title">Trending Places</h3>
       <div className="places-grid">
         {trendingData.map((place, index) => (
-          <div key={index} className="place-card">
+          <div key={index} 
+          onClick={() => handleCardClick(place.activityId)}
+          className="place-card">
             <div
               className="place-image"
               style={{ backgroundImage: `url(${place.images[0]})` }}
