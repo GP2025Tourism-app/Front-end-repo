@@ -221,4 +221,35 @@ body, html {
     font-size: 25px;
   }
   
- 
+  .flex-container-map {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px; /* Adds some space between the address and map */
+  }
+  
+  .address-container {
+    flex: 1; /* Ensures the address takes up remaining space */
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .address{
+    color:#555;
+    text-decoration: underline;
+  }
+  .area{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Playfair Display', serif;
+  }
+  @media (max-width: 768px) {
+    .flex-container {
+      flex-direction: column; /* Stacks the address and map on top of each other on smaller screens */
+      gap: 10px;
+    }
+    .address-container, div[ref='mapRef'] {
+      width: 100%; /* Full width for both on small screens */
+    }
+  }
+  
