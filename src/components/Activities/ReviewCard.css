@@ -1,0 +1,26 @@
+.review-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .review-score {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  .review-date {
+    color: #888;
+  }
+  
+  .review-text {
+    margin-top: 8px;
+  }
+
+  

@@ -227,7 +227,9 @@ body, html {
     align-items: flex-start;
     gap: 20px; /* Adds some space between the address and map */
   }
-  
+  .leaflet-container{
+    position: sticky !important;
+  }
   .address-container {
     flex: 1; /* Ensures the address takes up remaining space */
     padding: 15px;
@@ -252,4 +254,30 @@ body, html {
       width: 100%; /* Full width for both on small screens */
     }
   }
+  .reviews-section {
+    margin-top: 30px;
+  }
   
+  .review-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .average-rating {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .ReviewsButton{
+    display: flex;
+    gap: 20px;
+  }
+  .filter-button,
+  .write-review-button {
+    width: 130px;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 20px;
+    border-color:#888;
+  }

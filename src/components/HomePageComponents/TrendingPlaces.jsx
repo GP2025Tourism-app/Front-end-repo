@@ -7,7 +7,7 @@ function TrendingPlaces() {
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
 
-  const cityId = "67684edf75fa800e5517a7c1"; 
+  const cityId = "6761b610f094131ce8b66c34"; 
   const token = localStorage.getItem("authToken"); 
   const navigate = useNavigate();
 
