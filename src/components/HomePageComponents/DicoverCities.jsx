@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "./DiscoverCities.css";
 
 function DiscoverCities() {
@@ -20,6 +21,7 @@ function DiscoverCities() {
         });
 
         const citiesData = response.data.map((city) => ({
+          id: city.cityId,
           name: city.city,
           image: city.images[0], 
         }));
@@ -48,7 +50,9 @@ function DiscoverCities() {
       <h3 className="Discover-cities-title">Discover Cities</h3>
       <div className="Discover-cities-grid">
         {cities.map((city, index) => (
-          <div key={index} className="Discover-cities-card">
+          <Link key={index} 
+          to={`/discover-city/${city.id}`}
+          className="Discover-cities-card">
             <div
               className="Discover-cities-image"
               style={{ backgroundImage: `url(${city.image})` }}
@@ -57,7 +61,7 @@ function DiscoverCities() {
                 <h4>{city.name}</h4>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

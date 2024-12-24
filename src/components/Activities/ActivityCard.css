@@ -1,4 +1,4 @@
-.activity-card {
+.activity-card-detail {
     background-color: #FBFBFB;
     border-radius: 27px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -12,12 +12,6 @@
   .card-section {
     margin-bottom: 16px;
     padding: 5px;
-  }
-  
-  .card-section h3 {
-    font-size: 20px;
-    font-weight: 550;
-    margin-bottom: 20px;
   }
   
   .card-section p {
@@ -37,10 +31,19 @@
     margin: 16px 0;
   }
   .details-title{
-    
+    font-size: 20px;
+    font-weight: 550;
+    margin-bottom: 20px;
     font-family: 'Playfair Display', serif;
+    text-align: left;
+    margin-left: 5px;
   }
-  .about-title{
+  .about-title-card{
+    margin-left: 5px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 550;
+    margin-bottom: 20px;
     font-family: 'Playfair Display', serif;
   }
   .details .detail-item {

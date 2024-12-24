@@ -6,6 +6,7 @@ import QuestionnairePage from './pages/Questionnaire/QuestionnairePage';
 import ProtectedRoute from './ProtectedRoute'; 
 import HomePage from './pages/Homepage/HomePage';
 import ActivityPage from './pages/ActivityPage/ActivityPage';
+import DiscoverCityDetails from './pages/DiscoverCity/DiscoverCityPage';
 
 function App() {
   return (
@@ -25,8 +26,12 @@ function App() {
           element={<ProtectedRoute element={<HomePage />} />}
         />
         <Route
-          path="/activity/:activityId"
+          path="/activity/:activityId/city/:cityId"
           element={<ProtectedRoute element={<ActivityPage/>} />}
+        />
+        <Route
+          path="/discover-city/:id"
+          element={<ProtectedRoute element={<DiscoverCityDetails/>} />}
         />
       </Routes>
     </Router>

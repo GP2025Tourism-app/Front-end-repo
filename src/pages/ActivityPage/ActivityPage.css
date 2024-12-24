@@ -7,24 +7,7 @@ body, html {
     padding-top: 60px; 
     margin-left: 200px; /* Adjust the margin to align with the layout */
   }
-  .sticky-search-bar-container{ 
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .search-bar-activity{
-    display: flex;
-    align-items: center;
-    width: 40%; /* Adjust the width as needed */
-    padding: 10px 40px 10px 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 40px;
-    outline: none;
-    box-sizing: border-box;
-  }
   .Search-tips-Container{
     
         position: sticky;
@@ -37,15 +20,7 @@ body, html {
     
       
   }
-  .search-bar-activity-icon{
-    position: absolute;
-    right: 410px; /* Position it inside the input */
-    top: 28%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-  }
+
   /* Tabs for City and Categories */
   .activity-tabs {
     display: flex;

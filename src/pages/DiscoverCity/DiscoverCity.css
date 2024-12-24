@@ -1,0 +1,187 @@
+/* Ensure the main container starts below the navbar */
+.City-details {
+    padding-top: 60px; 
+    margin-left: 200px; /* Adjust this value if your sidebar width changes */
+  }
+  
+  /* Title styling */
+  .city-details-Tilte {
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 20px; /* Add spacing between the title and the carousel */
+  }
+  
+  .city-name {
+    font-size: 2.5rem; /* Larger font size for emphasis */
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 20px;
+  }
+  
+  /* Carousel styling */
+  .city-carousel {
+    display: block;
+    border-radius: 30px;
+    margin: 20px auto;
+    align-items: center;
+    width: 100%; /* Full width of the container */
+    max-width: 1250px; 
+    /* Remove max-width to allow full width */
+  }
+  
+  /* Ensure images scale proportionally */
+  .city-carousel img {
+    border-radius: 30px;
+    height: 500px; /* Adjust height for prominent display */
+    object-fit: cover; /* Ensure images scale properly */
+  }
+  .city-description{
+    font-size: 18px;
+  }
+  .city-description-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  
+  .city-info-flex {
+    display: flex;
+    flex-direction: column; /* Stack the description and best time vertically */
+    width: 65%; /* Takes 65% of the width */
+  }
+  
+  .weather-widget-container {
+    width: 30%; /* Takes 30% of the width */
+    margin-left: 20px;
+  }
+  
+  .city-description-section,
+  .best-time-section {
+    margin-bottom: 20px;
+  }
+  
+  .see-more-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+  }
+  
+  .see-more-btn:hover {
+    color: #0056b3;
+  }
+  .divider-city{
+    margin: 30px 0;
+    border: 0;
+    width: 900px;
+    border-top: 1px solid #ccc !important;
+  }
+  .best-time-to-visit{
+    font-size: 20px;
+    color: #333;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+  }
+  .best-time-text {
+    display: flex;
+    align-items: center; /* Vertically align the text with the icon */
+  }
+  
+  .aero-icon{
+
+        width: 30px;  /* Adjust this value for the size */
+        height: 30px; /* Ensure the height matches the width for a consistent look */
+        margin-right: 8px;
+      
+  }
+  .activities-section {
+    margin-top: 20px;
+  }
+  
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .activity-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .activity-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  .activity-rating {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .see-more-activities-btn {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .activities-grid {
+    display: flex; 
+    gap: 20px;
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; 
+    padding-bottom: 20px; 
+    scroll-behavior: smooth; 
+    justify-content: flex-start; 
+    flex-wrap: nowrap; 
+}
+.activities-grid::-webkit-scrollbar {
+    display: none; 
+}
+
+.activity-card-discover {
+    position: relative;
+    width: 300px; 
+    height: 300px; 
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; 
+    flex-shrink: 0; 
+}
+
+.activity-image {
+    height: 75%; 
+    width: 100%; 
+    background-size: cover;
+    background-position: center;
+}
+
+.activity-info {
+    padding: 10px;
+    background-color: white;
+    flex-grow: 1; 
+}
+
+.activity-info h4 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.activity-info p {
+    font-size: 14px; 
+    color: #777; 
+    margin: 5px 0 0;
+}

@@ -14,9 +14,10 @@ import ActivityCard from '../../components/Activities/ActivityDetailsCard';
 import ReviewCard from '../../components/Activities/ReviewCard'; // Import the ReviewCard
 import L from 'leaflet';  
 import 'leaflet/dist/leaflet.css';  
+import SearchBar from '../../components/ReusableComp/SearchBar';
 
 function ActivityPage() {
-  const { activityId } = useParams();
+  const { activityId, cityId } = useParams();
   const [activityData, setActivityData] = useState(null);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +25,6 @@ function ActivityPage() {
   const [currentImage, setCurrentImage] = useState('');
   const [error, setError] = useState(null);
   const [address, setAddress] = useState(""); 
-  const cityId = "67684edf75fa800e5517a7c1";
   const token = localStorage.getItem("authToken");
   const [searchQuery, setSearchQuery] = useState("");
   const [reviews, setReviews] = useState([]); // State for reviews
@@ -190,16 +190,7 @@ function ActivityPage() {
       <Sidebar />
       <div className="activity-container">
         <div className='Search-tips-Container'>
-          <div className="sticky-search-bar-container">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className="search-bar-activity"
-            />
-            <img src={searchIcon} alt="Search Icon" className="search-bar-activity-icon" />
-          </div>
+         <SearchBar/>
 
           <Nav variant="underline" defaultActiveKey="City" className="activity-tabs">
             <Nav.Item>

@@ -60,10 +60,10 @@ const ActivityCard = ({ activity }) => {
   })();
 
   return (
-    <div className="activity-card">
+    <div className="activity-card-detail">
       {/* About Section */}
       <div className="card-section about">
-        <h3 className="about-title">About</h3>
+        <h3 className="about-title-card">About</h3>
         <p>
           {isDescriptionExpanded
             ? activity.description
