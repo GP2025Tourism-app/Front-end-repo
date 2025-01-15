@@ -193,7 +193,7 @@ function DiscoverCityDetails() {
 
           {/* Activities Section */}
           <div className="activities-section">
-            <h3>Top Activities in {city.city}</h3>
+            <h3>Top Places in {city.city}</h3>
             <div className="activities-grid">
               {city.topActivities.map((activity, index) => (
                 <div key={index} className="activity-card-discover"

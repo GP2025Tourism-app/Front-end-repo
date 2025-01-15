@@ -8,6 +8,7 @@ import clothesIcon from "../../assets/images/Icons/T-Shirt.svg";
 import cameraIcon from "../../assets/images/Icons/camera.svg";
 import notesIcon from "../../assets/images/Icons/journal-plus.svg";
 import moneyIcon from "../../assets/images/Icons/cash-stack.svg";
+import transportationIcon from "../../assets/images/Icons/PublicTransportation.svg";
 import { Nav } from 'react-bootstrap';
 import './ActivityPage.css';
 import ActivityCard from '../../components/Activities/ActivityDetailsCard';
@@ -285,6 +286,12 @@ function ActivityPage() {
                   <div className="tip-item">
                     <img src={notesIcon} alt="Notes" className="tip-icon" />
                     <span>{activityData.additionalTips.notes}</span>
+                  </div>
+                )}
+                {activityData.additionalTips.transportation && (
+                  <div className="tip-item">
+                    <img src={transportationIcon} alt="Notes" className="tip-icon" />
+                    <span>{activityData.additionalTips.transportation}</span>
                   </div>
                 )}
               </div>
