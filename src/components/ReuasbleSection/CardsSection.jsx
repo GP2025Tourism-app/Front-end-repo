@@ -22,25 +22,26 @@ function CardsSection({ title, description, cards }) {
       <div
         style={{
           display: 'flex',
-          overflowX: 'auto',  // Enables horizontal scrolling
-          paddingBottom: '20px',  // To prevent content being cut off at the bottom
-          gap: '20px',  // Space between cards
-          width: '100%',  // Ensure full width
+          overflowX: 'auto',  
+          paddingBottom: '20px',  
+          gap: '20px',  
+          width: '100%',  
+          scrollbarWidth: 'none',
         }}
       >
         {cards.map((card, index) => (
           <div
             key={index}
             style={{
-              minWidth: '250px',  // Ensures each card has a consistent width
-              flex: '0 0 auto',   // Prevent cards from shrinking or growing
+              minWidth: '250px',  
+              flex: '0 0 auto',   
             }}
           >
-            <Card style={{ width: '100%' }}>
-              <Card.Img variant="top" src={card.imageSrc} />
-              <Card.Body>
+            <Card style={{ width: '250px', height: '350px' }}>
+              <Card.Img variant="top" src={card.imageSrc} style={{ height: '200px', objectFit: 'cover' }} />
+              <Card.Body style={{ height: '100px', overflow: 'hidden' }}>
                 <Card.Title>{card.title}</Card.Title>
-                <Card.Text>{card.description}</Card.Text>
+                <Card.Text style={{ fontSize: '1rem' }}>{card.description}</Card.Text>
               </Card.Body>
             </Card>
           </div>

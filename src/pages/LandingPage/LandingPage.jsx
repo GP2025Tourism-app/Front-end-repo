@@ -12,24 +12,44 @@ import SignUpPage from "../SignUpPage/SignUpPage";
 
 const cardsData = [
   {
-    imageSrc: 'https://via.placeholder.com/150',
-    title: 'Card 1',
-    description: 'Description for card 1.',
+    imageSrc: 'https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/egypt-tours-2021.jpg',
+    title: 'Solo Travel Safety',
+    description: 'Top tips to stay safe while traveling alone.',
   },
   {
-    imageSrc: 'https://via.placeholder.com/150',
-    title: 'Card 2',
-    description: 'Description for card 2.',
+    imageSrc: 'https://arloskye.com/cdn/shop/articles/20_packing_hacks.jpg?v=1732657322&width=1200',
+    title: 'Smart Packing',
+    description: 'Pack light for your next adventure.',
   },
   {
-    imageSrc: 'https://via.placeholder.com/150',
-    title: 'Card 3',
-    description: 'Description for card 3.',
+    imageSrc: 'https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/solo-travel-egypt,-travel-to-egypt-alone,-solo-female-travel-egypt.jpg',
+    title: 'Best Solo Destinations',
+    description: 'Explore top spots for solo travelers.',
   },
   {
-    imageSrc: 'https://via.placeholder.com/150',
-    title: 'Card 4',
-    description: 'Description for card 4.',
+    imageSrc: 'https://www.usatoday.com/gcdn/presto/2022/12/02/USAT/e68f9f11-fb78-4644-986d-0ec859de4649-GettyImages-510591722.jpg?crop=6495,3654,x0,y330&width=3200&height=1801&format=pjpg&auto=webp',
+    title: 'Making Friends Abroad',
+    description: 'Easy ways to meet people while traveling solo.',
+  },
+  {
+    imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBVwO-fqZOz5ZY-fESGHkkPBow9IwGl-Qfog&s',
+    title: 'Budget Travel Tips',
+    description: 'Travel the world without breaking the bank.',
+  },
+  {
+    imageSrc: 'https://c02.purpledshub.com/uploads/sites/47/2023/10/Photography-group-4516-scaled.jpg',
+    title: 'Travel Photography Tips',
+    description: 'Capture stunning travel photos on the go.',
+  },
+  {
+    imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2xMyimeNhjCrEAqQYsdJli3BDDFyvUeWQ5Q&s',
+    title: 'Solo Travel Mindset',
+    description: 'Adopt the right mindset for a successful solo trip.',
+  },
+  {
+    imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStUmT83sjAjXJ9C71h7r2p6MaXwDuWA6dzxA&s',
+    title: 'Cultural Etiquette',
+    description: 'Learn the basics of respecting local cultures.',
   },
 ];
 
@@ -74,26 +94,23 @@ function LandingPage() {
       title="Meet Egypt's Expert Local Tour Guides"
       description="Connect with passionate, knowledgeable guides who bring Egypt’s rich history and culture to life."
       images={[
-        { src: 'https://via.placeholder.com/300x200', alt: 'Guide 1' },
-        { src: 'https://via.placeholder.com/300x200', alt: 'Guide 2' },
-        { src: 'https://via.placeholder.com/300x200', alt: 'Guide 3' },
+        { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS2DL1KbicU1Hgotp-nBuPMGTakTbY8XH5zQ&s', alt: 'Guide 1' },
+        { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgDOJTtXgAtW8S_6efumgkbZs3Htfo5P_wzA&s', alt: 'Guide 2' },
+        { src: 'https://storage.googleapis.com/tblv3_bucket_us/guides/57783/1167524/e95b658c-390e-4a18-bbdc-277cf297f493-IMG-20231224-WA0052.jpg', alt: 'Guide 3' },
       ]}
-        reverseLayout={false} // This will make images on the left and text on the right
-        background="#757272" // Dark background, white text
+        reverseLayout={false} 
+        background="#757272" 
       />
-
-    <LeftImagesRightTextSection
-      title="Your Virtual Tour Guide, 
-      Anytime, Anywhere"
-      description="Explore Egypt at your own pace with our interactive, AI-powered virtual tour guide."
-      images={[
-        { src: 'https://via.placeholder.com/300x200', alt: 'Guide 1' },
-        { src: 'https://via.placeholder.com/300x200', alt: 'Guide 2' },
-        { src: 'https://via.placeholder.com/300x200', alt: 'Guide 3' },
-      ]}
-      reverseLayout={true} // This will make images on the right and text on the left
-      backgroundColor="#fff" // Light background, black text
-    />
+      
+    <OneImageRightTextSection
+        title="Your Virtual Tour Guide, 
+        Anytime, Anywhere"
+        description="Explore Egypt at your own pace with our interactive, AI-powered virtual tour guide."
+        images={[
+          { src: 'https://botnation.ai/site/wp-content/uploads/2022/01/chatbot-gratuit.jpg', alt: 'Pyramids' },
+        ]}
+        backgroundColor="#fff"  // Dark background color for this section
+      />
 
 
        <ReusableSection
@@ -112,22 +129,22 @@ function LandingPage() {
         title="Egypt is breathtaking! From the pyramids to the Nile, every moment feels like a step back in time. The culture, history, and people make it unforgettable!"
         description="– Sophia Carter, Travel Blogger from the USA"
         images={[
-          { src: 'https://via.placeholder.com/500x300', alt: 'Pyramids' },
+          { src: 'https://www.theblondeabroad.com/wp-content/uploads/2019/10/pyramids-of-giza-thumb-712x520.jpg', alt: 'Pyramids' },
         ]}
         backgroundColor="#fff"  // Dark background color for this section
       />
 
+        <VideosSection
+          title="Egypt Through Their Eyes"
+          description="Explore Egypt through the perspectives of our local guides and travelers."
+          videos={[
+            'BapSQFJPMM0', // Discover Egypt - Official Tourism Video
+            'y6MXuqmxS_o', // Travel Guide to Egypt - Visit Cairo
+            'LJKM3pmqsbQ', // Exploring the Pyramids of Egypt
+            '-7ijw2b2VO4',
+          ]}
+        />
 
-      <VideosSection
-        title="Egypt Through Their Eyes"
-        description="Explore Egypt through the perspectives of our local guides and travelers."
-        images={[
-          { src: 'https://via.placeholder.com/300x400', alt: 'Image 1' },
-          { src: 'https://via.placeholder.com/300x400', alt: 'Image 2' },
-          { src: 'https://via.placeholder.com/300x400', alt: 'Image 3' },
-          { src: 'https://via.placeholder.com/300x400', alt: 'Image 4' },
-        ]}
-      />
 
 
        <CardsSection

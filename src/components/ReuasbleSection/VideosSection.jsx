@@ -1,6 +1,6 @@
 import React from 'react';
 
-function VideosSection({ title, description, images }) {
+function VideosSection({ title, description, images, videos }) {
   return (
     <section
       style={{
@@ -13,7 +13,9 @@ function VideosSection({ title, description, images }) {
       }}
     >
       {/* Title */}
-      <h2 style={{ fontSize: '2.5rem', marginBottom: '20px' ,color:'white'}}>{title}</h2>
+      <h2 style={{ fontSize: '2.5rem', marginBottom: '20px', color: 'white' }}>
+        {title}
+      </h2>
 
       {/* Description */}
       <p
@@ -21,44 +23,45 @@ function VideosSection({ title, description, images }) {
           fontSize: '1.2rem',
           maxWidth: '800px',
           marginBottom: '120px',
-          color:'white',
+          color: 'white',
         }}
       >
         {description}
       </p>
 
-      {/* Images */}
+      {/* Videos */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',  // 4 images per row
+          gridTemplateColumns: 'repeat(4, 1fr)', // 4 videos per row
           gridGap: '20px',
-          width: '100%',  // Ensure full width for the grid container
+          width: '100%', // Ensure full width for the grid container
         }}
       >
-        {images.map((image, index) => (
+        {videos.map((videoUrl, index) => (
           <div
             key={index}
             style={{
               position: 'relative',
               width: '100%',
               height: 0,
-              paddingBottom: '75%', // Maintain aspect ratio (3:4)
-              transform: index % 2 === 0 ? 'translateY(-50px)' : 'none', // Lift 1st and 3rd images
+              paddingBottom: '75%', // Maintain aspect ratio (16:9 for videos)
+              transform: index % 2 === 0 ? 'translateY(-50px)' : 'none', // Lift 1st and 3rd videos
             }}
           >
-            <img
-              src={image.src}
-              alt={image.alt}
+            <iframe
+              src={`https://www.youtube.com/embed/${videoUrl}`}
+              title={`YouTube video ${index + 1}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
               style={{
                 position: 'absolute',
                 width: '100%',
                 height: '100%',
-                objectFit: 'cover',
                 borderRadius: '8px',
-                border: '2px solid green', // Border for debugging
               }}
-            />
+            ></iframe>
           </div>
         ))}
       </div>
