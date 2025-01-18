@@ -8,7 +8,7 @@ import CardsSection from '../../components/ReuasbleSection/CardsSection';
 import Footer from '../../components/Footer/Footer';
 import LoginPage from '../LoginPage/LoginPage';
 import SignUpPage from "../SignUpPage/SignUpPage";
-
+import chatting from '../../assets/images/chatting.svg';
 
 const cardsData = [
   {
@@ -99,7 +99,7 @@ function LandingPage() {
         { src: 'https://storage.googleapis.com/tblv3_bucket_us/guides/57783/1167524/e95b658c-390e-4a18-bbdc-277cf297f493-IMG-20231224-WA0052.jpg', alt: 'Guide 3' },
       ]}
         reverseLayout={false} 
-        background="#757272" 
+        background="#17A2B8" 
       />
       
     <OneImageRightTextSection
@@ -117,9 +117,8 @@ function LandingPage() {
         title="Chat Live with Local Tour Guides"
         description="Get real-time answers, advice, and recommendations directly from Egypt’s expert guides."
         images={[
-          { src: 'https://via.placeholder.com/300x200', alt: 'Image 1' },
-          { src: 'https://via.placeholder.com/300x200', alt: 'Image 2' },
-          { src: 'https://via.placeholder.com/300x200', alt: 'Image 3' },
+          { src:chatting, alt: 'Image 1' },
+          
         ]}
         background="#757272"
       />

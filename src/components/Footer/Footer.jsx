@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: '#333333',
+        backgroundColor: '#17191A',
         color: '#ffffff',
         padding: '50px 20px',
       }}
@@ -35,7 +35,7 @@ function Footer() {
           />
           <button
             style={{
-              backgroundColor: '#0055b8',
+              backgroundColor: '#17A2B8',
               color: '#ffffff',
               border: 'none',
               padding: '10px 20px',

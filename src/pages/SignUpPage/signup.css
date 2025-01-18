@@ -1,18 +1,18 @@
-/* Style for the overlay and the popup card */
+
 .popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    background: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
   }
   
-  .popup-card {
+  .popup-card-signup {
     background: #fff;
     padding: 25px; /* Decreased padding to make the card smaller */
     border-radius: 12px; /* Slightly more rounded corners */
@@ -50,10 +50,10 @@
   }
   
   .form-row label {
-    font-weight: bold;
     margin-bottom: 8px; /* Increased margin for better spacing */
     font-size: 1.1rem; /* Slightly larger label text */
-    text-align: left; /* Ensure label is aligned to the left */
+    text-align: left;
+    font-weight: 5px; /* Ensure label is aligned to the left */
   }
   
   .form-row input {
@@ -65,9 +65,11 @@
   }
   
   /* Style for the submit button */
-  button {
-    font-size: 1.2rem; /* Slightly larger font size for the button */
-    padding: 12px; /* Increase padding for better button size */
+  .signup-button {
+    display: "block";
+    width: "40%" !important;
+    background-color: #17A2B8 !important;
+    border:#17A2B8 !important;
   }
   
   /* 'or login with' section styles */
@@ -76,11 +78,11 @@
     align-items: center;
     justify-content: center;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .or-login-with .line {
-    width: 40%;
+    width: 38%;
     height: 1px;
     background-color: #ccc;
     margin: 0 10px;

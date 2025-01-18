@@ -16,6 +16,7 @@ import ReviewCard from '../../components/Activities/ReviewCard'; // Import the R
 import L from 'leaflet';  
 import 'leaflet/dist/leaflet.css';  
 import SearchBar from '../../components/ReusableComp/SearchBar';
+import LoadingScreen from '../../components/loadingscreen/loadingScreen';
 
 function ActivityPage() {
   const { activityId, cityId } = useParams();
@@ -31,6 +32,18 @@ function ActivityPage() {
   const [reviews, setReviews] = useState([]); // State for reviews
   const mapRef = useRef(null);  
   const mapInstance = useRef(null); 
+  // Static data for nearby places
+  const nearbyRestaurants = [
+    { name: "Branzino Fish", rating: 4.5 },
+    { name: "Pasta Palace", rating: 5 },
+    { name: "Burger Barn", rating: 3},
+  ];
+
+  const nearbyAttractions = [
+    { name: "Art Museum", rating: 4 },
+    { name: "Botanical Gardens", rating: 4.5 },
+    { name: "Historic Castle", rating: 5 },
+  ];
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -57,6 +70,7 @@ function ActivityPage() {
   };
 
   const fetchActivityData = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`http://localhost:8080/api/cities/${cityId}/activities/${activityId}`, {
         method: "GET",
@@ -174,7 +188,7 @@ function ActivityPage() {
   }, [activityData]);
 
   if (loading) {
-    return <div>Loading activity...</div>;
+    return <LoadingScreen isLoading={loading} />;
   }
 
   if (error) {
@@ -187,6 +201,7 @@ function ActivityPage() {
 
   return (
     <>
+      <LoadingScreen isLoading={loading} />
       <WebsiteNavbar />
       <Sidebar />
       <div className="activity-container">
@@ -298,17 +313,71 @@ function ActivityPage() {
             </div>
             <hr className="divider-part" />
             <div className="flex-container-map">
-                <div className="address-container" style={{ flex: 1, paddingRight: '20px' }}>
-                  <h3 className='area'>Area</h3>
-                  <p className='address'>{address}</p>
+    <div className="address-container">
+        <h3 className='area'>Area</h3>
+        <p className='address'>{address}</p>
+        <h3 className='nearby-title'>Best Nearby</h3>
+        <div className="nearby-container">
+          
+        <div className="nearby-section">
+    <h4 className='nearby-restaurant'>Restaurants</h4>
+    <p>{nearbyRestaurants.length} within 3 miles</p>
+    {nearbyRestaurants.map((restaurant, index) => (
+        <div key={index} className="nearby-item">
+            <img src={restaurant.image ||'https://via.placeholder.com/150'} alt={restaurant.name} className="nearby-image" />
+            <div className="nearby-details">
+                <p>{restaurant.name}</p>
+                <div className="rating-stars">
+                    {Array.from({ length: 5 }, (v, i) => {
+                        if (i < Math.floor(restaurant.rating)) {
+                            return <span key={i} className="star filled">★</span>; // Filled star
+                        } else if (i === Math.floor(restaurant.rating) && restaurant.rating % 1 !== 0) {
+                            return <span key={i} className="star half-filled">★</span>; // Half-filled star
+                        } else {
+                            return <span key={i} className="star">★</span>; // Unfilled star
+                        }
+                    })}
                 </div>
+            </div>
+        </div>
+    ))}
+    <a href="#">See all</a>
+</div>
 
-                <div ref={mapRef} style={{ height: '500px', width: '35%', borderRadius: '15px' }}></div>
-              </div>
+
+          <div className="nearby-section">
+              <h4 className='nearby-attractions'>Attractions</h4>
+              <p className='nearby-distance'>{nearbyAttractions.length} within 6 miles</p>
+              {nearbyAttractions.map((attraction, index) => (
+                  <div key={index} className="nearby-item">
+                      <img src={attraction.image || 'https://via.placeholder.com/150'} alt={attraction.name} className="nearby-image" />
+                      <div className="nearby-details">
+                          <p className='nearby-attraction-name'>{attraction.name}</p>
+                          <div className="rating-stars">
+                    {Array.from({ length: 5 }, (v, i) => {
+                        if (i < Math.floor(attraction.rating)) {
+                            return <span key={i} className="star filled">★</span>; // Filled star
+                        } else if (i === Math.floor(attraction.rating) && attraction.rating % 1 !== 0) {
+                            return <span key={i} className="star half-filled">★</span>; // Half-filled star
+                        } else {
+                            return <span key={i} className="star">★</span>; // Unfilled star
+                        }
+                    })}
+                </div>
+                      </div>
+                  </div>
+              ))}
+              <a href="#">See all</a>
+          </div>
+      </div>
+    </div>
+
+    <div ref={mapRef} style={{ height: '500px', width: '35%', borderRadius: '15px' }}></div>
+</div>
               <hr className="divider-part" />
 
             <div className="reviews-section">
-              <h3>Customer Reviews</h3>
+              <h3 className='review-title'>Customer Reviews</h3>
               <div className="review-summary">
               <div className="rating">
                 <span className="rating-score">{calculateTotalScore().toFixed(1)}</span>
@@ -321,7 +390,8 @@ function ActivityPage() {
               </div>
               {reviews.map((review, index) => (
                 <ReviewCard key={index} review={{
-                  username: review.userId, 
+                  name: `${review.user.firstname} ${review.user.lastname}`,  // Concatenate first and last names
+                  image: review.user.image ,
                   rating: review.rating,
                   date: new Date(review.reviewDate).toLocaleDateString(),
                   text: review.comment,

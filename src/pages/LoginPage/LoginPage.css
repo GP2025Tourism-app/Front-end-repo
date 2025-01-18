@@ -44,12 +44,11 @@
     align-items: flex-start; /* Align labels and input fields to the left */
     margin-bottom: 20px; /* Increased space between form rows */
   }
-  
   .form-row label {
-    font-weight: bold;
     margin-bottom: 8px; /* Increased margin for better spacing */
     font-size: 1.1rem; /* Slightly larger label text */
-    text-align: left; /* Ensure label is aligned to the left */
+    text-align: left;
+    font-weight: 5px; /* Ensure label is aligned to the left */
   }
   
   .form-row input {
@@ -74,13 +73,6 @@
     margin-bottom: 20px;
   }
   
-  .or-login-with .line {
-    width: 40%;
-    height: 1px;
-    background-color: #ccc;
-    margin: 0 10px;
-  }
-  
 /* Style for the social login buttons */
 .social-login {
     display: flex;
@@ -88,7 +80,16 @@
     gap: 10px; /* Add gap between the social login buttons */
   }
   
-  /* Style for each social button */
+  .error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+  }
+  
+  .form-row .is-invalid {
+    border-color: red;
+  }
+  
   .social-btn {
     width: 50px;
     height: 50px;
@@ -111,4 +112,9 @@
     background-color: #3b5998; /* Facebook Blue */
   }
   
-  
+  .login-button{
+    display: "block";
+    width: "40%" !important;
+    background-color: #17A2B8 !important;
+    border:#17A2B8 !important;
+  }

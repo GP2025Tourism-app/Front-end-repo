@@ -8,7 +8,6 @@ function DiscoverCities() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch data from the API
   useEffect(() => {
     const fetchCities = async () => {
       try {

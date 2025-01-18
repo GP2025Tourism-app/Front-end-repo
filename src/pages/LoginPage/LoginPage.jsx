@@ -5,11 +5,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 
-
 function LoginPage({ show, onClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({ username: "", password: "", general: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -25,12 +24,25 @@ function LoginPage({ show, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username || !password) {
-      setError("Both fields are required.");
+    let hasError = false;
+    const newErrors = { username: "", password: "", general: "" };
+
+    if (!username) {
+      newErrors.username = "Username is required.";
+      hasError = true;
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required.";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
       return;
     }
 
-    setError("");
+    setErrors({ username: "", password: "", general: "" });
     setLoading(true);
 
     try {
@@ -41,23 +53,26 @@ function LoginPage({ show, onClose }) {
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
-              // Save the token to localStorage
-      const token = response.data.token; 
-      localStorage.setItem("authToken", token);
+        // Save the token to localStorage
+        const token = response.data.token; 
+        localStorage.setItem("authToken", token);
 
-      // Save user data if needed
-      localStorage.setItem("userData", JSON.stringify(response.data));
-      navigate('/homepage')
-      onClose(); // Close the popup after successful login
+        // Save user data if needed
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        navigate("/homepage");
+        onClose(); // Close the popup after successful login
       }
     } catch (err) {
       console.error("Error during login:", err);
       if (err.response) {
-        // Server responded with an error
-        setError(err.response.data.message || "Login failed. Please try again.");
+        // If the backend returns a "Bad credentials" message
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          general: err.response.data.message || "Login failed. Please try again.",
+        }));
       } else {
         // Network or other errors
-        setError("An error occurred. Please try again later.");
+        setErrors({ ...errors, general: "An error occurred. Please try again later." });
       }
     } finally {
       setLoading(false);
@@ -73,16 +88,18 @@ function LoginPage({ show, onClose }) {
           &times;
         </button>
         <h3>Login</h3>
-        {error && <div className="error-message">{error}</div>} 
+        {errors.general && <div className="error-message">{errors.general}</div>} 
         <Form onSubmit={handleSubmit}>
           <div className="form-row">
             <Form.Label>Username</Form.Label>
             <Form.Control
-              type="username"
+              type="text"
               placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              isInvalid={errors.username}
             />
+            {errors.username && <div className="error-message">{errors.username}</div>}
           </div>
           <div className="form-row">
             <Form.Label>Password</Form.Label>
@@ -91,10 +108,12 @@ function LoginPage({ show, onClose }) {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              isInvalid={errors.password}
             />
+            {errors.password && <div className="error-message">{errors.password}</div>}
           </div>
-          <Button variant="primary" type="submit" style={{ display: "block", width: "100%" }} disabled={loading}>
-              {loading ? "logging in..." : "Login"}
+          <Button variant="primary" type="submit" className="login-button" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </Button>
         </Form>
 

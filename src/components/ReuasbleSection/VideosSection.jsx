@@ -6,7 +6,7 @@ function VideosSection({ title, description, images, videos }) {
       style={{
         marginTop: '50px',
         padding: '50px 20px',
-        backgroundColor: '#757272',
+        backgroundColor: '#587E84',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

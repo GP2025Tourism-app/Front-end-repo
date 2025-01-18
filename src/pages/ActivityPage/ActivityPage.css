@@ -1,258 +1,357 @@
 /* Main Container for the Activity Page */
 body, html {
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-  }
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
 .activity-container {
-    
-    padding-top: 60px; 
-    margin-left: 200px; /* Adjust the margin to align with the layout */
-  }
+  padding-top: 60px; 
+  margin-left: 200px; /* Adjust the margin to align with the layout */
+}
 
-  .Search-tips-Container{
-    
-        position: sticky;
-        top: 60px;
-        background-color: white; /* White background */
-        z-index: 100; /* Ensure it stays on top of other elements */
-        width: 100%; /* Full width of the container */
-        box-sizing: border-box;
-        padding: 10px 0; /* Some padding to separate elements */
-    
-      
-  }
+.Search-tips-Container {
+  position: sticky;
+  top: 60px;
+  background-color: white; /* White background */
+  z-index: 100; /* Ensure it stays on top of other elements */
+  width: 100%; /* Full width of the container */
+  box-sizing: border-box;
+  padding: 10px 0; /* Some padding to separate elements */
+}
 
-  /* Tabs for City and Categories */
-  .activity-tabs {
-    display: flex;
-    justify-content: space-around; /* Distribute tabs evenly */
-    background-color: white; /* Ensure tabs have a white background */
-  }
-  
-  .activity-tabs .nav-link {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  /* Flex Container for Activity Details and Image Gallery */
-  .flex-container {
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 20px;
-    gap: 20px; /* Adds space between the details and gallery */
-  }
-  
-  /* Activity Details */
-  .activity-details-Tilte {
-    flex: 1; /* Allow the activity details to take up the remaining space */
-  }
-  
-  .activity-name {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    font-family: 'Playfair Display', serif;
-    margin-bottom: 10px;
-  }
-  
-  .activity-info-box {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 15px;
-  }
-  
-  .rating {
-    display: flex;
-    align-items: center;
-  }
-  
-  .rating span {
-    margin-right: 5px;
-    font-weight: bold;
-  }
-  
-  .reviews {
-    color: #888;
-  }
-  
-  .dot {
-    margin: 0 10px;
-    font-size: 18px;
-    color: #888;
-  }
-  
-  .rating-score {
-    background-color: #17A2B8;
-    color: white;
-    padding: 5px 5px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-right: 10px;
-  }
-  
-  .category {
-    font-weight: normal;
-    color: #17A2B8;
-  }
-  
-  .image-gallery {
-    flex: 0 1 800px; /* Increase the flex-basis to 700px or adjust as needed */
-    max-width: 1200px;
-    max-height: 470px; /* Increase the max-width to allow larger images */
-    text-align: center;
-    margin: 20px 0;
-    margin-left: 20px;
-  }
-  
-  .large-image {
-    width: 100%;
-    height: auto;
-    max-height: 400px; 
-    border: 2px solid #ccc;
-    border-radius: 8px;
-  }
-  
-  .thumbnail-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    max-height: 90px;
-  }
-  
-  .thumbnail {
-    width: 120px; /* Adjust thumbnail width */
-    height: auto;
-    margin: 0 5px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 4px;
-    transition: border 0.3s;
-  }
-  
-  .thumbnail:hover {
-    border: 2px solid #007bff; /* Highlight color on hover */
-  }
-  
-  /* Make the layout responsive for smaller screens */
-  @media (max-width: 768px) {
-    .activity-container {
+/* Tabs for City and Categories */
+.activity-tabs {
+  display: flex;
+  justify-content: space-around; /* Distribute tabs evenly */
+  background-color: white; /* Ensure tabs have a white background */
+}
+
+.activity-tabs .nav-link {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Flex Container for Activity Details and Image Gallery */
+.flex-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+  gap: 20px; /* Adds space between the details and gallery */
+}
+
+/* Activity Details */
+.activity-details-Tilte {
+  flex: 1; /* Allow the activity details to take up the remaining space */
+}
+
+.activity-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 10px;
+}
+
+.activity-info-box {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating span {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.reviews {
+  color: #888;
+}
+
+.dot {
+  margin: 0 10px;
+  font-size: 18px;
+  color: #888;
+}
+
+.rating-score {
+  background-color: #17A2B8;
+  color: white;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.category {
+  font-weight: normal;
+  color: #17A2B8;
+}
+
+.image-gallery {
+  flex: 0 1 800px; /* Increase the flex-basis to 700px or adjust as needed */
+  max-width: 1200px;
+  max-height: 470px; /* Increase the max-width to allow larger images */
+  text-align: center;
+  margin: 20px 0;
+  margin-left: 20px;
+}
+
+.large-image {
+  width: 100%;
+  height: auto;
+  max-height: 400px; 
+  border: 2px solid #ccc;
+  border-radius: 8px;
+}
+
+.thumbnail-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  max-height: 90px;
+}
+
+.thumbnail {
+  width: 120px; /* Adjust thumbnail width */
+  height: auto;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: border 0.3s;
+}
+
+.thumbnail:hover {
+  border: 2px solid #007bff; /* Highlight color on hover */
+}
+
+/* Make the layout responsive for smaller screens */
+@media (max-width: 768px) {
+  .activity-container {
       margin-left: 0;
-    }
-  
-    .flex-container {
+  }
+
+  .flex-container {
       flex-direction: column; /* Stack the details and gallery on small screens */
       gap: 10px;
-    }
-  
-    .image-gallery {
+  }
+
+  .image-gallery {
       max-width: 100%;
-    }
-    
-    .activity-tabs {
+  }
+  
+  .activity-tabs {
       flex-direction: column;
       margin-top: 10px;
-    }
   }
-  .divider-part {
-    margin: 30px 0;
-    border: 0;
-    width: 1300px;
-    border-top: 1px solid #ccc !important;
-  }
-  additional-tips {
-    margin-top: 30px;
-  }
-  .additional-tips {
-    margin-top: 30px;
-  }
-  
-  .row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-  
-  .tip-item {
-    display: flex;
-    align-items: center;
-    width: 40% !important; 
-  }
-  
-  .tip-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-  }
-  
-  .tip-item span {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .additional-tips-title {
-    font-family: 'Playfair Display', serif;
-    margin-bottom: 30px;
-    font-size: 25px;
-  }
-  
+}
+
+.divider-part {
+  margin: 30px 0;
+  border: 0;
+  width: 1300px;
+  border-top: 1px solid #ccc !important;
+}
+
+.additional-tips {
+  margin-top: 30px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.tip-item {
+  display: flex;
+  align-items: center;
+  width: 40% !important; 
+}
+
+.tip-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.tip-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.additional-tips-title {
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 30px;
+  font-size: 25px;
+}
+
+.flex-container-map {
+  display: flex;
+  justify-content: flex-start; /* Align items to the left */
+  align-items: flex-start; /* Align items to the start */
+  gap: 20px; /* Adds some space between the address and map */
+}
+
+.leaflet-container {
+  position: sticky !important;
+}
+
+.address-container {
+  flex: 1; /* Ensures the address takes up remaining space */
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.address {
+  color: #555;
+  text-decoration: underline;
+}
+
+.area {
+  font-size: 25px;
+  color: #333;
+  font-family: 'Playfair Display', serif;
+}
+
+/* Adjustments for responsive layout */
+@media (max-width: 768px) {
   .flex-container-map {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px; /* Adds some space between the address and map */
-  }
-  .leaflet-container{
-    position: sticky !important;
+      flex-direction: column; /* Stack map below address and nearby on small screens */
   }
   .address-container {
-    flex: 1; /* Ensures the address takes up remaining space */
-    padding: 15px;
-    border-radius: 8px;
+      width: 100%; /* Full width for address container */
   }
-  .address{
-    color:#555;
-    text-decoration: underline;
+  .leaflet-container {
+      width: 100%; /* Full width for map on small screens */
   }
-  .area{
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    font-family: 'Playfair Display', serif;
+}
+
+.reviews-section {
+  margin-top: 30px;
+}
+
+.review-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.average-rating {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.ReviewsButton {
+  display: flex;
+  gap: 20px;
+}
+
+.filter-button,
+.write-review-button {
+  width: 130px;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 20px;
+  border: 1px solid #D9D9D9; 
+}
+
+.nearby-container {
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 10px; /* Add space between area and nearby sections */
+  display: flex; /* Use flexbox for side-by-side layout */
+  gap: 20px; /* Space between columns */
+}
+
+.nearby-section {
+  flex: 1; /* Allow sections to take equal space */
+  margin-bottom: 20px; /* Space between sections */
+}
+
+/* Adjustments for responsive layout */
+@media (max-width: 768px) {
+  .nearby-container {
+      flex-direction: column; /* Stack sections on smaller screens */
   }
-  @media (max-width: 768px) {
-    .flex-container {
-      flex-direction: column; /* Stacks the address and map on top of each other on smaller screens */
-      gap: 10px;
-    }
-    .address-container, div[ref='mapRef'] {
-      width: 100%; /* Full width for both on small screens */
-    }
-  }
-  .reviews-section {
-    margin-top: 30px;
-  }
-  
-  .review-summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .average-rating {
-    font-size: 1.5em;
-    font-weight: bold;
-  }
-  .ReviewsButton{
-    display: flex;
-    gap: 20px;
-  }
-  .filter-button,
-  .write-review-button {
-    width: 130px;
-    margin-bottom: 20px;
-    background-color: white;
-    border-radius: 20px;
-    border-color:#888;
-  }
+}
+.nearby-item {
+  display: flex; /* Use flexbox to align image and text */
+  align-items: center; /* Center align items vertically */
+  margin-bottom: 10px; /* Space between items */
+}
+
+.nearby-image {
+  width: 50px; /* Adjust width as needed */
+  height: 50px; /* Adjust height as needed */
+  border-radius: 5px; /* Optional: Rounded corners for images */
+  margin-right: 10px; /* Space between image and text */
+}
+
+.nearby-details {
+  display: flex;
+  flex-direction: column; /* Stack name and rating vertically */
+}
+.nearby-attractions,
+.nearby-restaurant,
+.nearby-distance{
+  font-size: 1rem;
+  font-weight: lighter;
+  color: #333;
+  font-family: 'Playfair Display', serif;
+}
+.nearby-title,
+.review-title{
+  font-size: 25px;
+  color: #333;
+  font-family: 'Playfair Display', serif;
+  margin-top: 5px;
+
+}
+.rating-stars {
+  display: flex;
+  align-items: center; /* Center align stars vertically */
+}
+
+.star {
+  font-size: 20px; /* Size of the stars */
+  color: #ccc; /* Default star color */
+  margin-right: 2px; /* Space between stars */
+  position: relative; /* Positioning context for pseudo-element */
+  overflow: hidden; /* Prevent overflow */
+}
+
+.star.filled {
+  color: #17A2B8; /* Color for filled stars (gold) */
+}
+
+.star.half-filled {
+  color: transparent; /* Hide the default star color */
+}
+
+.star.half-filled::before {
+  content: '★'; /* Use the filled star character */
+  position: absolute; /* Position it absolutely */
+  left: 0; /* Align to the left */
+  width: 50%; /* Fill half of the star */
+  color: #17A2B8; /* Color for the filled half */
+}
+
+.star.half-filled::after {
+  content: '★'; /* Use the filled star character */
+  position: absolute; /* Position it absolutely */
+  left: 0; /* Align to the left */
+  width: 50%; /* Fill half of the star */
+  color: #ccc; /* Color for the unfilled half */
+  clip-path: inset(0 50% 0 0); /* Hide the filled half */
+  z-index: -1; /* Place behind the filled half */
+}

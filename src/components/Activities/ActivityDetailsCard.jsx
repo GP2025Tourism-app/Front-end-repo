@@ -153,7 +153,7 @@ const ActivityCard = ({ activity }) => {
         {/* Duration */}
         <div className="detail-item">
           <img src={durationIcon} alt="feed" className="icon" />
-          <span>{activity.duration || "N/A"} hours</span>
+          <span>{activity.duration || "N/A"} </span>
         </div>
       </div>
     </div>

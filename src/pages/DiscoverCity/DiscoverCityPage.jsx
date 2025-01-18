@@ -10,7 +10,7 @@ import SearchBar from "../../components/ReusableComp/SearchBar";
 import WeatherWidget from "../../components/ReusableComp/Weather";
 import areoplaneIcon from "../../assets/images/Icons/Airplane Take Off.svg";
 import { useNavigate } from "react-router-dom";
-
+import LoadingScreen from "../../components/loadingscreen/loadingScreen"; // Ensure the path is correct
 
 function DiscoverCityDetails() {
   const [reviews, setReviews] = useState([]);
@@ -64,37 +64,41 @@ function DiscoverCityDetails() {
       }
     }
   };
-
   useEffect(() => {
     const fetchCity = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`http://localhost:8080/api/cities/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-
         setCity(response.data);
-        setLoading(false);
-        fetchReviews();
+        await fetchReviews();
       } catch (err) {
         console.error("Error fetching city details:", err);
         setError("Failed to load city details.");
+      } finally {
         setLoading(false);
       }
     };
-
+  
     fetchCity();
-  }, [id]);
-
+    
+    // Scroll to top when the page is loaded
+    window.scrollTo(0, 0);
+  }, [id]); 
+  
   useEffect(() => {
     fetchWeather();
   }, [city]);
-
+  useEffect(() => {
+    console.log("City data loaded:", city);
+  }, [city]);
+  // Render the loading screen
   if (loading) {
-    return <p>Loading city details...</p>;
+    return <LoadingScreen isLoading={loading} />;
   }
 
+  // Render error message if there is an error
   if (error) {
     return <p>{error}</p>;
   }
@@ -197,17 +201,15 @@ function DiscoverCityDetails() {
             <div className="activities-grid">
               {city.topActivities.map((activity, index) => (
                 <div key={index} className="activity-card-discover"
-                onClick={() => navigate(`/activity/${activity.activityId}/city/${city.cityId}`)} >
+                  onClick={() => navigate(`/activity/${activity.activityId}/city/${city.cityId}`)} >
                   <img src={activity.images[0]} alt={activity.name} className="activity-image" />
                   <div className="activity-info">
-                  <h4>{activity.name}</h4>
-                  <p>{activity.category}</p>
-                </div>
+                    <h4>{activity.name}</h4>
+                    <p>{activity.category}</p>
+                  </div>
                 </div>
               ))}
             </div>
-            
-            <button className="see-more-activities-btn">See More</button>
           </div>
         </div>
       </div>

@@ -1,0 +1,58 @@
+/* LoadingScreen.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.loading-screen {
+    position: fixed; /* Cover the entire screen */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly less transparent */
+    display: flex; /* Use flexbox to center content */
+    flex-direction: column; /* Stack loader and text vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    z-index: 9999; /* Ensure it's on top of other content */
+    text-align: center; /* Center text */
+}
+
+.loader {
+    border: 8px solid #f3f3f3; /* Light gray border */
+    border-top: 8px solid #3498db; /* Blue border for the top */
+    border-radius: 50%; /* Circular loader */
+    width: 70px; /* Increased width */
+    height: 70px; /* Increased height */
+    animation: spin 1s linear infinite; /* Spinning animation */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    margin-top: 20px; /* Space between loader and text */
+    font-size: 24px; /* Larger font size */
+    font-weight: bold; /* Bold text */
+    color: #3498db; /* Blue color */
+    animation: fadeIn 1s; /* Fade-in animation */
+}
+
+.loading-subtext {
+    margin-top: 10px; /* Space between texts */
+    font-size: 16px; /* Medium font size */
+    color: #666; /* Gray color */
+    animation: fadeIn 1.5s; /* Fade-in animation */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

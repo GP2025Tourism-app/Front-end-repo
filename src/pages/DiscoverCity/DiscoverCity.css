@@ -10,7 +10,13 @@
     margin-top: 10px;
     margin-bottom: 20px; /* Add spacing between the title and the carousel */
   }
-  
+  .activity-tabs .nav-link.active{
+    color: #17A2B8 !important;
+  }
+  .activity-tabs .nav-link {
+    font-weight: 500;
+    color: black !important;
+  }
   .city-name {
     font-size: 2.5rem; /* Larger font size for emphasis */
     font-weight: bold;

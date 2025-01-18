@@ -6,7 +6,7 @@ const getTextColor = (backgroundColor) => {
   return backgroundColor === '#fff' ? '#333' : '#fff';
 };
 
-function LeftImagesRightTextSection({ title, description, images, reverseLayout = false, backgroundColor = '#757272' }) {
+function LeftImagesRightTextSection({ title, description, images, reverseLayout = false, backgroundColor = '#587E84' }) {
   // Determine the text color based on the background color
   const textColor = getTextColor(backgroundColor);
 

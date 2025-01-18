@@ -1,17 +1,22 @@
-// ReviewCard.js
 import React from 'react';
-import './ReviewCard.css'; // Create a CSS file for styles
+import './ReviewCard.css';
 
 const ReviewCard = ({ review }) => {
   return (
     <div className="review-card">
       <div className="review-header">
-        
-      <span className="review-username">{review.userId}</span>
-        <span className="review-score">{review.rating}</span>
-        <span className="review-date">{review.date}</span>
+        <img 
+          className="review-image" 
+          src={review.image || 'https://via.placeholder.com/150'}  
+        />
+        <div>
+          <span className="review-username">{review.name}</span>
+          <p className="review-text">{review.text}</p>
+        </div>
+        <div className="review-info">
+          <span className="review-date">{review.date}</span>
+        </div>
       </div>
-      <p className="review-text">{review.text}</p>
     </div>
   );
 };
