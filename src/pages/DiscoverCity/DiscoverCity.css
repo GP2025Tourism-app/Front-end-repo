@@ -1,4 +1,7 @@
 /* Ensure the main container starts below the navbar */
+.body{
+  padding-top: 70px;
+}
 .City-details {
     padding-top: 60px; 
     margin-left: 200px; /* Adjust this value if your sidebar width changes */
@@ -16,6 +19,14 @@
   .activity-tabs .nav-link {
     font-weight: 500;
     color: black !important;
+  }
+  .activitytype{
+    font-size: 2rem; /* Larger font size for emphasis */
+    font-weight: bold;
+    color: #403f3f;
+    margin-top: 20px;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 20px;
   }
   .city-name {
     font-size: 2.5rem; /* Larger font size for emphasis */
@@ -191,3 +202,22 @@
     color: #777; 
     margin: 5px 0 0;
 }
+.activity-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ensures responsiveness */
+    grid-template-columns: repeat(4, 1fr); /* Maximum 4 activities per row */
+    gap: 20px; /* Space between items */
+    justify-content: center; /* Center items horizontally */
+    padding-bottom: 20px; 
+}
+
+.favorite-button {
+  position: absolute; /* Position it absolutely within the container */
+  bottom: 10px; /* Position from the bottom */
+  right: 10px; /* Position from the right */
+  background: none; /* No background */
+  border: none; /* No border */
+  cursor: pointer; /* Pointer cursor on hover */
+  padding: 0; /* Remove padding */
+}
+

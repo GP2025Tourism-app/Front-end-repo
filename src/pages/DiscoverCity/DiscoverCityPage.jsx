@@ -10,7 +10,9 @@ import SearchBar from "../../components/ReusableComp/SearchBar";
 import WeatherWidget from "../../components/ReusableComp/Weather";
 import areoplaneIcon from "../../assets/images/Icons/Airplane Take Off.svg";
 import { useNavigate } from "react-router-dom";
-import LoadingScreen from "../../components/loadingscreen/loadingScreen"; // Ensure the path is correct
+import LoadingScreen from "../../components/loadingscreen/loadingScreen"; 
+import heartIcon from "../../assets/images/Icons/heart.svg"; 
+import heartFilledIcon from "../../assets/images/Icons/heart-fill.svg"; 
 
 function DiscoverCityDetails() {
   const [reviews, setReviews] = useState([]);
@@ -23,8 +25,24 @@ function DiscoverCityDetails() {
   const [showBestTime, setShowBestTime] = useState(false); // State to toggle Best Time to Visit
   const token = localStorage.getItem("authToken");
   const navigate = useNavigate();
+ 
+  const [selectedCategory, setSelectedCategory] = useState("City"); 
+  const [isCategoryFullScreen, setIsCategoryFullScreen] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
-  // Fetch reviews for the city
+  const handleSelect = (eventKey) => {
+    setSelectedCategory(eventKey);
+    setIsCategoryFullScreen(eventKey !== "City");
+  };
+
+  const filteredActivities =
+  city && city.topActivities
+    ? selectedCategory === "City"
+      ? city.topActivities
+      : city.topActivities.filter((activity) => activity.type === selectedCategory)
+    : [];
+
+
   const fetchReviews = async () => {
     try {
       const response = await fetch(`http://localhost:8080/api/reviews/city/${id}`, {
@@ -45,14 +63,14 @@ function DiscoverCityDetails() {
     }
   };
 
-  // Calculate average rating score
+ 
   const calculateTotalScore = () => {
     if (reviews.length === 0) return 0;
     const totalScore = reviews.reduce((acc, review) => acc + review.rating, 0);
-    return totalScore / reviews.length; // Average score
+    return totalScore / reviews.length; 
   };
 
-  // Fetch dynamic weather details
+
   const fetchWeather = async () => {
     if (city) {
       try {
@@ -83,7 +101,7 @@ function DiscoverCityDetails() {
   
     fetchCity();
     
-    // Scroll to top when the page is loaded
+   
     window.scrollTo(0, 0);
   }, [id]); 
   
@@ -102,6 +120,18 @@ function DiscoverCityDetails() {
   if (error) {
     return <p>{error}</p>;
   }
+  
+  const toggleFavorite = (activityId) => {
+    setFavorites((prevFavorites) => {
+      if (prevFavorites.includes(activityId)) {
+        // Remove from favorites
+        return prevFavorites.filter((id) => id !== activityId);
+      } else {
+        // Add to favorites
+        return [...prevFavorites, activityId];
+      }
+    });
+  };
 
   return (
     <>
@@ -111,18 +141,18 @@ function DiscoverCityDetails() {
         <div className="Search-tips-Container">
           <SearchBar />
 
-          <Nav variant="underline" defaultActiveKey="City" className="activity-tabs">
+          <Nav variant="underline" activeKey={selectedCategory} className="activity-tabs" onSelect={handleSelect} defaultActiveKey="City">
             <Nav.Item>
               <Nav.Link eventKey="City">{city.city}</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="places">Places</Nav.Link>
+              <Nav.Link eventKey="Places">Places</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="things-to-do">Things to Do</Nav.Link>
+              <Nav.Link eventKey="ThingsToDo">Things to Do</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="hidden-gems">Hidden Gems</Nav.Link>
+              <Nav.Link eventKey="HiddenGems">Hidden Gems</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="restaurants">Restaurants</Nav.Link>
@@ -131,8 +161,34 @@ function DiscoverCityDetails() {
               <Nav.Link eventKey="tour-guides">Tour Guides</Nav.Link>
             </Nav.Item>
           </Nav>
-        </div>
-
+          </div>
+          {isCategoryFullScreen ? (
+          // Fullscreen category view
+          <div className="activities-fullscreen">
+            <h3 className="activtype">{selectedCategory.replace("-", " ")}</h3>
+            <div className="activity-grid">
+              {filteredActivities.map((activity, index) => (
+                <div
+                  key={index}
+                  className="activity-card-discover"
+                  onClick={() => navigate(`/activity/${activity.activityId}/city/${city.cityId}`)}
+                >
+                  <img src={activity.images[0]} alt={activity.name} className="activity-image" />
+                  <div className="activity-info">
+                  <button className="favorite-button" onClick={(e) => {
+                      e.stopPropagation(); 
+                      toggleFavorite(activity.activityId);
+                    }}>
+                      <img src={favorites.includes(activity.activityId) ? heartFilledIcon : heartIcon} alt="Favorite" />
+                    </button>
+                    <h4>{activity.name}</h4>
+                    <p>{activity.category}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ):(
         <div className="City-container">
           {/* City Title */}
           <div className="city-details-Tilte">
@@ -194,24 +250,38 @@ function DiscoverCityDetails() {
               <WeatherWidget weather={weather} />
             </div>
           </div>
-
-          {/* Activities Section */}
-          <div className="activities-section">
-            <h3>Top Places in {city.city}</h3>
-            <div className="activities-grid">
-              {city.topActivities.map((activity, index) => (
-                <div key={index} className="activity-card-discover"
-                  onClick={() => navigate(`/activity/${activity.activityId}/city/${city.cityId}`)} >
-                  <img src={activity.images[0]} alt={activity.name} className="activity-image" />
-                  <div className="activity-info">
-                    <h4>{activity.name}</h4>
-                    <p>{activity.category}</p>
-                  </div>
+ {/* Activities */}
+            {["Places", "HiddenGems", "ThingsToDo", "Restaurants"].map((category) => (
+              <div className="activities-section" key={category}>
+                <h3>{category.replace("-", " ")}</h3>
+                <div className="activities-grid">
+                  {city.topActivities
+                    .filter((activity) => activity.type === category)
+                    .map((activity, index) => (
+                      <div
+                        key={index}
+                        className="activity-card-discover"
+                        onClick={() => navigate(`/activity/${activity.activityId}/city/${city.cityId}`)}
+                      >
+                        <img src={activity.images[0]} alt={activity.name} className="activity-image" />
+                        <div className="activity-info">
+                        <button className="favorite-button" onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            toggleFavorite(activity.activityId);
+                          }}>
+                            <img src={favorites.includes(activity.activityId) ? heartFilledIcon : heartIcon} alt="Favorite" />
+                          </button>
+                          <h4>{activity.name}</h4>
+                          <p>{activity.category}</p>
+                        </div>
+                      </div>
+                    ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        </div>
+        )}
+       
       </div>
     </>
   );

@@ -12,7 +12,7 @@ import transportationIcon from "../../assets/images/Icons/PublicTransportation.s
 import { Nav } from 'react-bootstrap';
 import './ActivityPage.css';
 import ActivityCard from '../../components/Activities/ActivityDetailsCard';
-import ReviewCard from '../../components/Activities/ReviewCard'; // Import the ReviewCard
+import ReviewCard from '../../components/Activities/ReviewCard';
 import L from 'leaflet';  
 import 'leaflet/dist/leaflet.css';  
 import SearchBar from '../../components/ReusableComp/SearchBar';
