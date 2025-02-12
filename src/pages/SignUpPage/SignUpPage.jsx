@@ -13,7 +13,6 @@ function SignUpPage({ show, onClose }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   
-  // State for individual error messages
   const [firstnameError, setFirstnameError] = useState("");
   const [lastnameError, setLastnameError] = useState("");
   const [usernameError, setUsernameError] = useState(""); 
@@ -22,7 +21,10 @@ function SignUpPage({ show, onClose }) {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   
   const [loading, setLoading] = useState(false);
+  const [showLocationPopup, setShowLocationPopup] = useState(false);
+  const [clientId, setclientId] = useState(null); 
 
+  const token = localStorage.getItem("authToken");
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -35,102 +37,118 @@ function SignUpPage({ show, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Clear all error messages
+  
     setFirstnameError("");
     setLastnameError("");
     setUsernameError("");
     setEmailError("");
     setPasswordError("");
     setConfirmPasswordError("");
-
-    // Validate fields
-    if (!firstname) {
-      setFirstnameError("First name is required.");
-    }
-    if (!lastname) {
-      setLastnameError("Last name is required.");
-    }
-    if (!username) {
-      setUsernameError("Username is required.");
-    }
-    if (!email) {
-      setEmailError("Email is required.");
-    }
-    if (!password) {
-      setPasswordError("Password is required.");
-    }
-    if (password !== confirmPassword) {
-      setConfirmPasswordError("Passwords do not match.");
-    }
-
-    // If there are any validation errors, stop the submit process
-    if (
-      !firstname || 
-      !lastname || 
-      !username || 
-      !email || 
-      !password || 
-      password !== confirmPassword
-    ) {
+  
+    if (!firstname) setFirstnameError("First name is required.");
+    if (!lastname) setLastnameError("Last name is required.");
+    if (!username) setUsernameError("Username is required.");
+    if (!email) setEmailError("Email is required.");
+    if (!password) setPasswordError("Password is required.");
+    if (password !== confirmPassword) setConfirmPasswordError("Passwords do not match.");
+  
+    if (!firstname || !lastname || !username || !email || !password || password !== confirmPassword) {
       return;
     }
-
+  
     setLoading(true);
-
+  
     try {
-
+      // Step 1: Sign up the user
       const signupResponse = await axios.post("http://localhost:8080/api/auth/signup", {
-        firstname,          
-        lastname,          
-        username,          
-        email,              
-        password,           
+        firstname,
+        lastname,
+        username,
+        email,
+        password,
       });
-
+  
       if (signupResponse.status === 200) {
         console.log("User registered successfully:", signupResponse.data);
-
-        // Once signup is successful, try to log the user in
+  
+        // Step 2: Log in the user immediately after signing up
         const loginResponse = await axios.post("http://localhost:8080/api/auth/signin", {
-          username,  
-          password,  
+          username,
+          password,
         });
-
+  
         if (loginResponse.status === 200) {
-          const token = loginResponse.data.token;
-          localStorage.setItem('authToken', token);  
-          console.log("token", loginResponse.data.token);
-          console.log(localStorage.getItem("authToken"));
-
-          navigate("/questionnaire");
+          const authToken = loginResponse.data.token; // Extract the token
+          localStorage.setItem("authToken", authToken); // Store it in localStorage
+          console.log("User logged in successfully:", authToken);
+  
+          setShowLocationPopup(true); // Show location request popup
         }
       }
     } catch (err) {
       console.error("Error during sign-up or login:", err);
-
-      // Check if the error response exists and set individual field errors
       if (err.response && err.response.data) {
         const errorData = err.response.data;
-
-        if (errorData.password) {
-          setPasswordError(errorData.password); 
-        }
-        if (errorData.email) {
-          setEmailError(errorData.email); 
-        }
-        if (errorData.username) {
-          setUsernameError(errorData.username); 
-        }
+        if (errorData.password) setPasswordError(errorData.password);
+        if (errorData.email) setEmailError(errorData.email);
+        if (errorData.username) setUsernameError(errorData.username);
       } else {
-        // Handle network or other errors
         setEmailError("An error occurred. Please try again later.");
       }
     } finally {
       setLoading(false);
     }
   };
+  
 
+  const requestLocation = async () => {
+    const authToken = localStorage.getItem("authToken"); // Retrieve the token
+  
+    if (!authToken) {
+      console.error("No auth token found. Please log in.");
+      return;
+    }
+  
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+  
+          try {
+            // Use URLSearchParams to send as form-encoded data
+            const params = new URLSearchParams();
+            params.append("latitude", latitude);
+            params.append("longitude", longitude);
+  
+            await axios.put("http://localhost:8080/api/clients/location", params, {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+  
+            console.log("Location sent successfully");
+            setShowLocationPopup(false);
+            navigate("/questionnaire");
+          } catch (err) {
+            console.error("Error sending location:", err);
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          setShowLocationPopup(false);
+          navigate("/questionnaire");
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setShowLocationPopup(false);
+      navigate("/questionnaire");
+    }
+  };
+  
+  
+  
   if (!show) return null;
 
   return (
@@ -210,24 +228,21 @@ function SignUpPage({ show, onClose }) {
           <Button variant="primary" type="submit" className="signup-button" disabled={loading}>
               {loading ? "Signing up..." : "Sign Up"}
           </Button>
-
         </Form>
-
-        <div className="or-login-with">
-          <div className="line"></div>
-          <span>or sign up with</span>
-          <div className="line"></div>
-        </div>
-
-        <div className="social-login">
-          <button className="social-btn google-btn">
-            <i className="fab fa-google"></i> 
-          </button>
-          <button className="social-btn facebook-btn">
-            <i className="fab fa-facebook-f"></i> 
-          </button>
-        </div>
       </div>
+
+      {showLocationPopup && (
+        <div className="popup-overlay">
+          <div className="popup-card">
+            <h4>Allow Location Access?</h4>
+            <p>We need your live location to enhance your experience.</p>
+            <Button variant="success" onClick={requestLocation}>Allow</Button>
+            <Button variant="danger" onClick={() => { setShowLocationPopup(false); navigate("/questionnaire"); }}>
+              Deny
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -17,6 +17,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';  
 import SearchBar from '../../components/ReusableComp/SearchBar';
 import LoadingScreen from '../../components/loadingscreen/loadingScreen';
+import ReviewModal from '../../components/Activities/ReviewModal';
 
 function ActivityPage() {
   const { activityId, cityId } = useParams();
@@ -32,6 +33,8 @@ function ActivityPage() {
   const [reviews, setReviews] = useState([]); // State for reviews
   const mapRef = useRef(null);  
   const mapInstance = useRef(null); 
+  const [showReviewModal, setShowReviewModal] = useState(false);
+
   // Static data for nearby places
   const nearbyRestaurants = [
     { name: "Branzino Fish", rating: 4.5 },
@@ -48,6 +51,55 @@ function ActivityPage() {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    console.log("Opening modal"); // Debugging log
+    setIsReviewModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    console.log("Closing modal"); // Debugging log
+    setIsReviewModalOpen(false);
+  };
+
+    const entityType = activityId ? "activity" : "unknown";
+    const entityId =  activityId;
+
+   const handleSubmitReview = async (review) => {
+    console.log("Review submitted:", review);
+
+
+    // Construct review data
+    const reviewData = {
+        activityId,  // Ensure activityId is properly defined in the component
+        comment: review.comment,
+        rating: review.rating,
+    };
+
+    try {
+        const response = await fetch("http://localhost:8080/api/reviews", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(reviewData),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to submit review");
+        }
+
+        const responseData = await response.json();
+        console.log("Review successfully submitted:", responseData);
+        alert("Review submitted successfully!");
+    } catch (error) {
+        console.error("Error submitting review:", error);
+        alert("Error submitting review. Please try again.");
+    }
+};
+
 
   const fetchCityList = async () => {
     try {
@@ -386,8 +438,18 @@ function ActivityPage() {
               </div>
               <div className='ReviewsButton'>
               <button className="filter-button">Filter</button>
-              <button className="write-review-button">Write a review</button>
+              <button className="write-review-button" onClick={handleOpenModal}>
+              Write a Review
+              </button>
               </div>
+              <ReviewModal 
+          isOpen={isReviewModalOpen} 
+          closeModal={handleCloseModal} 
+          submitReview={handleSubmitReview} 
+        />
+
+
+             
               {reviews.map((review, index) => (
                 <ReviewCard key={index} review={{
                   name: `${review.user.firstname} ${review.user.lastname}`,  // Concatenate first and last names

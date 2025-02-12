@@ -33,3 +33,12 @@
   font-size: 0.9em;
   color: #6c757d;
 }
+.star {
+  font-size: 18px;
+  color: #ccc;
+  margin-right: 2px;
+}
+
+.star.filled {
+  color:  #17A2B8;
+}

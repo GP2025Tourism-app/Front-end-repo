@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import backgroundImage from "../../assets/images/LandingPage1.png";
-
+import logo from '../../assets/images/RoamRightLogo.svg';
 function Header({ onLoginClick, onSinupClick }) {
   return (
     <div
@@ -39,11 +39,10 @@ function Header({ onLoginClick, onSinupClick }) {
         <Container fluid>
           <Navbar.Brand href="#">
             <img
-              src="https://via.placeholder.com/30"
+              src={logo}
               alt="Logo"
-              style={{ marginRight: "10px", width: "30px", height: "30px" }}
+              style={{ marginRight: "15px", width: "100px", height: "40px" }}
             />
-            <span style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#fff" }}>Logo</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar-expand-md" />
           <Navbar.Offcanvas

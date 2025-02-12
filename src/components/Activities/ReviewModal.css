@@ -1,0 +1,110 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.review-modal-content {
+    background: #fff;
+    padding: 55px; /* Increased padding for more space inside the card */
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Slightly deeper shadow for more depth */
+    width: 700px; /* Increased width of the card */
+    text-align: center;
+    position: relative;
+}
+
+.close-review-button {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.review-modal-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.review-modal-subtitle {
+    text-align: left;
+    font-size: 18px;
+    color: #555;
+    margin-top: 5px;
+    margin-bottom: 8px;
+}
+
+.addreview-star-rating {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 5px;
+}
+
+.addreview-star {
+    align-items: end;
+    font-size: 36px;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.2s ease-in-out;
+}
+
+.addreview-star.selected {
+    color: #17A2B8; 
+}
+
+.review-textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.save-button {
+    background: #17A2B8;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.save-button:hover {
+    background: #17A2B8;
+}

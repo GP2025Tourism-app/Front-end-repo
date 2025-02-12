@@ -1,6 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import React from 'react';
+import logo from '../../assets/images/RoamRightLogo.svg';
 import './QuestionnaireNavbar.css';  
 
 function QuestionnaireNavbar() {
@@ -11,12 +12,12 @@ function QuestionnaireNavbar() {
           <Navbar.Brand href="#home">
             <img
               alt=""
-              src="/img/logo.svg"
-              width="30"
-              height="30"
+              src={logo}
+              width="100"
+              height="40"
               className="d-inline-block align-top"
             />{' '}
-            Logo
+           
           </Navbar.Brand>
         </Container>
       </Navbar>

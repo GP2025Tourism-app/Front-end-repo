@@ -13,7 +13,6 @@ function LoginPage({ show, onClose }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Disable scrolling on the body when the popup is shown
     if (show) {
       document.body.style.overflow = "hidden";
     } else {
@@ -53,29 +52,63 @@ function LoginPage({ show, onClose }) {
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
-        // Save the token to localStorage
-        const token = response.data.token; 
+        const token = response.data.token;
         localStorage.setItem("authToken", token);
-
-        // Save user data if needed
         localStorage.setItem("userData", JSON.stringify(response.data));
-        navigate("/homepage");
-        onClose(); // Close the popup after successful login
+
+        requestLocation(token);
+
+        onClose(); // Close login popup
       }
     } catch (err) {
       console.error("Error during login:", err);
       if (err.response) {
-        // If the backend returns a "Bad credentials" message
         setErrors((prevErrors) => ({
           ...prevErrors,
           general: err.response.data.message || "Login failed. Please try again.",
         }));
       } else {
-        // Network or other errors
         setErrors({ ...errors, general: "An error occurred. Please try again later." });
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const requestLocation = (authToken) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+
+          try {
+            // Send location to backend
+            const params = new URLSearchParams();
+            params.append("latitude", latitude);
+            params.append("longitude", longitude);
+
+            await axios.put("http://localhost:8080/api/clients/location", params, {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+
+            console.log("Location sent successfully");
+            navigate("/homepage"); // Navigate after location update
+          } catch (err) {
+            console.error("Error sending location:", err);
+            navigate("/homepage"); // Navigate even if location fails
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          navigate("/homepage"); // Navigate even if geolocation fails
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      navigate("/homepage"); // Navigate even if geolocation is not supported
     }
   };
 
@@ -97,7 +130,7 @@ function LoginPage({ show, onClose }) {
               placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              isInvalid={errors.username}
+              isInvalid={!!errors.username}
             />
             {errors.username && <div className="error-message">{errors.username}</div>}
           </div>
@@ -108,7 +141,7 @@ function LoginPage({ show, onClose }) {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              isInvalid={errors.password}
+              isInvalid={!!errors.password}
             />
             {errors.password && <div className="error-message">{errors.password}</div>}
           </div>
