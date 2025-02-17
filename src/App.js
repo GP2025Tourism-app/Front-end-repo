@@ -7,6 +7,7 @@ import ProtectedRoute from './ProtectedRoute';
 import HomePage from './pages/Homepage/HomePage';
 import ActivityPage from './pages/ActivityPage/ActivityPage';
 import DiscoverCityDetails from './pages/DiscoverCity/DiscoverCityPage';
+import FeedPage from './pages/Feed/FeedPage';
 
 function App() {
   return (
@@ -32,6 +33,10 @@ function App() {
         <Route
           path="/discover-city/:id"
           element={<ProtectedRoute element={<DiscoverCityDetails/>} />}
+        />
+        <Route
+          path="/feed"
+          element={<ProtectedRoute element={<FeedPage/>} />}
         />
       </Routes>
     </Router>

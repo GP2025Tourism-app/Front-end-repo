@@ -1,0 +1,16 @@
+.body{
+    padding-top: 70px;
+}
+.Feed-details{
+    padding-top: 60px; 
+    margin-left: 200px;
+}
+.Search-Feed-Container{
+    position: sticky;
+    top: 60px;
+    background-color: white; /* White background */
+    z-index: 100; /* Ensure it stays on top of other elements */
+    width: 100%; /* Full width of the container */
+    box-sizing: border-box;
+    padding: 10px 0;
+}

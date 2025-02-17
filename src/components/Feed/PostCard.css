@@ -1,0 +1,85 @@
+.postcard {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .postcard-body {
+    padding: 20px;
+  }
+  
+  .postcard-body img.rounded-circle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  h6 {
+    font-weight: bold;
+  }
+  
+  small.text-muted {
+    font-size: 0.85rem;
+  }
+  
+  p.fst-italic {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  p.text-dark {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  
+  .img-fluid {
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .d-flex button {
+    font-size: 0.9rem;
+    color: #6c757d;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .d-flex button:hover {
+    color: #007bff;
+  }
+  
+  .mt-4 h6 {
+    font-size: 1rem;
+  }
+  
+  .bg-light {
+    background-color: #d9f3ff !important;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .text-primary {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  
+  .input-group {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 20px;
+  }
+  
+  input.form-control {
+    border: none;
+    font-size: 0.9rem;
+    padding: 8px;
+    border-radius: 20px;
+    outline: none;
+  }
+  
+  input.form-control::placeholder {
+    color: #adb5bd;
+  }
+  

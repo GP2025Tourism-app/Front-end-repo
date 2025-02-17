@@ -10,7 +10,13 @@
     align-items: center; 
   }
   
-  
+  .sidebar ul li a {
+    text-decoration: none !important; /* Removes underline */
+    color: black !important; /* Sets text color to black */
+  }
+  .sidebar ul li a:hover {
+    color: #007bff; /* Bootstrap primary blue for hover effect */
+  }
   .sidebar .logo {
     font-size: 20px;
     font-weight: bold;
