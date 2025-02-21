@@ -27,11 +27,7 @@ function FeedPage (){
   const togglePostForm = () => {
     setShowPostForm(!showPostForm);
   };
-  const handleOverlayClick = (e) => {
-    if (e.target.classList.contains("overlay")) {
-      setShowPostForm(false);
-    }
-  };
+
     return (
      <>
       <WebsiteNavbar />
