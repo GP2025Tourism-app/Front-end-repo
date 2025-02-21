@@ -1,8 +1,6 @@
 .search-bar-activity-icon{
-    position: absolute;
-    right: 410px; /* Position it inside the input */
-    top: 28%;
-    transform: translateY(-50%);
+    position: relative;
+    right: 30px; /* Position it inside the input */
     width: 20px;
     height: 20px;
     cursor: pointer;

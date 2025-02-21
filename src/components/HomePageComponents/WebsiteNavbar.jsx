@@ -1,6 +1,7 @@
 import React from "react";
 import "./WebsiteNavbar.css";
 import logo from '../../assets/images/RoamRightLogo.svg';
+import avatar from "../../assets/images/Ellipse 10.png";
 function WebsiteNavbar() {
   return (
     <div className="Webnavbar">
@@ -14,7 +15,7 @@ function WebsiteNavbar() {
       
       <div className="user-profile">
         <img
-          src="https://via.placeholder.com/150" /* Replace with actual image URL */
+          src={avatar} /* Replace with actual image URL */
           alt="User"
           className="user-avatar"
         />
