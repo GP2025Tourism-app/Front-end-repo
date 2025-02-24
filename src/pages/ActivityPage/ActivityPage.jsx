@@ -30,12 +30,12 @@ function ActivityPage() {
   const [address, setAddress] = useState(""); 
   const token = localStorage.getItem("authToken");
   const [searchQuery, setSearchQuery] = useState("");
-  const [reviews, setReviews] = useState([]); // State for reviews
+  const [reviews, setReviews] = useState([]); 
   const mapRef = useRef(null);  
   const mapInstance = useRef(null); 
   const [showReviewModal, setShowReviewModal] = useState(false);
 
-  // Static data for nearby places
+  
   const nearbyRestaurants = [
     { name: "Branzino Fish", rating: 4.5 },
     { name: "Pasta Palace", rating: 5 },
@@ -54,12 +54,12 @@ function ActivityPage() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const handleOpenModal = () => {
-    console.log("Opening modal"); // Debugging log
+    console.log("Opening modal"); 
     setIsReviewModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    console.log("Closing modal"); // Debugging log
+    console.log("Closing modal"); 
     setIsReviewModalOpen(false);
   };
 
@@ -72,8 +72,7 @@ function ActivityPage() {
 
     // Construct review data
     const reviewData = {
-        activityId,  // Ensure activityId is properly defined in the component
-        comment: review.comment,
+        activityId,         comment: review.comment,
         rating: review.rating,
     };
 
@@ -174,7 +173,7 @@ function ActivityPage() {
   const calculateTotalScore = () => {
     if (reviews.length === 0) return 0;
     const totalScore = reviews.reduce((acc, review) => acc + review.rating, 0);
-    return totalScore / reviews.length; // Average score
+    return totalScore / reviews.length; 
   };
 
   const getCityName = () => {
