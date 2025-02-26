@@ -9,6 +9,7 @@ const PostCard = () => {
   const [error, setError] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
+  const [likedComments, setLikedComments] = useState({});
 
 
   useEffect(() => {
@@ -34,12 +35,20 @@ const PostCard = () => {
       const data = await response.json();
       setPosts(data);
   
-      const initialLikedState = {};
+      const initialLikedPosts = {};
       data.forEach((post) => {
-        initialLikedState[post.id] = post.likedUsr?.some(user => user.id === currentUserId) || false;
+        initialLikedPosts[post.id] = post.likedUsr?.some(user => user.id === currentUserId) || false;
       });
-  
-      setLikedPosts(initialLikedState);
+      setLikedPosts(initialLikedPosts);
+
+      const initialLikedComments = {};
+      data.forEach((post) => {
+        (post.comments || []).forEach(comment => {
+          initialLikedComments[comment.id] = comment.likedUsers?.some(user => user?.id === currentUserId) || false;
+        });
+      });
+      setLikedComments(initialLikedComments);
+      setLikedComments(initialLikedComments);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -128,7 +137,54 @@ const PostCard = () => {
     }
   };
   
-    
+  const handleLikeComment = async (postId, commentId) => {
+    const token = localStorage.getItem("authToken");
+    const currentUserId = localStorage.getItem("userId");
+    const isLiked = likedComments[commentId];
+  
+    try {
+      const response = await fetch(`http://localhost:8080/api/feed/${isLiked ? "unlikeComment" : "likeComment"}/${postId}/${commentId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to ${isLiked ? "unlike" : "like"} comment`);
+      }
+  
+      setLikedComments((prev) => ({
+        ...prev,
+        [commentId]: !isLiked,
+      }));
+
+      setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              comments: post.comments.map((comment) =>
+                comment.id === commentId
+                  ? {
+                      ...comment,
+                      likedUsers: isLiked
+                        ? comment.likedUsers.filter((user) => user.id !== currentUserId)
+                        : [...comment.likedUsers, { id: currentUserId }],
+                    }
+                  : comment
+              ),
+            }
+          : post
+      )
+    );
+    } catch (err) {
+      console.error(`Error ${isLiked ? "unliking" : "liking"} comment:`, err.message);
+    }
+  };
+  
+
   
   if (loading) return <p>Loading posts...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -210,8 +266,13 @@ const PostCard = () => {
                       </span>
                     </div>
                     <div className="comment-actions">
-                      <div className="comment-likes">
-                        <FaRegHeart /> <span>3</span>
+                    <div className="comment-likes" onClick={() => handleLikeComment(post.id, comment.id)}>
+                        {likedComments[comment.id] ? (
+                          <FaHeart style={{ color: "red" }} />
+                        ) : (
+                          <FaRegHeart />
+                        )}
+                        <span>{comment.likedUsers?.length || 0}</span>
                       </div>
                     </div>
                   </div>

@@ -56,6 +56,7 @@ function LoginPage({ show, onClose }) {
         const userid=response.data.id;
         localStorage.setItem("authToken", token);
         localStorage.setItem("userId",userid)
+
         localStorage.setItem("userData", JSON.stringify(response.data));
 
         requestLocation(token);

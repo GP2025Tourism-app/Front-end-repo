@@ -26,7 +26,11 @@ function FeedPage() {
   const photoInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
+  const userData = JSON.parse(localStorage.getItem("userData")) || {}; 
 
+  const firstName = userData.firstname || "";
+  const lastName = userData.lastname || "";
+  const username = userData.username || "";
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -221,9 +225,14 @@ function FeedPage() {
               <div className="feed-overlay" onClick={togglePostForm}></div>
               <div className="feed-post-creation-form">
                 <div className="feed-post-header">
-                  <div className="feed-user-info">
+                <div className="feed-user-info">
                     <img src={avatar} alt="User" className="feed-user-avatar" />
-                    <span className="feed-user-name">Peter</span>
+                    <div className="user-info">
+                    <h3 className="user-fullname">
+                      {firstName && lastName ? `${firstName} ${lastName}` : "Unknown User"}
+                    </h3>
+                    <h5 className="user-name">@{username?`${username}`: "UnknownUser"}</h5>
+                  </div>
                   </div>
                   <button
                       className="feed-post-btn"
