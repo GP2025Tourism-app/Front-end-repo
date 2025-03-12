@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { FaTimes } from "react-icons/fa";
 import WebsiteNavbar from "../../components/HomePageComponents/WebsiteNavbar";
 import Sidebar from "../../components/HomePageComponents/Sidebar";
@@ -8,6 +9,7 @@ function Favourites() {
   const [favorites, setFavorites] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate(); // Initialize navigation
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -40,7 +42,8 @@ function Favourites() {
     fetchFavorites();
   }, []);
 
-  const handleRemoveClick = (activity) => {
+  const handleRemoveClick = (activity, e) => {
+    e.stopPropagation(); // Prevents navigation when clicking remove button
     setSelectedActivity(activity);
     setShowModal(true);
   };
@@ -79,6 +82,10 @@ function Favourites() {
     }
   };
 
+  const handleCardClick = (activity) => {
+    navigate(`/activity/${activity.activityId}/city/${activity.cityId}`);
+  };
+
   return (
     <>
       <WebsiteNavbar />
@@ -91,9 +98,13 @@ function Favourites() {
               <p>No favorites added yet.</p>
             ) : (
               favorites.map((activity) => (
-                <div key={activity.activityId} className="fav-activity-card">
-                  <button className="fav-remove-btn" onClick={() => handleRemoveClick(activity)}>
-                  <FaTimes className="fav-remove-icon" />
+                <div
+                  key={activity.activityId}
+                  className="fav-activity-card"
+                  onClick={() => handleCardClick(activity)} // Navigate when clicking the card
+                >
+                  <button className="fav-remove-btn" onClick={(e) => handleRemoveClick(activity, e)}>
+                    <FaTimes className="fav-remove-icon" />
                   </button>
                   <img
                     src={activity.images && activity.images.length > 0 ? activity.images[0] : "default-image.jpg"}
