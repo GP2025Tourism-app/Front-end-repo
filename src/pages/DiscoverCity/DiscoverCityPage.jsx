@@ -16,19 +16,22 @@ import heartFilledIcon from "../../assets/images/Icons/heart-fill.svg";
 
 function DiscoverCityDetails() {
   const [reviews, setReviews] = useState([]);
-  const { id } = useParams(); // Extract city ID from the route
+  const { id } = useParams(); 
   const [city, setCity] = useState(null);
-  const [weather, setWeather] = useState(null); // State for dynamic weather
+  const [weather, setWeather] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showDescription, setShowDescription] = useState(false); // State to toggle description
-  const [showBestTime, setShowBestTime] = useState(false); // State to toggle Best Time to Visit
+  const [showDescription, setShowDescription] = useState(false); 
+  const [showBestTime, setShowBestTime] = useState(false); 
   const token = localStorage.getItem("authToken");
   const navigate = useNavigate();
  
   const [selectedCategory, setSelectedCategory] = useState("City"); 
   const [isCategoryFullScreen, setIsCategoryFullScreen] = useState(false);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem("favorites");
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
 
   const handleSelect = (eventKey) => {
     setSelectedCategory(eventKey);
@@ -121,17 +124,41 @@ function DiscoverCityDetails() {
     return <p>{error}</p>;
   }
   
-  const toggleFavorite = (activityId) => {
-    setFavorites((prevFavorites) => {
-      if (prevFavorites.includes(activityId)) {
-        // Remove from favorites
-        return prevFavorites.filter((id) => id !== activityId);
-      } else {
-        // Add to favorites
-        return [...prevFavorites, activityId];
+  const toggleFavorite = async (activityId) => {
+    try {
+  
+      const isFavorite = favorites.includes(activityId);
+ 
+  
+      const response = await fetch(`http://localhost:8080/api/clients/favorites/activities/${activityId}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update favorite status");
       }
-    });
+  
+      setFavorites((prevFavorites) => {
+        let updatedFavorites;
+        if (isFavorite) {
+          updatedFavorites = prevFavorites.filter((id) => id !== activityId);
+        } else {
+          updatedFavorites = [...prevFavorites, activityId];
+        }
+  
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        return updatedFavorites;
+      });
+  
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   };
+  
 
   return (
     <>
@@ -176,11 +203,15 @@ function DiscoverCityDetails() {
                   <img src={activity.images[0]} alt={activity.name} className="activity-image" />
                   <div className="activity-info">
                   <button className="favorite-button" onClick={(e) => {
-                      e.stopPropagation(); 
-                      toggleFavorite(activity.activityId);
-                    }}>
-                      <img src={favorites.includes(activity.activityId) ? heartFilledIcon : heartIcon} alt="Favorite" />
-                    </button>
+                        e.stopPropagation();
+                        toggleFavorite(activity.activityId);
+                      }}>
+                        <img 
+                          src={favorites.includes(activity.activityId) ? heartFilledIcon : heartIcon} 
+                          alt="Favorite" 
+                        />
+                      </button>
+
                     <h4>{activity.name}</h4>
                     <p>{activity.category}</p>
                   </div>
@@ -250,7 +281,7 @@ function DiscoverCityDetails() {
               <WeatherWidget weather={weather} />
             </div>
           </div>
- {/* Activities */}
+
             {["Places", "HiddenGems", "ThingsToDo", "Restaurants"].map((category) => (
               <div className="activities-section" key={category}>
                 <h3>{category.replace("-", " ")}</h3>
@@ -266,7 +297,7 @@ function DiscoverCityDetails() {
                         <img src={activity.images[0]} alt={activity.name} className="activity-image" />
                         <div className="activity-info">
                         <button className="favorite-button" onClick={(e) => {
-                            e.stopPropagation(); // Prevent card click
+                            e.stopPropagation(); 
                             toggleFavorite(activity.activityId);
                           }}>
                             <img src={favorites.includes(activity.activityId) ? heartFilledIcon : heartIcon} alt="Favorite" />

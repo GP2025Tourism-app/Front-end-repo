@@ -8,6 +8,8 @@ import HomePage from './pages/Homepage/HomePage';
 import ActivityPage from './pages/ActivityPage/ActivityPage';
 import DiscoverCityDetails from './pages/DiscoverCity/DiscoverCityPage';
 import FeedPage from './pages/Feed/FeedPage';
+import Favourites from './pages/Favourites/FavouritesPage';
+
 
 function App() {
   return (
@@ -37,6 +39,10 @@ function App() {
         <Route
           path="/feed"
           element={<ProtectedRoute element={<FeedPage/>} />}
+        />
+        <Route
+          path="/favourites"
+          element={<ProtectedRoute element={<Favourites/>} />} 
         />
       </Routes>
     </Router>

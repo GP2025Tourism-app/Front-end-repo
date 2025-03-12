@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import WebsiteNavbar from '../../components/HomePageComponents/WebsiteNavbar';
 import Sidebar from '../../components/HomePageComponents/Sidebar';
-import searchIcon from "../../assets/images/Icons/zoom-in.svg";
 import CalendarIcon from "../../assets/images/Icons/calendar-event.svg";
 import clothesIcon from "../../assets/images/Icons/T-Shirt.svg";
 import cameraIcon from "../../assets/images/Icons/camera.svg";
