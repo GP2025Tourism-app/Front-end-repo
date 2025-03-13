@@ -3,7 +3,7 @@ import { FaRegComment, FaRegHeart, FaHeart, FaRegShareSquare } from "react-icons
 import avatar from "../../assets/images/Ellipse 10.png";
 import "./PostCard.css";
 
-const PostCard = () => {
+const PostCard = ({ selectedCategory }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +11,13 @@ const PostCard = () => {
   const [commentInputs, setCommentInputs] = useState({});
   const [likedComments, setLikedComments] = useState({});
 
-
+  useEffect(() => {
+    if (selectedCategory && selectedCategory.length > 0) {
+      fetchFilteredPosts(selectedCategory);
+    } else {
+      fetchPosts();
+    }
+  }, [selectedCategory]);
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -55,7 +61,38 @@ const PostCard = () => {
       setLoading(false);
     }
   };
-  
+  const fetchFilteredPosts = async (categories) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        alert("User not authenticated. Please log in.");
+        return;
+      }
+
+      const categoryParams = categories.join(",");
+      const url = `http://localhost:8080/api/feed/filter?categories=${encodeURIComponent(categoryParams)}`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch filtered posts");
+      }
+
+      const data = await response.json();
+      updatePostState(data, localStorage.getItem("userId"));
+    } catch (error) {
+      console.error("Error fetching filtered posts:", error);
+    }
+  };
+
+  const updatePostState = (data, currentUserId) => {
+    setPosts(data);}
   
   const handleLike = async (postId) => {
     const token = localStorage.getItem("authToken");

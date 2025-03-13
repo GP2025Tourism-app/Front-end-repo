@@ -23,6 +23,7 @@ function FeedPage() {
   const [caption, setCaption] = useState("");
   const [mediaFiles, setMediaFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
+  const [feedPosts, setFeedPosts] = useState([]);
   const photoInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
@@ -64,13 +65,50 @@ function FeedPage() {
     setShowFilters(!showFilters);
   };
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory((prevSelected) =>
-      prevSelected.includes(category)
-        ? prevSelected.filter((c) => c !== category)
-        : [...prevSelected, category]
-    );
+  const handleCategoryClick = async (category) => {
+    setSelectedCategory((prevSelected) => {
+      const updatedCategories = prevSelected.includes(category)
+        ? prevSelected.filter((c) => c !== category) 
+        : [...prevSelected, category]; 
+  
+      fetchFilteredPosts(updatedCategories); 
+      return updatedCategories; 
+    });
   };
+  
+  const fetchFilteredPosts = async (categories) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        alert("User not authenticated. Please log in.");
+        return;
+      }
+  
+      const categoryParams = categories.join(",");
+      const url = `http://localhost:8080/api/feed/filter?categories=${encodeURIComponent(categoryParams)}`;
+  
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch filtered posts");
+      }
+  
+      const data = await response.json();
+      setFeedPosts(data);
+    } catch (error) {
+      console.error("Error fetching filtered posts:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchFilteredPosts(selectedCategory); 
+  }, []);
 
   const togglePostForm = () => {
     setShowPostForm(!showPostForm);
@@ -200,14 +238,17 @@ function FeedPage() {
           {showFilters && (
             <div className="filter-categories">
               {[
-                "Historical Sites",
-                "Food & Culinary Tours",
-                "Nightlife",
-                "Adventure Activities",
-                "Cultural Experiences",
+                "Historical",
+                "Architectural",
+                "Museum",
+                "Entertainment",
+                "Adventuring",
+                "Cultural",
                 "Shopping",
-                "Relaxation & Wellness",
-                "Beaches & Water Sports"
+                "Relaxing",
+                "Beaches",
+                "Religious",
+                "Nature"
               ].map((category) => (
                 <button
                   key={category}
@@ -303,7 +344,7 @@ function FeedPage() {
             </>
           )}
         </div>
-        <PostCard />
+        <PostCard selectedCategory={selectedCategory}/>
       </div>
     </>
   );
