@@ -9,6 +9,8 @@ import ActivityPage from './pages/ActivityPage/ActivityPage';
 import DiscoverCityDetails from './pages/DiscoverCity/DiscoverCityPage';
 import FeedPage from './pages/Feed/FeedPage';
 import Favourites from './pages/Favourites/FavouritesPage';
+import ViewTouristProfile from './pages/TouristProfile/ViewTouristProfile';
+import EditTouristProfile from './pages/TouristProfile/EditTouristProfile';
 
 
 function App() {
@@ -43,6 +45,14 @@ function App() {
         <Route
           path="/favourites"
           element={<ProtectedRoute element={<Favourites/>} />} 
+        />
+        <Route
+          path="/ViewTouristProfile"
+          element={<ProtectedRoute element={<ViewTouristProfile/>} />} 
+        />
+        <Route
+          path="/EditTouristProfile"
+          element={<ProtectedRoute element={<EditTouristProfile/>} />} 
         />
       </Routes>
     </Router>

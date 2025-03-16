@@ -59,8 +59,8 @@ function WebsiteNavbar() {
               </div>
             </div>
             <div className="navbar-dropdown-buttons">
-              <button className="profile-btn">View Profile</button>
-              <button className="profile-btn">Edit Profile</button>
+              <button className="profile-btn" onClick={() => navigate("/ViewTouristProfile")}>View Profile</button>
+              <button className="profile-btn" onClick={() => navigate("/EditTouristProfile")}>Edit Profile</button>
             </div>
             <ul className="navbar-dropdown-options">
             <li onClick={() => navigate("/favourites")}>

@@ -1,0 +1,129 @@
+.Edit-tourist-profile-container {
+    margin-top: 57px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 200px;
+}
+
+.Edit-tourist-profile-content {
+    position: relative;
+    width: 100%;
+}
+
+
+.Edit-tourist-cover-photo {
+    position: relative;
+    width: 100%;
+}
+
+.Edit-tourist-cover-photo img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.Edit-tourist-edit-cover {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color:#17A2B8
+}
+
+.Edit-tourist-profile-picture {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: -75px 50px 10px;
+}
+
+.Edit-tourist-profile-picture img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.Edit-tourist-camera-icon {
+    position: absolute;
+    bottom:-45px;
+    right: -26px;
+    background-color: #f5f4f4;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+}
+.edit-tourist-FaCamera-icon{
+    width: 18px;
+    height: 18px;
+    display: flex;
+}
+.Edit-tourist-profile-form {
+    padding: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.Edit-tourist-bio {
+    width: 48%;
+    margin-bottom: 15px;
+}
+
+.Edit-tourist-bio textarea {
+    width: 100%;
+    height: 80px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.Edit-tourist-form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.Edit-tourist-form-group {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+}
+
+.Edit-tourist-form-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.Edit-tourist-form-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.Edit-tourist-save-button {
+    width: 10%;
+    background: white;
+    border: 1px solid #17A2B8;
+    color: #17A2B8;
+    padding: 8px 12px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    margin-left: auto;
+    margin-right: 20px;
+  
+}
+
