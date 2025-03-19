@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import WebsiteNavbar from "../../components/HomePageComponents/WebsiteNavbar";
 import Sidebar from "../../components/HomePageComponents/Sidebar";
 import CoverPhotoDefault from "../../assets/images/default-cover-photo.png";
@@ -10,6 +11,7 @@ const CLOUD_NAME = "da6gcu1n9";
 const UPLOAD_PRESET = "graduationproject";
 
 function EditTouristProfile() {
+    const navigate = useNavigate();
     const [userData, setUserData] = useState({
         firstname: "",
         lastname: "",
@@ -121,6 +123,7 @@ function EditTouristProfile() {
 
             alert("Profile updated successfully!");
             setModifiedFields({});
+            navigate("/ViewTouristProfile")
         } catch (err) {
             setError(err.message);
         } finally {
@@ -179,7 +182,7 @@ function EditTouristProfile() {
                             </div>
                             <div className="Edit-tourist-form-group">
                                 <label>Birthday</label>
-                                <input type="text" name="birthday" placeholder="DD/MM/YYYY" value={userData.birthday} onChange={handleChange} />
+                                <input type="text" name="birthday" placeholder="YYYY/MM/DD" value={userData.birthday} onChange={handleChange} />
                             </div>
                         </div>
 
