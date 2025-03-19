@@ -115,12 +115,11 @@ function SignUpPage({ show, onClose }) {
           const { latitude, longitude } = position.coords;
   
           try {
-            // Use URLSearchParams to send as form-encoded data
             const params = new URLSearchParams();
             params.append("latitude", latitude);
             params.append("longitude", longitude);
   
-            await axios.put("http://localhost:8080/api/clients/location", params, {
+            await axios.put("http://localhost:8080/api/user/location", params, {
               headers: {
                 Authorization: `Bearer ${authToken}`,
                 "Content-Type": "application/x-www-form-urlencoded",

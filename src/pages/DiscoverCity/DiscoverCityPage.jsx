@@ -130,7 +130,7 @@ function DiscoverCityDetails() {
       const isFavorite = favorites.includes(activityId);
       const method = isFavorite ? "DELETE" : "POST";
   
-      const response = await fetch(`http://localhost:8080/api/clients/favorites/activities/${activityId}`, {
+      const response = await fetch(`http://localhost:8080/api/user/clients/favorites/activities/${activityId}`, {
         method: method,
         headers: {
           "Authorization": `Bearer ${token}`,

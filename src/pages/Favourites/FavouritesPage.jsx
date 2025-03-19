@@ -20,7 +20,7 @@ function Favourites() {
           return;
         }
 
-        const response = await fetch("http://localhost:8080/api/clients/favorites", {
+        const response = await fetch("http://localhost:8080/api/user/clients/favorites", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ function Favourites() {
       }
 
       const response = await fetch(
-        `http://localhost:8080/api/clients/favorites/activities/${selectedActivity.activityId}`,
+        `http://localhost:8080/api/user/clients/favorites/activities/${selectedActivity.activityId}`,
         {
           method: "DELETE",
           headers: {

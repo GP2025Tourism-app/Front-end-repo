@@ -138,7 +138,7 @@ const Questionnaire = () => {
       try {
 
         const response = await axios.put(
-          "http://localhost:8080/api/clients/preferences", 
+          "http://localhost:8080/api/user/clients/preferences", 
           { 
             
             preferences: flattenedPreferences }, 

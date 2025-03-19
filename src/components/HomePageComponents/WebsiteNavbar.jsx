@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import "./WebsiteNavbar.css";
 import { useNavigate } from "react-router-dom"; 
 import logo from "../../assets/images/RoamRightLogo.svg";
-import avatar from "../../assets/images/Ellipse 10.png";
 import { FaRegHeart, FaRegPenToSquare, FaRegClipboard } from "react-icons/fa6";
 
 function WebsiteNavbar() {
@@ -10,7 +9,7 @@ function WebsiteNavbar() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate(); 
   const userData = JSON.parse(localStorage.getItem("userData")) || {}; 
-  
+  const avatar = localStorage.getItem("profilePic");
   const firstName = userData.firstname || "";
   const lastName = userData.lastname || "";
 

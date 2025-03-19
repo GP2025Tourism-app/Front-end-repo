@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Sidebar from "../../components/HomePageComponents/Sidebar";
 import WebsiteNavbar from "../../components/HomePageComponents/WebsiteNavbar";
 import searchIcon from "../../assets/images/Icons/zoom-in.svg";
@@ -7,9 +7,31 @@ import TrendingPlaces from "../../components/HomePageComponents/TrendingPlaces";
 import Recommendations from "../../components/HomePageComponents/Recommendation";
 import DiscoverCities from "../../components/HomePageComponents/DicoverCities";
 import ExploreTourGuides from "../../components/HomePageComponents/ExploreTourGuides";
+import ProfilePicDefault from "../../assets/images/default-profile-pic.jpg";
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+
+    fetch("http://localhost:8080/api/user/profile", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setProfile(data);
+        // Save profile picture to localStorage
+        const profilePic = data.profilePic ? data.profilePic : ProfilePicDefault;
+        localStorage.setItem("profilePic", profilePic);
+      })
+      .catch((error) => console.error("Error fetching profile:", error));
+  }, []);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);

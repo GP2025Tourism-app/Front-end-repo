@@ -6,7 +6,7 @@ import WebsiteNavbar from "../../components/HomePageComponents/WebsiteNavbar";
 import Sidebar from "../../components/HomePageComponents/Sidebar";
 import SearchBar from "../../components/ReusableComp/SearchBar";
 import filterIcon from "../../assets/images/Vector.png";
-import avatar from '../../assets/images/Ellipse 10.png';
+import ProfilePicDefault from "../../assets/images/default-profile-pic.jpg";
 
 
 const CLOUD_NAME = "da6gcu1n9";
@@ -26,7 +26,7 @@ function FeedPage() {
   const [feedPosts, setFeedPosts] = useState([]);
   const photoInputRef = useRef(null);
   const videoInputRef = useRef(null);
-
+  const avatar = localStorage.getItem("profilePic") || ProfilePicDefault;
   const userData = JSON.parse(localStorage.getItem("userData")) || {}; 
 
   const firstName = userData.firstname || "";
