@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaRegComment, FaRegHeart, FaHeart, FaRegShareSquare } from "react-icons/fa";
-import avatar from "../../assets/images/Ellipse 10.png";
+import SkeletonPostCard from "./SkeletonPostCard";
 import "./PostCard.css";
 
 const PostCard = ({ selectedCategory }) => {
@@ -10,7 +10,7 @@ const PostCard = ({ selectedCategory }) => {
   const [likedPosts, setLikedPosts] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
   const [likedComments, setLikedComments] = useState({});
-
+  
   useEffect(() => {
     if (selectedCategory && selectedCategory.length > 0) {
       fetchFilteredPosts(selectedCategory);
@@ -23,6 +23,7 @@ const PostCard = ({ selectedCategory }) => {
   }, []);
   
   const fetchPosts = async () => {
+    setLoading(true);
     const token = localStorage.getItem("authToken");
     const currentUserId = localStorage.getItem("userId"); 
     try {
@@ -63,6 +64,7 @@ const PostCard = ({ selectedCategory }) => {
   };
   const fetchFilteredPosts = async (categories) => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("authToken");
       if (!token) {
         alert("User not authenticated. Please log in.");
@@ -88,7 +90,9 @@ const PostCard = ({ selectedCategory }) => {
       updatePostState(data, localStorage.getItem("userId"));
     } catch (error) {
       console.error("Error fetching filtered posts:", error);
-    }
+    }finally {
+      setLoading(false);
+  }
   };
 
   const updatePostState = (data, currentUserId) => {
@@ -223,17 +227,18 @@ const PostCard = ({ selectedCategory }) => {
   
 
   
-  if (loading) return <p>Loading posts...</p>;
-  if (error) return <p>Error: {error}</p>;
+
 
   return (
     <div className="feed-container">
       <div className="feed-content">
-        {posts.map((post) => (
+      {loading
+      ? [...Array(5)].map((_, index) => <SkeletonPostCard key={index} />)
+      : posts.map((post) => (
           <div key={post.id} className="post-card">
             <div className="post-header">
               <div className="post-user">
-                <img src={avatar} alt="User Avatar" className="avatar" />
+                <img src={post.user.profilePic} alt="User Avatar" className="avatar" />
                 <div className="user-info">
                   <h4 className="user-fullname">
                     {post.user?.firstname && post.user?.lastname
@@ -289,7 +294,7 @@ const PostCard = ({ selectedCategory }) => {
               <p className="comment-title">Replies</p>
               {(post.comments || []).map((comment) => (
                 <div key={comment.id} className="comment">
-                  <img src={avatar} alt="Commenter Avatar" className="comment-avatar" />
+                  <img src={comment.user.profilePic} alt="Commenter Avatar" className="comment-avatar" />
                   <div className="comment-content">
                     <p className="comment-user">
                       {comment.user?.firstname && comment.user?.lastname
@@ -316,7 +321,7 @@ const PostCard = ({ selectedCategory }) => {
                 </div>
               ))}
               <div className="comment-input-container">
-              <img src={avatar} alt="User Avatar" className="comment-avatar" />
+              <img src={post.user.profilePic} alt="User Avatar" className="comment-avatar" />
               <input
                 type="text"
                 placeholder="Write a comment..."

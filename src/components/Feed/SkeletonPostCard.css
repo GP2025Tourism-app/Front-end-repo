@@ -1,0 +1,59 @@
+.skeleton {
+    background: #f3f3f3;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  .skeleton-box {
+    background: #ddd;
+    border-radius: 4px;
+  }
+  
+  .skeleton-text {
+    height: 12px;
+    width: 80%;
+    margin-bottom: 8px;
+  }
+  
+  .skeleton-text.small {
+    width: 40%;
+  }
+  
+  .skeleton-title {
+    height: 16px;
+    width: 90%;
+  }
+  
+  .skeleton-caption {
+    height: 12px;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .skeleton-image {
+    height: 200px;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .skeleton-icon {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  @keyframes pulse {
+    0% {
+      background-color: #e0e0e0;
+    }
+    50% {
+      background-color: #d0d0d0;
+    }
+    100% {
+      background-color: #e0e0e0;
+    }
+  }
+  

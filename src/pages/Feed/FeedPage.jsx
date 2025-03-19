@@ -71,45 +71,12 @@ function FeedPage() {
         ? prevSelected.filter((c) => c !== category) 
         : [...prevSelected, category]; 
   
-      fetchFilteredPosts(updatedCategories); 
+      
       return updatedCategories; 
     });
   };
   
-  const fetchFilteredPosts = async (categories) => {
-    try {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        alert("User not authenticated. Please log in.");
-        return;
-      }
   
-      const categoryParams = categories.join(",");
-      const url = `http://localhost:8080/api/feed/filter?categories=${encodeURIComponent(categoryParams)}`;
-  
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to fetch filtered posts");
-      }
-  
-      const data = await response.json();
-      setFeedPosts(data);
-    } catch (error) {
-      console.error("Error fetching filtered posts:", error);
-    }
-  };
-  
-  useEffect(() => {
-    fetchFilteredPosts(selectedCategory); 
-  }, []);
-
   const togglePostForm = () => {
     setShowPostForm(!showPostForm);
   };
