@@ -26,7 +26,7 @@ function HomePage() {
       .then((response) => response.json())
       .then((data) => {
         setProfile(data);
-        // Save profile picture to localStorage
+    
         const profilePic = data.profilePic ? data.profilePic : ProfilePicDefault;
         localStorage.setItem("profilePic", profilePic);
       })

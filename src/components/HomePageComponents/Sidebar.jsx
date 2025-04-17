@@ -27,8 +27,8 @@ function Sidebar() {
             <BsJournalRichtext  className="icon" /> My Plans
           </Link>
         </li>
-        <li className={location.pathname === "/messages" ? "active" : ""}>
-          <Link to="/messages" className="d-flex align-items-center">
+        <li className={location.pathname === "/TouristChat" ? "active" : ""}>
+          <Link to="/TouristChat" className="d-flex align-items-center">
             <BsChatText className="icon" /> Messages
           </Link>
         </li>

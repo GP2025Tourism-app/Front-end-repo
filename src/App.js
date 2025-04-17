@@ -11,6 +11,8 @@ import FeedPage from './pages/Feed/FeedPage';
 import Favourites from './pages/Favourites/FavouritesPage';
 import ViewTouristProfile from './pages/TouristProfile/ViewTouristProfile';
 import EditTouristProfile from './pages/TouristProfile/EditTouristProfile';
+import TouristChat from './pages/TouristMessages/TouristChat';
+import AIChat from './pages/AI-Assistant/AIChat';
 
 
 function App() {
@@ -53,6 +55,14 @@ function App() {
         <Route
           path="/EditTouristProfile"
           element={<ProtectedRoute element={<EditTouristProfile/>} />} 
+        />
+         <Route
+          path="/TouristChat"
+          element={<ProtectedRoute element={<TouristChat/>} />} 
+        />
+         <Route
+          path="/ai-assistant"
+          element={<ProtectedRoute element={<AIChat/>} />} 
         />
       </Routes>
     </Router>
