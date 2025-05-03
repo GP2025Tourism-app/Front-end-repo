@@ -15,6 +15,7 @@ import TouristChat from './pages/TouristMessages/TouristChat';
 import AIChat from './pages/AI-Assistant/AIChat';
 import LgHomepage from './pages/LG-HomePage/LG-Homepage';
 import Notification from './pages/LG-Notification/Notification';
+import LGPlanNewTrip from './pages/LG-PlanTrip/LG-PlanNewTrip';
 
 
 function App() {
@@ -73,6 +74,10 @@ function App() {
           <Route
           path="/notification"
           element={<ProtectedRoute element={<Notification/>} />} 
+        />
+          <Route
+          path="/plan-new-trip"
+          element={<ProtectedRoute element={<LGPlanNewTrip/>} />} 
         />
       </Routes>
     </Router>

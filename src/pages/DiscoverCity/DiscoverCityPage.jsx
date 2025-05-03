@@ -185,7 +185,7 @@ function DiscoverCityDetails() {
               <Nav.Link eventKey="HiddenGems">Hidden Gems</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="restaurants">Restaurants</Nav.Link>
+              <Nav.Link eventKey="Restaurants">Restaurants</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="tour-guides">Tour Guides</Nav.Link>

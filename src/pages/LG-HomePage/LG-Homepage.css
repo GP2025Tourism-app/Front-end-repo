@@ -1,0 +1,123 @@
+/* LG-Homepage.css */
+
+.localguide-home-container {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+  }
+  
+  .localguide-home-sidebar {
+    width: 150px;
+    z-index: 10;
+  }
+  
+  .lg-homepage-container {
+    margin-top: 40px;
+    flex-grow: 1;
+    padding: 20px;
+  }
+  .lg-homepage-buttons{
+    gap:10px;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .my-trips-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .my-trips-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .my-trips-header h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+  
+  .place-new-trips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .place-new-trip-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    cursor: pointer; /* Add a pointer cursor for interaction */
+  }
+  
+  .place-new-trip-image {
+    background-size: cover;
+    background-position: center;
+    height: 200px; /* Adjust the height as needed */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    filter: brightness(1); /* Further decrease brightness to 50% */
+  }
+  
+  .place-new-trip-image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Darker overlay */
+  }
+  
+  .place-new-trip-info {
+    color: white;
+    padding: 15px;
+    text-align: left;
+    position: relative; /* Ensure text is above the overlay */
+    z-index: 1; /* Ensure text is above the overlay */
+  }
+  
+  .place-new-trip-info h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+  }
+  
+  .place-new-trip-info p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
+  
+  .plan-new-trip-button {
+    background-color: #17A2B8;
+    color: white;
+    height: 40px;
+    border-radius: 20px;
+    border:none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .plan-new-trip-button svg {
+    margin-right: 5px;
+  }
+  
+  .filter-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+  }
