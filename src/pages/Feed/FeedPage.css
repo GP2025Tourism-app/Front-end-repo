@@ -1,9 +1,14 @@
-.body{
-    padding-top: 70px;
+.feed-page-container { 
+  display: flex;
 }
-.Feed-details{
-    padding-top: 60px; 
-    margin-left: 200px;
+
+.Feed-details {
+  flex-grow: 1; 
+  padding-top: 40px; 
+}
+
+.sidebar-container { 
+  width: 200px; 
 }
 .Search-Feed-Container {
     position: sticky;

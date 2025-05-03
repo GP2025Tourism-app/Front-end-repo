@@ -6,6 +6,7 @@ import CoverPhotoDefault from "../../assets/images/default-cover-photo.png";
 import ProfilePicDefault from "../../assets/images/default-profile-pic.jpg";
 import { FaCamera } from "react-icons/fa";
 import "./EditTouristProfile.css";
+import LGSidebar from "../../components/LocalGuide/LG-Sidebar";
 
 const CLOUD_NAME = "da6gcu1n9";
 const UPLOAD_PRESET = "graduationproject";
@@ -22,12 +23,15 @@ function EditTouristProfile() {
         bio: "",
         profilePic: ProfilePicDefault, 
         coverPhoto: CoverPhotoDefault, 
+        location: "",       
+        workingDays: "",    
     });
-
+    
     const [modifiedFields, setModifiedFields] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const token = localStorage.getItem("authToken");
+    const userRoles = JSON.parse(localStorage.getItem("userRole")) || [];
 
     useEffect(() => {
         fetchUserProfile();
@@ -123,7 +127,7 @@ function EditTouristProfile() {
 
             alert("Profile updated successfully!");
             setModifiedFields({});
-            navigate("/ViewTouristProfile")
+            navigate("/ViewTouristProfile");
         } catch (err) {
             setError(err.message);
         } finally {
@@ -134,72 +138,126 @@ function EditTouristProfile() {
     return (
         <>
             <WebsiteNavbar />
-            <Sidebar />
-            <div className="Edit-tourist-profile-container">
-                <div className="Edit-tourist-profile-content">
-                   
-                    <div className="Edit-tourist-cover-photo">
-                        <img src={userData.coverPhoto || CoverPhotoDefault} alt="Cover" />
-                        <label className="Edit-tourist-edit-cover">
-                            Edit Cover Photo
-                            <input type="file" accept="image/*" onChange={handleCoverPhotoChange} style={{ display: "none" }} />
-                        </label>
+            <div className="editprofile-page-container">
+                <div className="eidtprofile-sidebar-container">
+                    {userRoles.includes("ROLE_LocalGuide") ? <LGSidebar /> : <Sidebar />}
+                </div>
+                <div className="Edit-tourist-profile-container">
+                    <div className="Edit-tourist-profile-content">
+                       
+                        <div className="Edit-tourist-cover-photo">
+                            <img src={userData.coverPhoto || CoverPhotoDefault} alt="Cover" />
+                            <label className="Edit-tourist-edit-cover">
+                                Edit Cover Photo
+                                <input type="file" accept="image/*" onChange={handleCoverPhotoChange} style={{ display: "none" }} />
+                            </label>
+                        </div>
+
+                        <div className="Edit-tourist-profile-picture">
+                            <img src={userData.profilePic || ProfilePicDefault} alt="Profile" />
+                            <label className="Edit-tourist-camera-icon">
+                                <FaCamera className="edit-tourist-FaCamera-icon" />
+                                <input type="file" accept="image/*" onChange={handleProfilePicChange} style={{ display: "none" }} />
+                            </label>
+                        </div>
+
+                        <button className="Edit-tourist-save-button" onClick={handleSave} disabled={loading}>
+                            {loading ? "Saving..." : "Save"}
+                        </button>
+                        <div className="Edit-tourist-profile-form">
+                          
+                        {/* Conditional rendering for LocalGuide */}
+                        {userRoles.includes("ROLE_LocalGuide") ? (
+                            <>
+                                <div className="Edit-tourist-form-row">
+                                    {/* Left Side for Bio */}
+                                    <div className="Edit-tourist-bio">
+                                        <label>Bio</label>
+                                        <textarea
+                                            name="bio"
+                                            placeholder="Write here..."
+                                            value={userData.bio}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+
+                                    {/* Right Side for Location and Working Days */}
+                                    <div className="Edit-tourist-form-col">
+                                        <div className="Edit-tourist-form-group">
+                                            <label>Location</label>
+                                            <input
+                                                type="text"
+                                                name="location"
+                                                placeholder="Your Location"
+                                                value={userData.location}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+
+                                        <div className="Edit-tourist-form-group">
+                                            <label>Working Days</label>
+                                            <input
+                                                type="text"
+                                                name="workingDays"
+                                                placeholder="Your Working Days"
+                                                value={userData.workingDays}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            // Bio section for clients
+                            <div className="Edit-tourist-form-row">
+                                <div className="Edit-tourist-bio">
+                                    <label>Bio</label>
+                                    <textarea
+                                        name="bio"
+                                        placeholder="Write here..."
+                                        value={userData.bio}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                            <div className="Edit-tourist-form-row">
+                                <div className="Edit-tourist-form-group">
+                                    <label>First Name</label>
+                                    <input type="text" name="firstname" placeholder="Your First Name" value={userData.firstname} onChange={handleChange} />
+                                </div>
+                                <div className="Edit-tourist-form-group">
+                                    <label>Address</label>
+                                    <input type="text" name="address" placeholder="Your Address" value={userData.address} onChange={handleChange} />
+                                </div>
+                            </div>
+
+                            <div className="Edit-tourist-form-row">
+                                <div className="Edit-tourist-form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" name="lastname" placeholder="Your Last Name" value={userData.lastname} onChange={handleChange} />
+                                </div>
+                                <div className="Edit-tourist-form-group">
+                                    <label>Birthday</label>
+                                    <input type="text" name="birthday" placeholder="YYYY/MM/DD" value={userData.birthday} onChange={handleChange} />
+                                </div>
+                            </div>
+
+                            <div className="Edit-tourist-form-row">
+                                <div className="Edit-tourist-form-group">
+                                    <label>Username</label>
+                                    <input type="text" name="username" placeholder="Your User Name" value={userData.username} onChange={handleChange} />
+                                </div>
+                                <div className="Edit-tourist-form-group">
+                                    <label>Email</label>
+                                    <input type="email" name="email" placeholder="Your Email" value={userData.email} onChange={handleChange} />
+                                </div>
+                            </div>
+                        </div>
+
+                        {error && <p className="error-message">{error}</p>}
                     </div>
-
-                  
-                    <div className="Edit-tourist-profile-picture">
-                        <img src={userData.profilePic || ProfilePicDefault} alt="Profile" />
-                        <label className="Edit-tourist-camera-icon">
-                            <FaCamera className="edit-tourist-FaCamera-icon" />
-                            <input type="file" accept="image/*" onChange={handleProfilePicChange} style={{ display: "none" }} />
-                        </label>
-                    </div>
-
-                    <button className="Edit-tourist-save-button" onClick={handleSave} disabled={loading}>
-                        {loading ? "Saving..." : "Save"}
-                    </button>
-                    <div className="Edit-tourist-profile-form">
-                        <div className="Edit-tourist-bio">
-                            <label>Bio</label>
-                            <textarea name="bio" placeholder="Write here..." value={userData.bio} onChange={handleChange} />
-                        </div>
-
-                        <div className="Edit-tourist-form-row">
-                            <div className="Edit-tourist-form-group">
-                                <label>First Name</label>
-                                <input type="text" name="firstname" placeholder="Your First Name" value={userData.firstname} onChange={handleChange} />
-                            </div>
-                            <div className="Edit-tourist-form-group">
-                                <label>Address</label>
-                                <input type="text" name="address" placeholder="Your Address" value={userData.address} onChange={handleChange} />
-                            </div>
-                        </div>
-
-                        <div className="Edit-tourist-form-row">
-                            <div className="Edit-tourist-form-group">
-                                <label>Last Name</label>
-                                <input type="text" name="lastname" placeholder="Your Last Name" value={userData.lastname} onChange={handleChange} />
-                            </div>
-                            <div className="Edit-tourist-form-group">
-                                <label>Birthday</label>
-                                <input type="text" name="birthday" placeholder="YYYY/MM/DD" value={userData.birthday} onChange={handleChange} />
-                            </div>
-                        </div>
-
-                        <div className="Edit-tourist-form-row">
-                            <div className="Edit-tourist-form-group">
-                                <label>Username</label>
-                                <input type="text" name="username" placeholder="Your User Name" value={userData.username} onChange={handleChange} />
-                            </div>
-                            <div className="Edit-tourist-form-group">
-                                <label>Email</label>
-                                <input type="email" name="email" placeholder="Your Email" value={userData.email} onChange={handleChange} />
-                            </div>
-                        </div>
-                    </div>
-
-   
-                    {error && <p className="error-message">{error}</p>}
                 </div>
             </div>
         </>

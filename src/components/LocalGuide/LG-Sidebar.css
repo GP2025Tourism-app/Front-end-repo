@@ -1,5 +1,5 @@
 
-.tourist-sidebar {
+.LG-sidebar {
     width: 141px; 
     background-color: white !important;
     height: 92vh !important; 
@@ -10,14 +10,14 @@
     align-items: center; 
   }
   
-  .tourist-sidebar ul li a {
+  .LG-sidebar ul li a {
     text-decoration: none !important; /* Removes underline */
     color: black !important; /* Sets text color to black */
   }
-  .tourist-sidebar ul li a:hover {
+  .LG-sidebar ul li a:hover {
     color: #007bff; /* Bootstrap primary blue for hover effect */
   }
-  .tourist-sidebar .logo {
+  .LG-sidebar .logo {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 30px;
@@ -25,7 +25,7 @@
   }
   
   
-  .tourist-sidebar ul {
+  .LG-sidebar ul {
     list-style: none;
     padding: 0; 
     margin: 0; 
@@ -33,7 +33,7 @@
   }
   
 
-  .tourist-sidebar li {
+  .LG-sidebar li {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -45,12 +45,12 @@
     border-radius: 4px;
   }
   
-  .tourist-sidebar li .icon {
+  .LG-sidebar li .LG-icon {
     margin-right: 10px;
     font-size: 18px; 
   }
   
-  .tourist-sidebar li:hover {
+  .LG-sidebar li:hover {
     background-color: #e2e6ea; 
   }
   
@@ -60,12 +60,12 @@
   }
   
 
-  .tourist-sidebar-footer {
+  .LG-sidebar-footer {
     margin-top:auto; 
     width: 100%;
   }
   
-  .tourist-sidebar-footer p {
+  .LG-sidebar-footer p {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -76,12 +76,12 @@
     transition: background-color 0.3s ease;
   }
   
-  .tourist-sidebar-footer p .icon {
+  .LG-sidebar-footer p .LG-icon {
     margin-right: 10px;
     font-size: 16px;
   }
   
-  .tourist-sidebar-footer p:hover {
+  .LG-sidebar-footer p:hover {
     background-color: #e2e6ea; 
     border-radius: 4px;
   }

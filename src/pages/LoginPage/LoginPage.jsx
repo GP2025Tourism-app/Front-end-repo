@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; 
+import axios from "axios";
 import "./LoginPage.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -10,6 +10,7 @@ function LoginPage({ show, onClose }) {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "", general: "" });
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,15 +54,14 @@ function LoginPage({ show, onClose }) {
       if (response.status === 200) {
         console.log("Login successful:", response.data);
         const token = response.data.token;
-        const userid=response.data.id;
+        const userid = response.data.id;
         localStorage.setItem("authToken", token);
-        localStorage.setItem("userId",userid)
-
+        localStorage.setItem("userId", userid);
         localStorage.setItem("userData", JSON.stringify(response.data));
+        localStorage.setItem("userRole",JSON.stringify(response.data.roles));
+        requestLocation(token, response.data.roles);
 
-        requestLocation(token);
-
-        onClose(); // Close login popup
+        onClose();
       }
     } catch (err) {
       console.error("Error during login:", err);
@@ -78,14 +78,13 @@ function LoginPage({ show, onClose }) {
     }
   };
 
-  const requestLocation = (authToken) => {
+  const requestLocation = (authToken, roles) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
 
           try {
-            // Send location to backend
             const params = new URLSearchParams();
             params.append("latitude", latitude);
             params.append("longitude", longitude);
@@ -98,24 +97,30 @@ function LoginPage({ show, onClose }) {
             });
 
             console.log("Location sent successfully");
-            navigate("/homepage"); // Navigate after location update
+
+            // Navigate based on user role
+            if (roles.includes("ROLE_LocalGuide")) {
+              navigate("/tour-guide-homepage"); // Navigate to Local Guide homepage
+            } else {
+              navigate("/homepage"); // Navigate to general homepage
+            }
           } catch (err) {
             console.error("Error sending location:", err);
-            navigate("/homepage"); // Navigate even if location fails
+            navigate(roles.includes("ROLE_LocalGuide") ? "/tour-guide-homepage" : "/homepage");
           }
         },
         (error) => {
           console.error("Error getting location:", error);
-          navigate("/homepage"); // Navigate even if geolocation fails
+          navigate(roles.includes("ROLE_LocalGuide") ? "/tour-guide-homepage" : "/homepage");
         }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
-      navigate("/homepage"); // Navigate even if geolocation is not supported
+      navigate(roles.includes("role-localguide") ? "/tour-guide-homepage" : "/homepage");
     }
   };
 
-  if (!show) return null; 
+  if (!show) return null;
 
   return (
     <div className="popup-overlay">
@@ -124,7 +129,7 @@ function LoginPage({ show, onClose }) {
           &times;
         </button>
         <h3>Login</h3>
-        {errors.general && <div className="error-message">{errors.general}</div>} 
+        {errors.general && <div className="error-message">{errors.general}</div>}
         <Form onSubmit={handleSubmit}>
           <div className="form-row">
             <Form.Label>Username</Form.Label>
@@ -148,25 +153,24 @@ function LoginPage({ show, onClose }) {
             />
             {errors.password && <div className="error-message">{errors.password}</div>}
           </div>
+
           <Button variant="primary" type="submit" className="login-button" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </Button>
         </Form>
 
-        {/* 'Or login with' Section */}
         <div className="or-login-with">
           <div className="line"></div>
           <span>or login with</span>
           <div className="line"></div>
         </div>
 
-        {/* Social login buttons */}
         <div className="social-login">
           <button className="social-btn google-btn">
-            <i className="fab fa-google"></i> {/* Google icon */}
+            <i className="fab fa-google"></i>
           </button>
           <button className="social-btn facebook-btn">
-            <i className="fab fa-facebook-f"></i> {/* Facebook icon */}
+            <i className="fab fa-facebook-f"></i>
           </button>
         </div>
       </div>

@@ -10,7 +10,7 @@ function Sidebar() {
   const location = useLocation(); // Get current route
 
   return (
-    <div className="sidebar">
+    <div className="tourist-sidebar">
       <ul>
         <li className={location.pathname === "/homepage" ? "active" : ""}>
           <Link to="/homepage" className="d-flex align-items-center">
@@ -39,8 +39,8 @@ function Sidebar() {
         </li>
       </ul>
 
-      {/* Sidebar Footer */}
-      <div className="sidebar-footer">
+      {/* tourist-sidebar Footer */}
+      <div className="tourist-sidebar-footer">
         <p>
           <FaCog className="icon" /> Policy
         </p>

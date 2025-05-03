@@ -1,9 +1,18 @@
+.viewprofile-page-container { 
+    display: flex;
+    width: 100%
+  }
+  
+  
+  .viewprofile-sidebar-container { 
+    width: 150px; 
+  }
 .view_tourist_profile_container {
     margin-top: 57px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 200px;
+    width: 100%;
 }
 
 .view-tourist-profile-header {

@@ -7,6 +7,7 @@ import Sidebar from "../../components/HomePageComponents/Sidebar";
 import SearchBar from "../../components/ReusableComp/SearchBar";
 import filterIcon from "../../assets/images/Vector.png";
 import ProfilePicDefault from "../../assets/images/default-profile-pic.jpg";
+import LGSidebar from "../../components/LocalGuide/LG-Sidebar";
 
 
 const CLOUD_NAME = "da6gcu1n9";
@@ -28,6 +29,7 @@ function FeedPage() {
   const videoInputRef = useRef(null);
   const avatar = localStorage.getItem("profilePic") || ProfilePicDefault;
   const userData = JSON.parse(localStorage.getItem("userData")) || {}; 
+  const userRoles = JSON.parse(localStorage.getItem("userRole")) || [];
 
   const firstName = userData.firstname || "";
   const lastName = userData.lastname || "";
@@ -185,7 +187,10 @@ function FeedPage() {
   return (
     <>
       <WebsiteNavbar />
-      <Sidebar />
+      <div className="feed-page-container">
+      <div className="sidebar-container">
+        {userRoles.includes("ROLE_LocalGuide") ? <LGSidebar /> : <Sidebar />}
+      </div>
       <div className="Feed-details">
         <div className="Search-Feed-Container">
           <div className="search-actions">
@@ -312,6 +317,7 @@ function FeedPage() {
           )}
         </div>
         <PostCard selectedCategory={selectedCategory}/>
+      </div>
       </div>
     </>
   );

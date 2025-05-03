@@ -7,6 +7,7 @@ import Sidebar from "../../components/HomePageComponents/Sidebar";
 import CoverPhotoDefault from "../../assets/images/default-cover-photo.png";
 import ProfilePicDefault from "../../assets/images/default-profile-pic.jpg";
 import "./ViewTouristProfile.css";
+import LGSidebar from "../../components/LocalGuide/LG-Sidebar";
 
 function ViewTouristProfile() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function ViewTouristProfile() {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const avatar = localStorage.getItem("profilePic");
-
+  const userRoles = JSON.parse(localStorage.getItem("userRole")) || [];
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -75,7 +76,10 @@ function ViewTouristProfile() {
   return (
     <>
       <WebsiteNavbar />
-      <Sidebar />
+      <div className="viewprofile-page-container">
+      <div className="viewprofile-sidebar-container">
+        {userRoles.includes("ROLE_LocalGuide") ? <LGSidebar /> : <Sidebar />}
+      </div>
       <div className="view_tourist_profile_container">
         <div className="view-tourist-profile-header">
           <img src={profile.coverPhoto || CoverPhotoDefault} alt="Cover" className="view-tourist-cover-image" />
@@ -155,6 +159,7 @@ function ViewTouristProfile() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

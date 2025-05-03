@@ -105,7 +105,11 @@ function AIChat() {
     return (
         <>
             <WebsiteNavbar />
+
+            <div className="ai-main-conatiner">
+            <div className="ai-sidebar">
             <Sidebar />
+            </div>
             <div className='AIchat-container'>
                 <div className="AIchat-sidebar">
                     <h2>Chats</h2>
@@ -160,6 +164,7 @@ function AIChat() {
                         <ImAttachment className="AIchat-icon" />
                     </div>
                 </div>
+            </div>
             </div>
         </>
     );

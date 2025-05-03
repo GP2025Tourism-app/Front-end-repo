@@ -4,9 +4,11 @@ import Sidebar from '../../components/HomePageComponents/Sidebar';
 import { FaMicrophone} from 'react-icons/fa';
 import { ImAttachment } from "react-icons/im";
 import './TouristChat.css';
+import LGSidebar from '../../components/LocalGuide/LG-Sidebar';
 
 
 function TouristChat() {
+    const userRoles = JSON.parse(localStorage.getItem("userRole")) || [];
     const [messages, setMessages] = useState([
         { text: "Hello, How can I help you?", type: "incoming", userId: 1 },
         { text: "Hello, I want to visit the pyramids", type: "outgoing", userId: 2, status: "sent" }
@@ -61,7 +63,10 @@ function TouristChat() {
     return (
         <>
             <WebsiteNavbar />
-            <Sidebar />
+            <div className="messages-page-container">
+            <div className="messages-sidebar-container">
+                {userRoles.includes("ROLE_LocalGuide") ? <LGSidebar /> : <Sidebar />}
+            </div>
             <div className='touristchat-container'>
                 <div className="touristchat-sidebar">
                     <h2>Chats</h2>
@@ -114,6 +119,7 @@ function TouristChat() {
                         <ImAttachment className="touristchat-icon" />
                     </div>
                 </div>
+            </div>
             </div>
         </>
     );

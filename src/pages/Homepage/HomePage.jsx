@@ -8,6 +8,7 @@ import Recommendations from "../../components/HomePageComponents/Recommendation"
 import DiscoverCities from "../../components/HomePageComponents/DicoverCities";
 import ExploreTourGuides from "../../components/HomePageComponents/ExploreTourGuides";
 import ProfilePicDefault from "../../assets/images/default-profile-pic.jpg";
+import SearchBar from "../../components/ReusableComp/SearchBar";
 
 function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,30 +39,25 @@ function HomePage() {
   };
 
   return (
-    <div className="page-container">
+     <>
+     
       <WebsiteNavbar />
+      <div className="home-main-conatiner">
+      <div className="Homesidebar">
       <Sidebar />
-
-      {/* Main content area */}
-      <div className="main-content">
-        {/* Search Bar */}
-        <div className="search-bar-container">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="search-bar"
-          />
-           <img src={searchIcon} alt="Search Icon" className="search-bar-icon" />
-        </div>
+      </div>
+     
+      <div className="homepage-main-content">
+      
+       <SearchBar/>
 
       <TrendingPlaces/>
       <Recommendations/>
       <DiscoverCities/>
       <ExploreTourGuides/>
       </div>
-    </div>
+      </div>
+      </>
   );
 }
 

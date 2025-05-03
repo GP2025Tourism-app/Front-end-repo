@@ -22,7 +22,8 @@ function SignUpPage({ show, onClose }) {
   
   const [loading, setLoading] = useState(false);
   const [showLocationPopup, setShowLocationPopup] = useState(false);
-  const [clientId, setclientId] = useState(null); 
+  const [clientId, setclientId] = useState(null);
+  const [isTourGuide, setIsTourGuide] = useState(false); // This is the checkbox state
 
   const token = localStorage.getItem("authToken");
   const navigate = useNavigate(); 
@@ -66,6 +67,7 @@ function SignUpPage({ show, onClose }) {
         username,
         email,
         password,
+        roles: isTourGuide ? ["ROLE_LocalGuide"] : [], // Add role if checkbox is checked
       });
   
       if (signupResponse.status === 200) {
@@ -83,6 +85,15 @@ function SignUpPage({ show, onClose }) {
           console.log("User logged in successfully:", authToken);
   
           setShowLocationPopup(true); // Show location request popup
+  
+          // Step 3: Navigate to the appropriate page
+          if (isTourGuide) {
+            // If user is a local guide, navigate to the tour guide homepage
+            navigate("/tour-guide-homepage");
+          } else {
+            // If user is not a local guide, navigate to another page (e.g., questionnaire)
+            navigate("/questionnaire");
+          }
         }
       }
     } catch (err) {
@@ -99,6 +110,7 @@ function SignUpPage({ show, onClose }) {
       setLoading(false);
     }
   };
+  
   
 
   const requestLocation = async () => {
@@ -224,8 +236,19 @@ function SignUpPage({ show, onClose }) {
             {confirmPasswordError && <div className="error-message">{confirmPasswordError}</div>}
           </div>
 
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+            <Form.Check
+              type="checkbox"
+              id="tour-guide-checkbox"
+              checked={isTourGuide}
+              onChange={(e) => setIsTourGuide(e.target.checked)}
+              style={{ marginRight: "8px" }} 
+            />
+            <label htmlFor="tour-guide-checkbox">Sign up as Tour Guide</label>
+          </div>
+
           <Button variant="primary" type="submit" className="signup-button" disabled={loading}>
-              {loading ? "Signing up..." : "Sign Up"}
+            {loading ? "Signing up..." : "Sign Up"}
           </Button>
         </Form>
       </div>

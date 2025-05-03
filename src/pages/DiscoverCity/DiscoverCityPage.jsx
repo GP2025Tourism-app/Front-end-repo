@@ -163,9 +163,12 @@ function DiscoverCityDetails() {
   return (
     <>
       <WebsiteNavbar />
+      <div className="Dicovercity-main-conatiner">
+      <div className="Dicovercity-sidebar">
       <Sidebar />
+      </div>
       <div className="City-details">
-        <div className="Search-tips-Container">
+        <div className="discover-city-Search-tips-Container">
           <SearchBar />
 
           <Nav variant="underline" activeKey={selectedCategory} className="activity-tabs" onSelect={handleSelect} defaultActiveKey="City">
@@ -313,6 +316,7 @@ function DiscoverCityDetails() {
           </div>
         )}
        
+      </div>
       </div>
     </>
   );

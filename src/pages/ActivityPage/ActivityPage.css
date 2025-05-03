@@ -1,15 +1,22 @@
-body, html {
-  overflow-x: hidden; 
+.activity-sidebar{
+  width: 150px;
+  margin-top: -55px;
 }
-
+  
+.activity-main-conatiner {
+  display: flex;
+  margin-top: 60px; /* pushes content below the fixed navbar */
+  height: calc(100vh - 60px); /* fills remaining vertical space */
+  box-sizing: border-box;
+}
 .activity-container {
-  padding-top: 60px; 
-  margin-left: 200px; 
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .Search-tips-Container {
   position: sticky;
-  top: 60px;
+  top: 0;
   background-color: white; 
   z-index: 100;
   width: 100%; /* Full width of the container */

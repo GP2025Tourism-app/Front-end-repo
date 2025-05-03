@@ -253,7 +253,10 @@ function ActivityPage() {
     <>
       <LoadingScreen isLoading={loading} />
       <WebsiteNavbar />
+      <div className="activity-main-conatiner">
+      <div className="activity-sidebar">
       <Sidebar />
+      </div>
       <div className="activity-container">
         <div className='Search-tips-Container'>
          <SearchBar/>
@@ -463,6 +466,7 @@ function ActivityPage() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

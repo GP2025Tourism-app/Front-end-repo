@@ -1,14 +1,17 @@
-.body{
-    padding-top: 70px;
-    overflow-x: hidden; 
-      
-  }
-
-  .fav-content-container {
+.favssidebar{
+  width: 150px;
+  margin-top: -55px;
+}
+  
+.favs-main-conatiner {
+  display: flex;
+  margin-top: 60px; /* pushes content below the fixed navbar */
+  height: calc(100vh - 60px); /* fills remaining vertical space */
+  box-sizing: border-box;
+}
+.fav-content-container {
     display: flex;
-    flex: 1;
-    padding-top: 60px; 
-    margin-left: 200px; 
+    flex: 1; 
   }
   
   .favourites-content {

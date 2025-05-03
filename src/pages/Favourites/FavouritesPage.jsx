@@ -89,7 +89,10 @@ function Favourites() {
   return (
     <>
       <WebsiteNavbar />
+      <div className="favs-main-conatiner">
+      <div className="favssidebar">
       <Sidebar />
+      </div>
       <div className="fav-content-container">
         <div className="favourites-content">
           <h1 className="fav-title">Wishlist</h1>
@@ -136,6 +139,7 @@ function Favourites() {
           </div>
         </div>
       )}
+      </div>
     </>
   );
 }

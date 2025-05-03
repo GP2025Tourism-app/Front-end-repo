@@ -13,6 +13,8 @@ import ViewTouristProfile from './pages/TouristProfile/ViewTouristProfile';
 import EditTouristProfile from './pages/TouristProfile/EditTouristProfile';
 import TouristChat from './pages/TouristMessages/TouristChat';
 import AIChat from './pages/AI-Assistant/AIChat';
+import LgHomepage from './pages/LG-HomePage/LG-Homepage';
+import Notification from './pages/LG-Notification/Notification';
 
 
 function App() {
@@ -63,6 +65,14 @@ function App() {
          <Route
           path="/ai-assistant"
           element={<ProtectedRoute element={<AIChat/>} />} 
+        />
+          <Route
+          path="/tour-guide-homepage"
+          element={<ProtectedRoute element={<LgHomepage/>} />} 
+        />
+          <Route
+          path="/notification"
+          element={<ProtectedRoute element={<Notification/>} />} 
         />
       </Routes>
     </Router>

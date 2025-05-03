@@ -1,0 +1,81 @@
+.notification-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .notification-container {
+    display: flex;
+    flex: 1;
+  }
+  
+  .notification-content {
+    flex: 1;
+    padding: 80px 20px 0px 20px;
+    background: white;
+
+  }
+
+  
+  .notification-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .notification-card {
+    display: flex; 
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.blue-dot-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 8px;
+    height: 100%; /* stretch to card height */
+}
+
+.blue-dot {
+    width: 10px;
+    height: 10px;
+    background: #17A2B8;
+    border-radius: 50%;
+}
+
+.vertical-line {
+    width: 1px;
+    flex: 1; /* stretch line to fill remaining height */
+    background-color: rgb(172, 171, 171);
+    margin-top: 4px;
+}
+
+.notification-title{
+    font-size: 15px;
+    font-weight: bold;
+    color: #666;
+}
+  
+  .notification-details {
+    display: flex;
+    gap: 20px;
+    color: #555;
+    padding-left: 15px;
+    flex-direction: column;
+  }
+  .notification-trip-details{
+    display: flex;
+    gap: 20px;
+    color: #555;
+}
+
+  .today-date {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 30px;
+}
