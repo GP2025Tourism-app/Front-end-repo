@@ -139,11 +139,11 @@ function EditTouristProfile() {
         <>
             <WebsiteNavbar />
             <div className="editprofile-page-container">
-                <div className="eidtprofile-sidebar-container">
+                <div className="editprofile-sidebar-container">
                     {userRoles.includes("ROLE_LocalGuide") ? <LGSidebar /> : <Sidebar />}
                 </div>
                 <div className="Edit-tourist-profile-container">
-                    <div className="Edit-tourist-profile-content">
+                    
                        
                         <div className="Edit-tourist-cover-photo">
                             <img src={userData.coverPhoto || CoverPhotoDefault} alt="Cover" />
@@ -259,7 +259,7 @@ function EditTouristProfile() {
                         {error && <p className="error-message">{error}</p>}
                     </div>
                 </div>
-            </div>
+       
         </>
     );
 }

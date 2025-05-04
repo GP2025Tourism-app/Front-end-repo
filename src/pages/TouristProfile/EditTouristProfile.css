@@ -1,10 +1,12 @@
 .editprofile-page-container { 
-    display: flex;
+   display: flex;
     width: 100%
 }
   
 .editprofile-sidebar-container { 
-    width: 100px; 
+    width: 150px; /* Increased sidebar width */
+    z-index: 10;
+    margin-right: 20px;
 }
 .Edit-tourist-profile-container {
     margin-top: 57px;
@@ -72,6 +74,7 @@
     display: flex;
 }
 .Edit-tourist-profile-form {
+    width: 100%;
     padding: 20px;
     background: white;
     padding: 20px;

@@ -30,10 +30,12 @@ function Notification() {
   ];
 
   return (
-    <div className="notification-page">
+    <>
       <WebsiteNavbar />
-      <div className="notification-container">
+      <div className="notification-page">
+      <div className="notification-container-sidebar">
         <LGSidebar />
+       </div>
         <main className="notification-content">
           <h2 className="today-date">Today {today}</h2>
           {tours.map((tour, index) => (
@@ -60,7 +62,8 @@ function Notification() {
           ))}
         </main>
       </div>
-    </div>
+
+    </>
   );
 }
 

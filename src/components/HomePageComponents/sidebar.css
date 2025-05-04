@@ -1,5 +1,6 @@
 
 .tourist-sidebar {
+  position: fixed;
     width: 141px; 
     background-color: white !important;
     height: 92vh !important; 

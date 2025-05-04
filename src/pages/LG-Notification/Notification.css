@@ -1,18 +1,18 @@
 .notification-page {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 60px);
   }
   
-  .notification-container {
-    display: flex;
-    flex: 1;
+  .notification-container-sidebar {
+    width: 150px; /* Increased sidebar width */
+    z-index: 10;
+    margin-right: 20px;
   }
   
   .notification-content {
-    flex: 1;
-    padding: 80px 20px 0px 20px;
-    background: white;
+    padding-top: 100px;
+    width:80%;
 
   }
 
