@@ -1,125 +1,219 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import WebsiteNavbar from '../../components/HomePageComponents/WebsiteNavbar';
 import Sidebar from '../../components/HomePageComponents/Sidebar';
-import { FaMicrophone} from 'react-icons/fa';
+import { FaMicrophone } from 'react-icons/fa';
 import { ImAttachment } from "react-icons/im";
 import './TouristChat.css';
 import LGSidebar from '../../components/LocalGuide/LG-Sidebar';
-
+import { FiSend } from "react-icons/fi";
 
 function TouristChat() {
     const userRoles = JSON.parse(localStorage.getItem("userRole")) || [];
-    const [messages, setMessages] = useState([
-        { text: "Hello, How can I help you?", type: "incoming", userId: 1 },
-        { text: "Hello, I want to visit the pyramids", type: "outgoing", userId: 2, status: "sent" }
-    ]);
+    const currentUserUsername = localStorage.getItem('username');
+    const [chatUsers, setChatUsers] = useState([]);
+    const [activeChat, setActiveChat] = useState(null);
+    const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
+    const messagesEndRef = useRef(null);
 
+    const defaultAvatar = 'https://via.placeholder.com/50'; // Replace this with your default image URL
 
-    const [chatUsers, setChatUsers] = useState([
-        {
-            id: 1,
-            name: "Ashraf Ahmed",
-            preview: "Hello, How can I help you?",
-            avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMC2LPWinJXv_YDQERAfQCFG37V6PiBn_d4A&s",
-            unreadMessages: 0
-        },
-        {
-            id: 2,
-            name: "Mona Said",
-            preview: "Sure, I can recommend some places!",
-            avatar: "https://img.freepik.com/premium-photo/shot-young-female-tour-guide-leading-her-group-walking-tour-created-with-generative-ai_762026-49920.jpg",
-            unreadMessages: 1
-        },
-        {
-            id: 3,
-            name: "Omar Adel",
-            preview: "Let me know your budget first.",
-            avatar: "https://media.istockphoto.com/id/842181676/photo/tourist-surfing-the-net-outdoors.jpg?s=612x612&w=0&k=20&c=_D3G_VqswUqUZSU-xa0r88dgYHfLhIGU2A1rXgmaxZs=",
-            unreadMessages: 2
+    useEffect(() => {
+        fetchChats();
+    }, []);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    ]);
+    };
+
+    const fetchChats = () => {
+        const token = localStorage.getItem('authToken');
+
+        fetch('http://localhost:8080/msg/chats', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const users = data.map(chat => ({
+                    id: chat.sender.username,
+                    name: `${chat.sender.firstname} ${chat.sender.lastname}`,
+                    avatar: chat.sender.profilePic || defaultAvatar,
+                    preview: chat.messages[chat.messages.length - 1]?.content || "No messages yet",
+                    unreadMessages: chat.unreadCounts,
+                    idrole: chat.sender.role.name
+                }));
+                setChatUsers(users);
+                if (users.length > 0) loadChat(users[0]);
+            })
+            .catch(error => console.error('Error fetching chats:', error));
+    };
+
+    const loadChat = (user) => {
+        const token = localStorage.getItem('authToken');
+
+        fetch(`http://localhost:8080/msg/mychat?senderUsername=${user.id}`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const formattedMessages = data.map(msg => ({
+                    text: msg.content,
+                    senderUsername: msg.senderUsername,
+                    dateTime: msg.dateTime
+                }));
+                setMessages(formattedMessages);
+                setActiveChat(user);
+            })
+            .catch(error => console.error('Error fetching chat messages:', error));
+    };
 
     const handleSendMessage = () => {
-        if (inputValue.trim() !== "") {
-            const userId = 1; 
-            const newMessage = { text: inputValue, type: "outgoing", userId, status: "sent" };
-            const newMessages = [...messages, newMessage];
-            setMessages(newMessages);
+        if (inputValue.trim() === "" || !activeChat) return;
 
-          
-            const updatedUsers = chatUsers.map(user => {
-                if (user.id !== userId) {
-                    return { ...user, unreadMessages: user.unreadMessages + 1 };
+        const token = localStorage.getItem('authToken');
+        const messageData = {
+            receiverUsername: activeChat.id,
+            rcvRole: {
+                name: activeChat.idrole 
+            },
+            content: inputValue
+        };
+
+        // Optimistically update UI
+        const newMessage = {
+            text: inputValue,
+            senderUsername: currentUserUsername,
+            dateTime: new Date().toISOString()
+        };
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+        setInputValue(""); // Clear input
+
+        fetch('http://localhost:8080/msg/send', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(messageData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send message');
                 }
-                return user;
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+                // Optionally remove the optimistic message or show an error
             });
-
-            setChatUsers(updatedUsers);
-            setInputValue("");
-        }
     };
 
     return (
         <>
             <WebsiteNavbar />
             <div className="messages-page-container">
-            <div className="messages-sidebar-container">
-                {userRoles.includes("ROLE_LocalGuide") ? <LGSidebar /> : <Sidebar />}
-            </div>
-            <div className='touristchat-container'>
-                <div className="touristchat-sidebar">
-                    <h2>Chats</h2>
-                    <input type="text" placeholder="Search here.." className="touristchat-search" />
-                    {chatUsers.map(user => (
-                        <div className="touristchat-user" key={user.id} style={{ position: 'relative' }}>
-                            <img src={user.avatar} alt={user.name} className="touristchat-user-avatar" />
-                            <div>
-                                <p className="touristchat-user-name">{user.name}</p>
-                                <p className="touristchat-user-msg-preview">{user.preview}</p>
-                            </div>
-                            {user.unreadMessages > 0 && (
-                                <div className="unread-message-badge">{user.unreadMessages}</div>
-                            )}
-                        </div>
-                    ))}
+                <div className="messages-sidebar-container">
+                    {userRoles.includes("ROLE_LocalGuide") ? <LGSidebar /> : <Sidebar />}
                 </div>
-
-                <div className="touristchat-content">
-                    <div className="touristchat-header">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMC2LPWinJXv_YDQERAfQCFG37V6PiBn_d4A&s" alt="Ashraf Ahmed" className="user-avatar" />
-                        <p className="touristchat-user-name">Ashraf Ahmed</p>
-                    </div>
-
-                <div className="touristchat-messages">
-                    {messages.map((msg, index) => (
-                        <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: msg.type === "incoming" ? 'flex-start' : 'flex-end' }}>
-                            <div className={msg.type === "incoming" ? "incoming-message" : "outgoing-message"}>
-                                <div className="message-text">
-                                    {msg.text}
+                <div className='touristchat-container'>
+                    <div className="touristchat-sidebar">
+                        <h2>Chats</h2>
+                        <input type="text" placeholder="Search here.." className="touristchat-search" />
+                        {chatUsers.map(user => (
+                            <div
+                                className={`touristchat-user ${activeChat?.id === user.id ? 'active' : ''}`}
+                                key={user.id}
+                                style={{ position: 'relative', cursor: 'pointer' }}
+                                onClick={() => loadChat(user)}
+                            >
+                                <img
+                                    src={user.avatar || defaultAvatar}
+                                    alt={user.name}
+                                    className="touristchat-user-avatar"
+                                />
+                                <div>
+                                    <p className="touristchat-user-name">{user.name}</p>
+                                    <p className="touristchat-user-msg-preview">{user.preview}</p>
                                 </div>
+                                {user.unreadMessages > 0 && (
+                                    <div className="unread-message-badge">{user.unreadMessages}</div>
+                                )}
                             </div>
-                            {msg.type === "outgoing" && (
-                                <div className="message-status">{msg.status}</div>
-                            )}
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
 
-                    <div className="touristchat-input-area">
-                        <input
-                            type="text"
-                            placeholder="Type a message...."
-                            className="touristchat-input"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyPress={(e) => { if (e.key === 'Enter') handleSendMessage(); }}
-                        />
-                        <FaMicrophone className="touristchat-icon" />
-                        <ImAttachment className="touristchat-icon" />
+                    <div className="touristchat-content">
+                        {activeChat ? (
+                            <>
+                                <div className="touristchat-header">
+                                    <img
+                                        src={activeChat.avatar || defaultAvatar}
+                                        alt={activeChat.name}
+                                        className="user-avatar"
+                                    />
+                                    <p className="touristchat-user-name">{activeChat.name}</p>
+                                </div>
+
+                                <div className="touristchat-messages">
+                                    {messages.map((msg, index) => {
+                                        const isMyMessage = msg.senderUsername === currentUserUsername;
+                                        return (
+                                            <div
+                                                key={index}
+                                                style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: isMyMessage ? 'flex-end' : 'flex-start'
+                                                }}
+                                            >
+                                                <div className={isMyMessage ? "outgoing-message" : "incoming-message"}>
+                                                    <div className="message-text">
+                                                        {msg.text}
+                                                    </div>
+                                                    <div className="message-time">
+                                                        {new Date(msg.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                    <div ref={messagesEndRef} />
+                                </div>
+
+                                <div className="touristchat-input">
+                                    <input
+                                        type="text"
+                                        placeholder="Type a message..."
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                    />
+                                    <div className="touristchat-input-icons">
+                                        <ImAttachment className="input-icon" />
+                                        <FaMicrophone className="input-icon" />
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="no-chat-selected">
+                                <p>Select a chat to start messaging</p>
+                            </div>
+                        )}
                     </div>
                 </div>
-            </div>
             </div>
         </>
     );

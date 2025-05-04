@@ -140,7 +140,6 @@
 .touristchat-input {
     border-radius: 30px;
     border: 1px solid #ddd;
-    flex-grow: 1;
     outline: none;
     padding: 10px;
 }

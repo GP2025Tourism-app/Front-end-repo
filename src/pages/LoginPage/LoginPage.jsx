@@ -59,6 +59,7 @@ function LoginPage({ show, onClose }) {
         localStorage.setItem("userId", userid);
         localStorage.setItem("userData", JSON.stringify(response.data));
         localStorage.setItem("userRole",JSON.stringify(response.data.roles));
+        localStorage.setItem("username",JSON.stringify(response.data.username));
         requestLocation(token, response.data.roles);
 
         onClose();
