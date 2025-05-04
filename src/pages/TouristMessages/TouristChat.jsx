@@ -9,7 +9,8 @@ import { FiSend } from "react-icons/fi";
 
 function TouristChat() {
     const userRoles = JSON.parse(localStorage.getItem("userRole")) || [];
-    const currentUserUsername = localStorage.getItem('username');
+    const currentUserUsername = JSON.parse(localStorage.getItem('username'));
+    console.log("Current user username: ", currentUserUsername);
     const [chatUsers, setChatUsers] = useState([]);
     const [activeChat, setActiveChat] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -92,7 +93,6 @@ function TouristChat() {
             content: inputValue
         };
 
-        // Optimistically update UI
         const newMessage = {
             text: inputValue,
             senderUsername: currentUserUsername,
@@ -117,7 +117,6 @@ function TouristChat() {
             })
             .catch(error => {
                 console.error('Error sending message:', error);
-                // Optionally remove the optimistic message or show an error
             });
     };
 
@@ -170,6 +169,8 @@ function TouristChat() {
                                 <div className="touristchat-messages">
                                     {messages.map((msg, index) => {
                                         const isMyMessage = msg.senderUsername === currentUserUsername;
+                                        console.log(`Message ${index}: sender = ${msg.senderUsername}, currentUser = ${currentUserUsername}, isMyMessage = ${isMyMessage}`);
+
                                         return (
                                             <div
                                                 key={index}
@@ -195,6 +196,7 @@ function TouristChat() {
 
                                 <div className="touristchat-input">
                                     <input
+                                       className='message-input'
                                         type="text"
                                         placeholder="Type a message..."
                                         value={inputValue}

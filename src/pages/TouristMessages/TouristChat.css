@@ -142,8 +142,15 @@
     border: 1px solid #ddd;
     outline: none;
     padding: 10px;
+    display: flex;
+    height: 40px;
+    gap:10px;
+    align-items: center;
 }
-
+.message-input{
+    width: 95%;
+    border: none;
+}
 .touristchat-icon {
     font-size: 18px;
     color: gray;
