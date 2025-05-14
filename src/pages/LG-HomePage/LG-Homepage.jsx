@@ -23,9 +23,9 @@ function LgHomepage() {
     },
   ];
 
-  const handleCardClick = (title) => {
+  const handleCardClick = () => {
     
-    console.log(`Card clicked: ${title}`);
+   navigate('/localGuide-View-trips');
   }; 
   const handlePlanNewTripClick = () => {
     navigate('/plan-new-trip'); 

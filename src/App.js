@@ -16,6 +16,7 @@ import AIChat from './pages/AI-Assistant/AIChat';
 import LgHomepage from './pages/LG-HomePage/LG-Homepage';
 import Notification from './pages/LG-Notification/Notification';
 import LGPlanNewTrip from './pages/LG-PlanTrip/LG-PlanNewTrip';
+import LGViewTrips from './pages/LG-PlanTrip/LG-ViewTrips';
 
 
 function App() {
@@ -78,6 +79,10 @@ function App() {
           <Route
           path="/plan-new-trip"
           element={<ProtectedRoute element={<LGPlanNewTrip/>} />} 
+        />
+           <Route
+          path="/localGuide-View-trips"
+          element={<ProtectedRoute element={<LGViewTrips/>} />} 
         />
       </Routes>
     </Router>
