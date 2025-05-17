@@ -183,10 +183,10 @@ function TouristChat() {
                                                 <div className={isMyMessage ? "outgoing-message" : "incoming-message"}>
                                                     <div className="message-text">
                                                         {msg.text}
-                                                    </div>
-                                                    <div className="message-time">
+                                                    </div>   
+                                                </div>
+                                                <div className="message-time">
                                                         {new Date(msg.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                    </div>
                                                 </div>
                                             </div>
                                         );
@@ -195,19 +195,18 @@ function TouristChat() {
                                 </div>
 
                                 <div className="touristchat-input">
-                                    <input
-                                       className='message-input'
-                                        type="text"
-                                        placeholder="Type a message..."
-                                        value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                    />
-                                    <div className="touristchat-input-icons">
-                                        <ImAttachment className="input-icon" />
-                                        <FaMicrophone className="input-icon" />
-                                    </div>
-                                </div>
+                                <input
+                                    className="message-input"
+                                    type="text"
+                                    placeholder="Type a message..."
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                />
+                                <ImAttachment className="input-icon" />
+                                <FaMicrophone className="input-icon" />
+                            </div>
+
                             </>
                         ) : (
                             <div className="no-chat-selected">

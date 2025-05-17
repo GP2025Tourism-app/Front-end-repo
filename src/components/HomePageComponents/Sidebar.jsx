@@ -22,9 +22,9 @@ function Sidebar() {
             <BsGlobe2 className="icon" /> Feed
           </Link>
         </li>
-        <li className={location.pathname === "/plans" ? "active" : ""}>
-          <Link to="/plans" className="d-flex align-items-center">
-            <BsJournalRichtext  className="icon" /> My Plans
+        <li className={location.pathname === "/my-bookings" ? "active" : ""}>
+          <Link to="/my-bookings" className="d-flex align-items-center">
+            <BsJournalRichtext  className="icon" /> My Bookings
           </Link>
         </li>
         <li className={location.pathname === "/TouristChat" ? "active" : ""}>

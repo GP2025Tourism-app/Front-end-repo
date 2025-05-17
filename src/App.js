@@ -17,6 +17,7 @@ import LgHomepage from './pages/LG-HomePage/LG-Homepage';
 import Notification from './pages/LG-Notification/Notification';
 import LGPlanNewTrip from './pages/LG-PlanTrip/LG-PlanNewTrip';
 import LGViewTrips from './pages/LG-PlanTrip/LG-ViewTrips';
+import MyBookings from './pages/MyBookings/Mybookings';
 
 
 function App() {
@@ -47,6 +48,10 @@ function App() {
         <Route
           path="/feed"
           element={<ProtectedRoute element={<FeedPage/>} />}
+        />
+         <Route
+          path="/my-bookings"
+          element={<ProtectedRoute element={<MyBookings/>} />}
         />
         <Route
           path="/favourites"

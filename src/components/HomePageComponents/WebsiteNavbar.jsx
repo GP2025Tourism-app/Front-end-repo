@@ -70,7 +70,7 @@ function WebsiteNavbar() {
             </li>
             <li>
               <div className="icon-container pen">
-                <FaRegPenToSquare className="icon pen-icon" />
+                <FaRegPenToSquare className="icon post-icon" />
               </div>
               <span>Posts</span>
             </li>
@@ -78,8 +78,8 @@ function WebsiteNavbar() {
               <div className="icon-container list">
                 <FaRegClipboard className="icon list-icon" />
               </div>
-              <span>My Plan</span>
-            </li>
+              <span>My Bookings</span>
+            </li> 
           </ul>
           </div>
          

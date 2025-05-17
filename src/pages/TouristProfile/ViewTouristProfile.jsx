@@ -17,6 +17,8 @@ function ViewTouristProfile() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const avatar = localStorage.getItem("profilePic");
   const userRoles = JSON.parse(localStorage.getItem("userRole")) || [];
+  const [visibleComments, setVisibleComments] = useState({});
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -72,7 +74,13 @@ function ViewTouristProfile() {
   if (!profile) {
     return <p>Failed to load profile.</p>;
   }
-
+  const toggleComments = (postId) => {
+    setVisibleComments((prevState) => ({
+      ...prevState,
+      [postId]: !prevState[postId],
+    }));
+  };
+  
   return (
     <>
       <WebsiteNavbar />
@@ -143,16 +151,36 @@ function ViewTouristProfile() {
                     )}
                     <div className="user-profile-post-actions">
                       <button><FaRegHeart /> {post.likedUsr ? post.likedUsr.length : 0} Likes</button>
-                      <button><FaRegComment /> {post.comments ? post.comments.length : 0} Comments</button>
+                      <button onClick={() => toggleComments(post.id)}>
+  <FaRegComment /> {post.comments ? post.comments.length : 0} Comments
+</button>
+
                     </div>
-                    {post.comments && post.comments.length > 0 && (
-                      <div className="user-profile-post-comments">
-                        <h6>Comments</h6>
-                        {post.comments.map((comment, index) => (
-                          <p key={index}><strong>{comment.username}:</strong> {comment.text}</p>
-                        ))}
-                      </div>
-                    )}
+                    {visibleComments[post.id] && post.comments && post.comments.length > 0 && (
+  <div className="user-profile-post-comments">
+    <h6>Comments</h6>
+    {post.comments.map((comment, index) => (
+      <div key={index} className="comment-container">
+       <div className="comment-header">
+        <img src={comment.user.profilePic} alt="Commenter Avatar" className="comment-avatar" />
+        <p className="comment-user">
+          {comment.user?.firstname && comment.user?.lastname
+            ? `${comment.user.firstname} ${comment.user.lastname}`
+            : "Unknown User"}
+        </p>
+</div>
+        <div className="comment-box">
+          {comment.caption}
+          <span className="comment-date">
+            {comment.dateTime ? new Date(comment.dateTime).toLocaleString() : ""}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
+
                   </div>
                 ))
               )}
