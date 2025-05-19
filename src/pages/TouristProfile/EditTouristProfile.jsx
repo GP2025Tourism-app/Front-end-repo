@@ -169,9 +169,9 @@ function EditTouristProfile() {
                         {/* Conditional rendering for LocalGuide */}
                         {userRoles.includes("ROLE_LocalGuide") ? (
                             <>
-                                <div className="Edit-tourist-form-row">
+                                <div className="Edit-tourist-form-row-localguide">
                                     {/* Left Side for Bio */}
-                                    <div className="Edit-tourist-bio">
+                                    <div className="Edit-tourist-bio-localguide">
                                         <label>Bio</label>
                                         <textarea
                                             name="bio"
@@ -182,8 +182,8 @@ function EditTouristProfile() {
                                     </div>
 
                                     {/* Right Side for Location and Working Days */}
-                                    <div className="Edit-tourist-form-col">
-                                        <div className="Edit-tourist-form-group">
+                                    <div className="Edit-tourist-form-col-localguide">
+                                        <div className="Edit-tourist-form-group-localguide">
                                             <label>Location</label>
                                             <input
                                                 type="text"
@@ -194,7 +194,7 @@ function EditTouristProfile() {
                                             />
                                         </div>
 
-                                        <div className="Edit-tourist-form-group">
+                                        <div className="Edit-tourist-form-group-localguide">
                                             <label>Working Days</label>
                                             <input
                                                 type="text"
