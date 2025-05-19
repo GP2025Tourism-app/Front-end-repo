@@ -199,16 +199,7 @@
     font-weight: 500;
   }
   
-  .plan-new-trip-activity-search{
-    width: 100%;
-    padding: 14px 18px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 1.05rem;
-    margin-bottom: 18px;
-    border-radius: 25px;
-  }
+ 
   .plan-new-trip-time ,
   .plan-new-trip-duration{
     width:40%;
@@ -490,4 +481,98 @@
   display: flex;
   flex-direction: column;   
   gap: 20px;              
+}
+.plan-new-trip-activity-wrapper {
+  position: relative;
+  margin-top: 16px;
+}
+
+
+.plan-new-trip-activity-search {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-new-trip-activity-search:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+
+.suggestions-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+
+.selected-activities {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 6px 0;
+}
+
+
+.selected-activity-tag {
+  background-color: #e9ecef;
+  color: #495057;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 20px; 
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.selected-activity-tag:hover {
+  background-color: #dee2e6;
+}
+
+.remove-activity-button {
+  background: none;
+  border: none;
+  color: #6c757d; 
+  margin-left: 8px;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-activity-button:hover {
+  color: #dc3545;
+}
+
+.remove-activity-button svg {
+  vertical-align: middle; 
 }
