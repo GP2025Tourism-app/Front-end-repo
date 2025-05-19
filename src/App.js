@@ -86,7 +86,7 @@ function App() {
           element={<ProtectedRoute element={<LGPlanNewTrip/>} />} 
         />
            <Route
-          path="/localGuide-View-trips"
+          path="/localGuide-View-trips/:tripId"
           element={<ProtectedRoute element={<LGViewTrips/>} />} 
         />
       </Routes>

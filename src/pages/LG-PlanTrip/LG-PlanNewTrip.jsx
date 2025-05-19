@@ -5,7 +5,8 @@ import "./LG-PlanNewTrip.css";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CoverPhotoDefault from "../../assets/images/default-cover-photo.png";
-import { FaCamera, FaPen, FaCalendarAlt, FaTimes } from 'react-icons/fa'; // Import FaTimes for remove icon
+import { FaCamera, FaPen, FaCalendarAlt, FaTimes } from 'react-icons/fa';
+
 
 function LGPlanNewTrip() {
   const [isCalendarVisible, setCalendarVisible] = useState(false);
@@ -17,21 +18,32 @@ function LGPlanNewTrip() {
   const [guideDescription, setGuideDescription] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
-  const [days, setDays] = useState([{ id: 1, activities: [], time: '', duration: '' }]); // Initialize activities as an array
+  const [days, setDays] = useState([{ id: 1, activities: [], startTime: '', duration: '' }]);
   const [isTitleEditable, setIsTitleEditable] = useState(false);
-  const [seats, setSeats] = useState('');
-  const [price, setPrice] = useState('');
+  const [totalNoOfSeats, setTotalNoOfSeats] = useState('');
+  const [pricePerPerson, setPricePerPerson] = useState('');
   const token = localStorage.getItem("authToken");
   const [allActivities, setAllActivities] = useState([]);
   const [suggestions, setSuggestions] = useState({});
   const [activityInput, setActivityInput] = useState({});
+  
 
   const CLOUD_NAME = "da6gcu1n9";
   const UPLOAD_PRESET = "graduationproject";
 
+  const formatDateForInput = (date) => {
+    if (date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    return '';
+  };
+
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    const formattedDate = date.toLocaleDateString();
+    const formattedDate = formatDateForInput(date);
     if (dateField === 'from') setFromDate(formattedDate);
     else if (dateField === 'to') setToDate(formattedDate);
     setCalendarVisible(false);
@@ -105,7 +117,7 @@ function LGPlanNewTrip() {
   };
 
   const handleAddDay = () => {
-    setDays([...days, { id: days.length + 1, activities: [], time: '', duration: '' }]);
+    setDays([...days, { id: days.length + 1, activities: [], startTime: '', duration: '' }]); // Updated structure
   };
 
   const handleActivityInputChange = (dayId, value) => {
@@ -144,16 +156,20 @@ function LGPlanNewTrip() {
   };
 
   const handleSaveTrip = async () => {
-    const postData = {
+    const payload = {
       title: tripTitle,
-      image: tripImage,
-      city: tripCity,
+      cityName: tripCity, // Changed key to cityName
       description: guideDescription,
       fromDate,
       toDate,
-      days,
-      seats: Number(seats),
-      price: Number(price),
+      days: days.map(day => ({ // Format days array for backend
+        activitiesNames: day.activities, // Changed key to activitiesNames
+        startTime: day.startTime, // Changed key to startTime
+        duration: day.duration
+      })),
+      totalNoOfSeats: Number(totalNoOfSeats), // Changed key and value type
+      pricePerPerson: `${pricePerPerson} EGP`, // Changed key and formatted value
+      picture: tripImage, // Keep image if your backend handles it this way
     };
 
     try {
@@ -163,7 +179,7 @@ function LGPlanNewTrip() {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -194,6 +210,7 @@ function LGPlanNewTrip() {
                 <FaCamera size={20} />
                 <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: "none" }} />
               </label>
+
               <div className="plan-new-trip-image-title-box">
                 <input
                   type="text"
@@ -213,7 +230,7 @@ function LGPlanNewTrip() {
               <div className="plan-new-trip-form">
                 <div className="plan-new-trip-guide-info">
                   <h3>Trip Description</h3>
-                  <textarea className="plan-new-trip-description" placeholder="Brief bio about the guide..." value={guideDescription} onChange={(e) => setGuideDescription(e.target.value)}></textarea>
+                  <textarea className="plan-new-trip-description" placeholder="Brief description of the trip..." value={guideDescription} onChange={(e) => setGuideDescription(e.target.value)}></textarea>
                 </div>
                 <div className="plan-new-trip-city-input">
                   <label htmlFor="plan-new-trip-city">City</label>
@@ -262,7 +279,7 @@ function LGPlanNewTrip() {
                 <div className="plan-new-trip-activity-wrapper">
                   <input
                     type="text"
-                    placeholder="Tell us the name of the place or activity"
+                    placeholder="Search for activities"
                     className="plan-new-trip-activity-search"
                     value={activityInput[day.id] || ''}
                     onChange={(e) => handleActivityInputChange(day.id, e.target.value)}
@@ -284,7 +301,7 @@ function LGPlanNewTrip() {
 
                   {day.activities && day.activities.length > 0 && (
                     <div className="selected-activities">
-                      <strong>Selected Activities:</strong>
+                      <strong>Activities:</strong>
                       {day.activities.map((activity, idx) => (
                         <span key={idx} className="selected-activity-tag">
                           {activity}
@@ -304,17 +321,17 @@ function LGPlanNewTrip() {
                 <div className="plan-new-trip-time-duration">
                   <input
                     type="text"
-                    placeholder="Time (e.g., 10:00 AM)"
-                    value={day.time}
-                    onChange={(e) => handleDayInputChange(day.id, 'time', e.target.value)}
+                    placeholder="Start Time (e.g., 09:00 AM)"
+                    value={day.startTime}
+                    onChange={(e) => handleDayInputChange(day.id, 'startTime', e.target.value)}
                     className="plan-new-trip-time "
                   />
                   <input
                     type="text"
-                    placeholder="Duration (e.g., 2 hours)"
+                    placeholder="Duration (e.g., 6 Hours)"
                     value={day.duration}
-                    className="plan-new-trip-duration"
                     onChange={(e) => handleDayInputChange(day.id, 'duration', e.target.value)}
+                    className="plan-new-trip-duration"
                   />
                 </div>
               </div>
@@ -322,12 +339,24 @@ function LGPlanNewTrip() {
 
             <div className="plan-new-trip-seats-price">
               <div>
-                <label>No Of Seats</label>
-                <input type="number" placeholder="e.g 50" value={seats} onChange={(e) => setSeats(e.target.value)} className="plan-new-trip-seats" />
+                <label>Total No Of Seats</label>
+                <input
+                  type="number"
+                  placeholder="e.g 50"
+                  value={totalNoOfSeats}
+                  onChange={(e) => setTotalNoOfSeats(e.target.value)}
+                  className="plan-new-trip-seats"
+                />
               </div>
               <div>
-                <label>Price Per Person</label>
-                <input type="number" placeholder="e.g 70 $" value={price} onChange={(e) => setPrice(e.target.value)} className="plan-new-trip-price" />
+                <label>Price Per Person (EGP)</label>
+                <input
+                  type="number"
+                  placeholder="e.g 500"
+                  value={pricePerPerson}
+                  onChange={(e) => setPricePerPerson(e.target.value)}
+                  className="plan-new-trip-price"
+                />
               </div>
             </div>
 
