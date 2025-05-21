@@ -1,0 +1,247 @@
+.tour-booking-card-container {
+    background-color: #e0f2f7; /* Light blue from your image */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px; /* Space between this card and reviews */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    width: 100%; /* Ensure it takes full width of its parent */
+    /* Optional: limit max width for larger screens */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    position: relative; /* Needed for absolute positioning of message box */
+}
+
+.tour-booking-card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.tour-booking-inputs {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+    gap: 20px; /* Space between input groups */
+    margin-bottom: 20px;
+    width: 100%;
+    justify-content: center; /* Center the input groups */
+}
+
+.tour-booking-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1; /* Allows items to grow and shrink */
+    box-sizing: border-box;
+    position: relative; /* Needed for dropdown positioning */
+}
+
+.tour-booking-input-group label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.tour-booking-input-group input[type="date"] {
+    width: 100%; /* Make inputs fill their parent group */
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+}
+
+/* Custom Dropdown Trigger */
+.custom-dropdown-trigger {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.dropdown-arrow {
+    margin-left: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Custom Dropdown Content */
+.custom-dropdown-content {
+    position: absolute;
+    top: 100%; /* Position below the trigger */
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure it appears above other content */
+    padding: 15px;
+    margin-top: 5px; /* Small gap between trigger and content */
+}
+
+.counter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.counter-controls button {
+    background-color: #17A2B8;
+    color: white;
+    border: none;
+    border-radius: 50%; /* Make buttons round */
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.counter-controls button:hover:not(:disabled) {
+    background-color: #17A2B8;
+}
+
+.counter-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.dropdown-done-button {
+    background-color: #17A2B8; /* Green color for done button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-done-button:hover {
+    background-color: #72a6ae;
+}
+
+.booking-divider {
+    width: 100%;
+    border: 0;
+    height: 1px;
+    background: #dcdcdc;
+    margin: 20px 0;
+}
+
+.booking-summary {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text to the left */
+}
+
+.booking-summary p {
+    margin: 5px 0;
+    font-size: 15px;
+    color: #333;
+}
+
+.book-now-button {
+    background-color: white;
+    color: #007bff; /* A light blue color */
+    border: 1px solid #17A2B8;
+    padding: 10px 25px;
+    border-radius: 25px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    align-self: center; /* Center the button */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.book-now-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Custom Message Box Styles */
+.message-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Ensure it's on top of everything */
+    text-align: center;
+    min-width: 250px;
+}
+
+.message-box.success {
+    border: 2px solid #17A2B8;
+    color: #0f0f0f;
+}
+
+.message-box.error {
+    border: 2px solid #dc3545;
+    color: #dc3545;
+}
+
+.message-box p {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.message-box button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.message-box button:hover {
+    background-color: #b65555;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+    .tour-booking-inputs {
+        flex-direction: column; /* Stack inputs vertically */
+        align-items: center;
+    }
+
+    .tour-booking-input-group {
+        width: 90%; /* Make input groups take more width on small screens */
+        max-width: 300px; /* Limit max width even when stacked */
+    }
+}

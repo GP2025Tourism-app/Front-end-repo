@@ -17,6 +17,7 @@ import 'leaflet/dist/leaflet.css';
 import SearchBar from '../../components/ReusableComp/SearchBar';
 import LoadingScreen from '../../components/loadingscreen/loadingScreen';
 import ReviewModal from '../../components/Activities/ReviewModal';
+import TourBookingCard from '../../components/Activities/TourBookingCard';
 
 function ActivityPage() {
   const { activityId, cityId } = useParams();
@@ -428,7 +429,9 @@ function ActivityPage() {
     <div ref={mapRef} style={{ height: '500px', width: '35%', borderRadius: '15px' }}></div>
 </div>
               <hr className="divider-part" />
-
+              {activityData.type === "Places" && (
+                    <TourBookingCard/>
+                )}
             <div className="reviews-section">
               <h3 className='review-title'>Customer Reviews</h3>
               <div className="review-summary">
