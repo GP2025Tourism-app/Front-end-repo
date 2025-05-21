@@ -24,7 +24,7 @@ function EditTouristProfile() {
         profilePic: ProfilePicDefault, 
         coverPhoto: CoverPhotoDefault, 
         location: "",       
-        workingDays: "",    
+        availableTime: "",    
     });
     
     const [modifiedFields, setModifiedFields] = useState({});
@@ -198,9 +198,9 @@ function EditTouristProfile() {
                                             <label>Working Days</label>
                                             <input
                                                 type="text"
-                                                name="workingDays"
+                                                name="availableTime"
                                                 placeholder="Your Working Days"
-                                                value={userData.workingDays}
+                                                value={userData.availableTime}
                                                 onChange={handleChange}
                                             />
                                         </div>
