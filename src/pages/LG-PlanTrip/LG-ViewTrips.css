@@ -457,3 +457,22 @@
         padding: 15px;
     }
 }
+
+
+.see-more-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.9em;
+  padding: 0;
+  margin-bottom: 5px;
+  text-decoration: underline;
+  align-self: flex-end;
+  margin-right: 20px;
+}
+
+.see-more-button:hover {
+  color: #0056b3; /* Darker shade on hover */
+}
+

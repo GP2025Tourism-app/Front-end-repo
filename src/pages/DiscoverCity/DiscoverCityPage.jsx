@@ -187,9 +187,7 @@ function DiscoverCityDetails() {
             <Nav.Item>
               <Nav.Link eventKey="Restaurants">Restaurants</Nav.Link>
             </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="tour-guides">Tour Guides</Nav.Link>
-            </Nav.Item>
+            
           </Nav>
           </div>
           {isCategoryFullScreen ? (

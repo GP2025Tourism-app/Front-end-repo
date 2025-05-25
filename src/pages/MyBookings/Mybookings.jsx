@@ -4,6 +4,7 @@ import WebsiteNavbar from "../../components/HomePageComponents/WebsiteNavbar";
 import Sidebar from "../../components/HomePageComponents/Sidebar";
 import { FaComments, FaUserCircle, FaCalendarCheck } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import LoadingScreen from '../../components/loadingscreen/loadingScreen';
 
 function MyBookings() {
   const [allBookings, setAllBookings] = useState([]);
@@ -83,7 +84,7 @@ function MyBookings() {
     alert("Booking cancelled!");
   };
 
-  if (loading) return <p className="loading">Loading bookings...</p>;
+  if (loading) return <LoadingScreen isLoading={loading} />;
 
   return (
     <>
@@ -155,22 +156,31 @@ function MyBookings() {
                           </p>
                         )}
                       </div>
-                      {booking.guide?.username && ( // This condition should be met
-                          <div
-                            className="chat-icon"
-                            title="Chat with Guide"
-                            onClick={() =>
-                              navigate("/TouristChat", {
-                                state: {
-                                  receiverUsername: booking.guide.username,
-                                  receiverRole: "ROLE_LocalGuide",
-                                },
-                              })
-                            }
-                          >
-                            <FaComments />
-                          </div>
-                        )}
+                      {booking.guide?.username && (
+                        <button
+                          className="chat-icon"
+                          title="Chat with Guide"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate("/TouristChat", {
+                              state: {
+                                receiverUsername: booking.guide.username,
+                                receiverRole: booking.guide.roles?.[0]?.name || "ROLE_LocalGuide",
+                              },
+                            });
+                          }}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            padding: 0,
+                            marginLeft: "10px",
+                          }}
+                        >
+                          <FaComments />
+                        </button>
+                      )}
                     </div>
 
                     {booking.status !== "Cancelled" && (

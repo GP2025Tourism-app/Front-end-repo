@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Notification.css";
 import WebsiteNavbar from "../../components/HomePageComponents/WebsiteNavbar";
 import LGSidebar from "../../components/LocalGuide/LG-Sidebar";
+import LoadingScreen from '../../components/loadingscreen/loadingScreen';
 
 function Notification() {
   const today = new Date().toLocaleDateString("en-GB", {
@@ -63,7 +64,7 @@ function Notification() {
           </div>
           <main className="notification-content">
             <h2 className="today-date">Today {today}</h2>
-            <div>Loading notifications...</div>
+            <LoadingScreen isLoading={loading} />
           </main>
         </div>
       </>
@@ -112,12 +113,11 @@ function Notification() {
                     </div>
                     <div className="notification-trip-details">
                       {/* Assuming your backend sends data with these keys. Adjust if necessary. */}
-                      <span>{notification.booking.activity.name || 'N/A'}</span>
-                      <span>{new Date(notification.booking.date).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) || 'N/A'}</span>
-                      <span>Starting Time: {notification.booking.
-startingTime
- || 'N/A'}</span>
-                      <span>{notification.booking.adults || 0} Adults {notification.booking.children || 0} Child</span>
+                      <span>{notification.booking?.activity?.name || 'N/A'}</span>
+<span>{notification.booking?.date ? new Date(notification.booking.date).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : 'N/A'}</span>
+<span>Starting Time: {notification.booking?.startingTime || 'N/A'}</span>
+<span>{notification.booking?.adults || 0} Adults {notification.booking?.children || 0} Child</span>
+
                     </div>
                   </div>
                 </div>

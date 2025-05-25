@@ -22,7 +22,7 @@ const BookingCard = ({ trip, onBookClick }) => {
     if (trip && trip.pricePerPerson) {
       // Remove all non-numeric characters (except the decimal point)
       const cleanedPriceString = trip.pricePerPerson.replace(/[^0-9.]/g, '');
-      setNumericPricePerPerson(parseFloat(cleanedPriceString) || 0); 
+      setNumericPricePerPerson(parseFloat(cleanedPriceString) || 0);
     }
   }, [trip]); // Re-run this effect if the trip object changes
 
@@ -93,23 +93,23 @@ function LGViewTrips() {
 
   const [isTouristView, setIsTouristView] = useState(false);
 
-  // Helper function moved outside to be accessible to BookingCard and LGViewTrips
-  // (already defined above the BookingCard component)
+  // State to manage showing full description for activities
+  const [showFullDescriptions, setShowFullDescriptions] = useState({});
 
   useEffect(() => {
     const storedRolesString = localStorage.getItem("userRole");
     if (storedRolesString) {
       try {
         const roles = JSON.parse(storedRolesString);
-      
+
         if (roles.includes("ROLE_CLIENT")) {
           setIsTouristView(true);
         } else {
-          setIsTouristView(false); 
+          setIsTouristView(false);
         }
       } catch (e) {
         console.error("Error parsing user roles from localStorage:", e);
-        setIsTouristView(false); 
+        setIsTouristView(false);
       }
     } else {
       setIsTouristView(false);
@@ -146,15 +146,7 @@ function LGViewTrips() {
         }
 
         const data = await response.json();
-        
-        // --- IMPORTANT CHANGE HERE ---
-        // DO NOT parse pricePerPerson to a number directly and overwrite the original string.
-        // Instead, store the object as is. The `BookingCard` and display logic will use
-        // the original string and the helper function when needed.
-        // The data.pricePerPerson will remain "500 EGP" in the trip state.
-        // --- END IMPORTANT CHANGE ---
 
-        // Ensure noOfSeatsLeft is calculated and set if needed (this logic is fine)
         const tripDataToSet = { ...data };
         if (tripDataToSet.totalnoOfSeats !== undefined && tripDataToSet.noOfSeatsReserved !== undefined) {
             tripDataToSet.noOfSeatsLeft = tripDataToSet.totalnoOfSeats - tripDataToSet.noOfSeatsReserved;
@@ -191,7 +183,7 @@ function LGViewTrips() {
       }).addTo(map);
 
       const customIcon = L.icon({
-        iconUrl: 'https://https://img.icons8.com/?size=100&id=13808&format=png&color=000000', // Changed to a different marker URL for better stability
+        iconUrl: 'https://img.icons8.com/?size=100&id=13808&format=png&color=000000', // Changed to a different marker URL for better stability
         iconSize: [32, 32],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32],
@@ -233,7 +225,7 @@ function LGViewTrips() {
       const bookingData = await response.json();
       console.log("Booking successful:", bookingData);
       alert("Trip booked successfully!");
-   
+
 
     } catch (err) {
       console.error("Error booking trip:", err);
@@ -241,6 +233,13 @@ function LGViewTrips() {
     }
   };
 
+  // Function to toggle the full description for a specific activity
+  const toggleDescription = (dayIndex, activityIndex) => {
+    setShowFullDescriptions(prevState => ({
+      ...prevState,
+      [`${dayIndex}-${activityIndex}`]: !prevState[`${dayIndex}-${activityIndex}`]
+    }));
+  };
 
   if (loading) {
     return <LoadingScreen isLoading={loading} />;
@@ -366,24 +365,51 @@ function LGViewTrips() {
           style={{ marginTop: isTouristView ? '10px' : '0' }}>
             <h2>Days</h2>
             {trip.days && trip.days.length > 0 ? (
-              trip.days.map((day, index) => (
-                <div className="lg-view-trips-day-card" key={index}>
-                  <h3 className="lg-view-trips-Day">Day {index + 1}</h3>
+              trip.days.map((day, dayIndex) => ( // Changed index to dayIndex
+                <div className="lg-view-trips-day-card" key={dayIndex}>
+                  <h3 className="lg-view-trips-Day">Day {dayIndex + 1}</h3>
                   <h4>Activities</h4>
                   <div className="lg-view-trips-activities-list">
                     {day.activities && day.activities.length > 0 ? (
-                      day.activities.map((activity, activityIndex) => (
-                        <div className="lg-view-trips-activity-item" key={activityIndex}>
-                          <img
-                            src={activity.images && activity.images.length > 0 ? activity.images[0] : 'https://via.placeholder.com/100'}
-                            alt={activity.name}
-                          />
-                          <div className="activity-name-description">
-                            <h3>{activity.name}</h3>
-                            <p>{activity.description}</p>
+                      day.activities.map((activity, activityIndex) => { // Changed index to activityIndex
+                        const fullDescription = activity.description;
+                        // Split the description into words
+                        const words = fullDescription ? fullDescription.split(' ') : [];
+                        const TRUNCATE_WORD_LIMIT = 40;
+                        const shouldTruncate = words.length > TRUNCATE_WORD_LIMIT;
+
+                        const isFullDescriptionShown = showFullDescriptions[`${dayIndex}-${activityIndex}`];
+
+                        return (
+                          <div className="lg-view-trips-activity-item" key={activityIndex}>
+                            <img
+                              src={activity.images && activity.images.length > 0 ? activity.images[0] : 'https://via.placeholder.com/100'}
+                              alt={activity.name}
+                            />
+                            <div className="activity-name-description">
+                              <h3>{activity.name}</h3>
+                              {shouldTruncate ? (
+                                <>
+                                  <p className="activity-description-truncated">
+                                    {isFullDescriptionShown
+                                      ? fullDescription
+                                      : words.slice(0, TRUNCATE_WORD_LIMIT).join(' ') + '...'
+                                    }
+                                  </p>
+                                  <button
+                                    onClick={() => toggleDescription(dayIndex, activityIndex)}
+                                    className="see-more-button"
+                                  >
+                                    {isFullDescriptionShown ? "See Less" : "See More"}
+                                  </button>
+                                </>
+                              ) : (
+                                <p>{fullDescription}</p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        );
+                      })
                     ) : (
                       <p>No activities planned for this day.</p>
                     )}

@@ -39,7 +39,7 @@ function ExploreTourGuides() {
   };
   return (
     <section className="ExploreTourGuides">
-      <h3 className="ExploreTourGuides-title">Explore Tour Guides</h3>
+      <h3 className="ExploreTourGuides-title">Explore Tour Guide Trips</h3>
       <div className="ExploreTourGuides-grid">
         {trips.map((trip) => (
           <div key={trip.id}
@@ -47,7 +47,9 @@ function ExploreTourGuides() {
            className="ExploreTourGuides-card">
             <div className="ExploreTourGuides-image" style={{ backgroundImage: `url(${trip.picture})` }}>
               <div className="ExploreTourGuides-info">
-                <h4>{trip.title}</h4>
+              <h4>{trip.city.cityName ||""}</h4>
+                <p>{trip.title}</p>
+                
               </div>
             </div>
           </div>

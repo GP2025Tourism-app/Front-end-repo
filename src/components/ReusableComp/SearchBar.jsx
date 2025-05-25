@@ -8,6 +8,7 @@ function SearchBar() {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
+    const [loadingResults, setLoadingResults] = useState(false); // New state for loading
     const navigate = useNavigate();
     const token = localStorage.getItem("authToken");
 
@@ -15,6 +16,11 @@ function SearchBar() {
         setSearchQuery(e.target.value);
         if (e.target.value === "") {
             setShowResults(false);
+            setSearchResults([]); // Clear previous results when search query is empty
+        } else {
+            // Optionally, you might want to trigger a search here with a debounce
+            // For now, we'll keep search on submit/enter/icon click
+            setShowResults(true); // Show dropdown as soon as user types
         }
     };
 
@@ -24,6 +30,9 @@ function SearchBar() {
             setShowResults(false);
             return;
         }
+
+        setLoadingResults(true); // Start loading
+        setShowResults(true); // Ensure dropdown is visible when loading
 
         try {
             const response = await axios.post(
@@ -39,16 +48,15 @@ function SearchBar() {
 
             if (Array.isArray(response.data)) {
                 setSearchResults(response.data);
-                setShowResults(true);
             } else {
                 setSearchResults([]);
-                setShowResults(false);
                 console.warn("Expected an array of activities, but got:", response.data);
             }
         } catch (error) {
             console.error("Error during semantic search:", error);
             setSearchResults([]);
-            setShowResults(false);
+        } finally {
+            setLoadingResults(false); // End loading
         }
     };
 
@@ -57,7 +65,7 @@ function SearchBar() {
         navigate(`/activity/${activity.activityId}/city/${activity.cityId}`);
         setSearchQuery("");
         setSearchResults([]);
-        setShowResults(false);
+        setShowResults(false); // Hide results after navigation
     };
 
     const handleIconClick = () => {
@@ -87,17 +95,23 @@ function SearchBar() {
                 onClick={handleIconClick}
             />
 
-            {showResults && searchResults.length > 0 && (
+            {showResults && ( // Show dropdown if showResults is true
                 <div className="search-results-dropdown">
-                    {searchResults.map((activity) => (
-                        <div
-                            key={activity.activityId}
-                            className="search-result-item"
-                            onClick={() => handleResultClick(activity)}
-                        >
-                            {activity.name || activity.title || `Activity ${activity.activityId}`}
-                        </div>
-                    ))}
+                    {loadingResults ? (
+                        <div className="search-loading-message">Loading results...</div>
+                    ) : searchResults.length > 0 ? (
+                        searchResults.map((activity) => (
+                            <div
+                                key={activity.activityId}
+                                className="search-result-item"
+                                onClick={() => handleResultClick(activity)}
+                            >
+                                {activity.name || activity.title || `Activity ${activity.activityId}`}
+                            </div>
+                        ))
+                    ) : (
+                        searchQuery.trim() !== "" && <div className="search-no-results">No results found.</div>
+                    )}
                 </div>
             )}
         </div>

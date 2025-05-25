@@ -6,6 +6,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CoverPhotoDefault from "../../assets/images/default-cover-photo.png";
 import { FaCamera, FaPen, FaCalendarAlt, FaTimes } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 
 function LGPlanNewTrip() {
@@ -26,6 +27,7 @@ function LGPlanNewTrip() {
   const [allActivities, setAllActivities] = useState([]);
   const [suggestions, setSuggestions] = useState({});
   const [activityInput, setActivityInput] = useState({});
+  const navigate = useNavigate();
   
 
   const CLOUD_NAME = "da6gcu1n9";
@@ -184,6 +186,7 @@ function LGPlanNewTrip() {
 
       if (response.ok) {
         alert("Trip saved successfully!");
+        navigate("/tour-guide-homepage")
       } else {
         const errorData = await response.json();
         console.error("Error response:", errorData);

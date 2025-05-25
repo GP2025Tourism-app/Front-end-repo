@@ -58,3 +58,19 @@
 .search-result-item:hover {
   background-color: #f0f0f0; 
 }
+.search-loading-message,
+.search-no-results {
+    padding: 10px 15px;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+}
+
+.search-loading-message {
+    background-color: #f0f0f0;
+}
+
+.search-no-results {
+    background-color: #fff;
+    border-top: 1px solid #eee;
+}
