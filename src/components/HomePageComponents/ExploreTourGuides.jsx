@@ -1,16 +1,18 @@
 import React from "react";
 import "./ExploreTourGuides.css";
 import { useState , useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 
 function ExploreTourGuides() {
+  const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        const response = await fetch("http://localhost:8080/trip", {
+        const response = await fetch("http://localhost:8080/trip/all", {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -31,12 +33,18 @@ function ExploreTourGuides() {
 
     fetchTrips();
   }, [token]);
+
+  const handleCardClick = (tripId) => {
+    navigate(`/localGuide-View-trips/${tripId}`);
+  };
   return (
     <section className="ExploreTourGuides">
       <h3 className="ExploreTourGuides-title">Explore Tour Guides</h3>
       <div className="ExploreTourGuides-grid">
         {trips.map((trip) => (
-          <div key={trip.id} className="ExploreTourGuides-card">
+          <div key={trip.id}
+          onClick={() => handleCardClick(trip.id)}
+           className="ExploreTourGuides-card">
             <div className="ExploreTourGuides-image" style={{ backgroundImage: `url(${trip.picture})` }}>
               <div className="ExploreTourGuides-info">
                 <h4>{trip.title}</h4>

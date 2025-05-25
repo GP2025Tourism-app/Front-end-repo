@@ -282,3 +282,178 @@
   display: flex;
   flex-direction: column;
 }
+
+/* --- Tourist View Specific Layout (Keep as is, no changes here) --- */
+.tourist-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.tourist-overview-and-booking {
+  display: flex;
+  gap: 30px;
+}
+
+.tourist-overview-and-booking .lg-view-trips-overview {
+  flex: 1;
+}
+
+.tourist-map-position {
+  align-self: center;
+  width: 90%;
+  min-height: 400px;
+  border-radius: 20px;
+}
+
+
+.booking-card {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px; 
+  background-color: #f0efef;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); 
+  min-width: 280px;
+  max-width: 350px; 
+  height: fit-content;
+  margin-right: 30px;
+  margin-top: 20px; 
+}
+
+.booking-header {
+  border-bottom: none; /* Remove border */
+  padding-bottom: 0;
+  margin-bottom: 20px; /* Adjust margin */
+  text-align: left; /* Align header text to left */
+}
+
+.booking-header h4 {
+  margin: 0;
+  font-size: 1.2em; /* Smaller font size for header */
+  color: #333;
+  font-weight: 500; /* Lighter font weight */
+}
+
+.booking-details .detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px; /* Increased margin for more spacing */
+  font-size: 1em; /* Adjusted font size */
+  color: #555;
+}
+
+.booking-details .detail-item label,
+.booking-details .detail-item span:first-child {
+  font-weight: 400; /* Lighter font weight for labels */
+  color: #555;
+}
+
+.booking-details select {
+  width: 100%; /* Make select box take full width */
+  padding: 10px 12px; /* Adjusted padding */
+  border-radius: 8px; /* More rounded corners */
+  border: 1px solid #e0e0e0; /* Lighter border color */
+  font-size: 1em;
+  cursor: pointer;
+  appearance: none; /* Remove default arrow */
+  background-color: #f8f8f8; /* Light background for the select */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>'); /* Custom arrow icon */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+/* Style for the icon next to price */
+.price-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between icon and text */
+  font-weight: bold; /* Prices usually bold in the design */
+  color: #333; /* Darker color for price values */
+}
+
+/* Example: Use a small suitcase icon or similar. You'd replace this with an actual SVG/icon font. */
+/* For now, let's use a placeholder if you don't have an SVG ready */
+.price-with-icon::before {
+  /* Placeholder: A coin emoji. Replace with a proper icon if possible */
+  font-size: 0.9em;
+  /* You might need to adjust vertical alignment */
+}
+
+
+.booking-details .total-price {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #333; /* Make total price dark like in design */
+  margin-top: 20px; /* Increased margin */
+  border-top: 1px solid #eee; /* Solid light grey line */
+  padding-top: 20px; /* Increased padding */
+}
+
+.book-now-button {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #20b2aa; /* Teal/blue from your design */
+  color: white;
+  border: none;
+  border-radius: 8px; /* More rounded corners */
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.book-now-button:hover:not(:disabled) {
+  background-color: #1a8e86; /* Darker teal on hover */
+}
+
+.book-now-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.seats-left-warning {
+    color: #e74c3c; /* Red color for warning as seen in the image */
+    font-size: 0.9em;
+    text-align: center;
+    margin-top: 15px; /* Increased margin */
+    font-weight: 500; /* Slightly bolder */
+}
+
+.seats-left-warning.no-seats {
+    color: #c0392b; /* Darker red for no seats */
+    font-weight: bold;
+}
+
+/* --- Responsive Adjustments for Booking Card and Tourist Layout (Keep as is) --- */
+@media (max-width: 992px) {
+  .tourist-overview-and-booking {
+    flex-direction: column;
+  }
+
+  .tourist-overview-and-booking .lg-view-trips-overview,
+  .booking-card {
+    width: 100%;
+    flex: none;
+  }
+  .booking-card {
+      max-width: 100%; /* Allow full width on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+    .localguide-lg-view-trips-container {
+        flex-direction: column;
+    }
+    .localguide-lg-view-trips-sidebar {
+        width: 100%;
+        padding: 15px;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+    .lg-view-trips-content {
+        padding: 15px;
+    }
+}

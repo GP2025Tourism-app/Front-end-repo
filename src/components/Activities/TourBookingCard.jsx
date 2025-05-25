@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './TourBookingCard.css';
 
-function TourBookingCard() {
+function TourBookingCard({activityId}) {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const [numberOfAdults, setNumberOfAdults] = useState(1);
     const [numberOfChildren, setNumberOfChildren] = useState(0);
     const [showPeopleDropdown, setShowPeopleDropdown] = useState(false);
     const peopleDropdownRef = useRef(null);
     const [messageBox, setMessageBox] = useState({ visible: false, message: '', type: '' });
+    const [loading, setLoading] = useState(false); // New state for loading
+    const token = localStorage.getItem("authToken");
 
-
-    const startingTime = "9:00 AM";
-    const pricePerAdult = 100;
-    const pricePerChild = 50;
+    const startingTime = "09:00 AM"; 
+    const pricePerAdult = 500;
+    const pricePerChild = 250;
 
     const totalPrice = (numberOfAdults * pricePerAdult) + (numberOfChildren * pricePerChild);
 
@@ -53,12 +54,45 @@ function TourBookingCard() {
         setMessageBox({ visible: false, message: '', type: '' });
     };
 
-    const handleBookNow = () => {
+    const handleBookNow = async () => { // Made async
         if (numberOfAdults === 0 && numberOfChildren === 0) {
             showMessage('Please select at least one adult or child to book.', 'error');
             return;
         }
-        showMessage(`Booking for ${numberOfAdults} adult(s) and ${numberOfChildren} child(ren) on ${selectedDate} at ${startingTime}. Total Price: ${totalPrice} EGP.`, 'success');
+
+        setLoading(true); 
+        hideMessageBox(); 
+
+        try {
+            const response = await fetch('http://localhost:8080/api/tour-bookings/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    activityId: activityId, 
+                    date: selectedDate,
+                    startingTime: startingTime,
+                    adults: numberOfAdults,
+                    children: numberOfChildren
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to book the tour.');
+            }
+
+            const data = await response.json();
+            showMessage(`Booking successful!  Total Price: ${totalPrice} EGP.`, 'success');
+            // Optionally, clear the form or redirect the user
+        } catch (error) {
+            console.error('Booking error:', error);
+            showMessage(`Booking failed: ${error.message}`, 'error');
+        } finally {
+            setLoading(false); // Set loading to false after booking attempt
+        }
     };
 
     return (
@@ -114,7 +148,13 @@ function TourBookingCard() {
                 <p>Price Per Adult: {pricePerAdult} EGP</p>
                 <p>Price Per Child: {pricePerChild} EGP</p>
                 <p>Total Price : {totalPrice} EGP</p>
-                <button className="book-now-button" onClick={handleBookNow}>Book Now</button>
+                <button
+                    className="book-now-button"
+                    onClick={handleBookNow}
+                    disabled={loading} // Disable button while loading
+                >
+                    {loading ? 'Booking...' : 'Book Now'}
+                </button>
             </div>
 
             {messageBox.visible && (

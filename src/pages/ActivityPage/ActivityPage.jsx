@@ -430,7 +430,7 @@ function ActivityPage() {
 </div>
               <hr className="divider-part" />
               {activityData.type === "Places" && (
-                    <TourBookingCard/>
+                    <TourBookingCard activityId={activityId}/>
                 )}
             <div className="reviews-section">
               <h3 className='review-title'>Customer Reviews</h3>

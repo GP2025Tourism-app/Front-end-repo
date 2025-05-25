@@ -120,20 +120,29 @@
   .guide-info {
     display: flex;
     align-items: center;
+    gap: 1rem;
     margin-top: 1rem;
-    gap: 0.8rem;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
   }
   
   .guide-icon {
     font-size: 2rem;
-    color: #555;
+    color: #6c757d;
   }
   
   .chat-icon {
-    margin-left: auto;
+    cursor: pointer;
+    color: #007bff;
     font-size: 1.5rem;
-    color: #17A2B8;
-    text-decoration: none;
+    margin-left: 1rem;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .chat-icon:hover {
+    color: #0056b3;
+    transform: scale(1.1);
   }
   
   .mybookings-cancel-button {
