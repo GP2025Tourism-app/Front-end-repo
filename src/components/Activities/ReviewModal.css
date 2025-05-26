@@ -108,3 +108,22 @@
 .save-button:hover {
     background: #17A2B8;
 }
+.review-modal-file-upload-input {
+    margin: 10px 0;
+  }
+  
+  .review-modal-preview-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .review-modal-preview-thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  

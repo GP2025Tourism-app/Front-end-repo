@@ -115,7 +115,7 @@ function Notification() {
                       {/* Assuming your backend sends data with these keys. Adjust if necessary. */}
                       <span>{notification.booking?.activity?.name || 'N/A'}</span>
 <span>{notification.booking?.date ? new Date(notification.booking.date).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : 'N/A'}</span>
-<span>Starting Time: {notification.booking?.startingTime || 'N/A'}</span>
+<span>Starting Time: {'9:00 AM'}</span>
 <span>{notification.booking?.adults || 0} Adults {notification.booking?.children || 0} Child</span>
 
                     </div>

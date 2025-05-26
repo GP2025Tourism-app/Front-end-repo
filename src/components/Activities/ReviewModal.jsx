@@ -1,10 +1,42 @@
 import React, { useState } from "react";
 import "./ReviewModal.css"; 
-
+const CLOUD_NAME = "da6gcu1n9";
+const UPLOAD_PRESET = "graduationproject";
 const ReviewModal = ({ isOpen, closeModal, submitReview }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [reviewText, setReviewText] = useState("");
+  
+const [mediaFiles, setMediaFiles] = useState([]);
+const [previewUrls, setPreviewUrls] = useState([]);
+  
+const handleFileUpload = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return null;
+  }
+};
+
+const handleFileChange = async (event) => {
+  const files = Array.from(event.target.files);
+  const urls = await Promise.all(files.map((file) => handleFileUpload(file)));
+  setMediaFiles((prev) => [...prev, ...urls.filter((url) => url)]);
+  setPreviewUrls((prev) => [...prev, ...urls.filter((url) => url)]);
+};
 
   if (!isOpen) return null;
 
@@ -32,7 +64,21 @@ const ReviewModal = ({ isOpen, closeModal, submitReview }) => {
           })}
         </div>
 
-        <p className="review-modal-subtitle">Write your review</p>
+        <p className="review-modal-subtitle">Add visuals (optional)</p>
+<input 
+  type="file" 
+  accept="image/*" 
+  multiple 
+  onChange={handleFileChange}
+  className="review-modal-file-upload-input"
+/>
+
+<div className="review-modal-preview-images">
+  {previewUrls.map((url, index) => (
+    <img key={index} src={url} alt={`Preview ${index}`} className="review-modal-preview-thumbnail" />
+  ))}
+</div>
+<p className="review-modal-subtitle">Write your review</p>
         <textarea
           className="review-textarea"
           placeholder="Tell us about your experience..."
@@ -49,9 +95,14 @@ const ReviewModal = ({ isOpen, closeModal, submitReview }) => {
                 alert("Please provide a rating and a review.");
                 return;
               }
-              submitReview({ rating, comment: reviewText });
+              submitReview({
+                rating,
+                comment: reviewText,
+                visualsUrl:mediaFiles, 
+              });
               closeModal();
             }}
+            
           >
             Save
           </button>

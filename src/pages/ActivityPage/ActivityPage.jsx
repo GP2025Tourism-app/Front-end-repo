@@ -74,6 +74,7 @@ function ActivityPage() {
     const reviewData = {
         activityId,         comment: review.comment,
         rating: review.rating,
+        visualsUrl: review.visualsUrl,
     };
 
     try {
@@ -457,15 +458,15 @@ function ActivityPage() {
               {reviews.map((review, index) => (
                 <ReviewCard key={index} review={{
                   name: `${review.user.firstname} ${review.user.lastname}`,  // Concatenate first and last names
-                  image: review.user.image ,
+                  image: review.user.profilePic,
                   rating: review.rating,
                   date: new Date(review.reviewDate).toLocaleDateString(),
                   text: review.comment,
+                  visualsUrl: review.visualsUrl, 
+                  approved: review.approved, 
                 }} />
               ))}
-              <div className="view-more-reviews">
-                <a href="#">View more Reviews</a>
-              </div>
+             
             </div>
           </div>
         </div>
