@@ -1,164 +1,176 @@
 .mybooking-page-container {
-    display: flex;
-    margin-top: 60px;
-    height: calc(100vh - 60px);
-    box-sizing: border-box;
-  }
-  
-  .mybookings-sidebar {
-    width: 150px;
-    margin-top: -55px;
-  }
+  display: flex;
+  margin-top: 60px;
+  height: calc(100vh - 60px);
+  box-sizing: border-box;
+}
+
+.mybookings-sidebar {
+  width: 150px;
+  margin-top: -55px;
+}
+
 .mybookings-page {
-    width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-  }
-  
-  .booking-list {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 2rem;
-  }
-  
-  .booking-ticket {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.booking-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+.booking-ticket {
+  display: flex;
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  border: 1px dashed #ccc;
+  position: relative;
+}
+
+.ticket-left {
+  width: 60px;
+  background-color: #e6f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: #17A2B8;
+  border-right: 1px dashed #ccc;
+  position: relative;
+}
+
+.ticket-left::before,
+.ticket-left::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #f4f4f4;
+  border-radius: 50%;
+  left: 100%;
+}
+
+.ticket-left::before {
+  top: -10px;
+}
+
+.ticket-left::after {
+  bottom: -10px;
+}
+
+.ticket-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex; /* Make ticket-content a flex container */
+  flex-direction: column; /* Stack its children vertically */
+  justify-content: space-between; /* Distribute space vertically */
+}
+
+.ticket-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ticket-title h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #17A2B8;
+}
+
+.status-badge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.status-badge.confirmed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.booking-ticket p {
+  margin: 0.3rem 0;
+  color: #444;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #28a745;
+  margin-top: 0.5rem;
+}
+
+.guide-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* This is the key change */
+  gap: 1rem; /* Keep gap for spacing between guide icon and text */
+  margin-top: 1rem;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  flex-wrap: wrap; /* Allows items to wrap if space is limited */
+}
+
+.guide-info > div { /* Target the div containing guide's text details */
     display: flex;
-    background-color: #fff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 2rem;
-    border: 1px dashed #ccc;
-    position: relative;
-  }
-  
-  .ticket-left {
-    width: 60px;
-    background-color: #e6f7ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    color: #17A2B8;
-    border-right: 1px dashed #ccc;
-    position: relative;
-  }
-  
-  .ticket-left::before,
-  .ticket-left::after {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #f4f4f4;
-    border-radius: 50%;
-    left: 100%;
-  }
-  
-  .ticket-left::before {
-    top: -10px;
-  }
-  
-  .ticket-left::after {
-    bottom: -10px;
-  }
-  
-  .ticket-content {
-    padding: 1.5rem;
-    flex: 1;
-  }
-  
-  .ticket-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .ticket-title h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #17A2B8;
-  }
-  
-  .status-badge {
-    padding: 0.3rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-  
-  .status-badge.confirmed {
-    background-color: #d4edda;
-    color: #155724;
-  }
-  
-  .status-badge.pending {
-    background-color: #fff3cd;
-    color: #856404;
-  }
-  
-  .status-badge.cancelled {
-    background-color: #f8d7da;
-    color: #721c24;
-  }
-  
-  .booking-ticket p {
-    margin: 0.3rem 0;
-    color: #444;
-  }
-  
-  .price {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #28a745;
-    margin-top: 0.5rem;
-  }
-  
-  .guide-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-  }
-  
-  .guide-icon {
-    font-size: 2rem;
-    color: #6c757d;
-  }
-  
-  .chat-icon {
-    cursor: pointer;
-    color: #007bff;
-    font-size: 1.5rem;
-    margin-left: 1rem;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .chat-icon:hover {
-    color: #0056b3;
-    transform: scale(1.1);
-  }
-  
-  .mybookings-cancel-button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    background-color: #dc3545;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    justify-self: flex-end;
-  }
-  
-  .mybookings-cancel-button:hover {
-    background-color: #c82333;
-  }
-  
+    flex-direction: column;
+    flex-grow: 1; /* Allow it to grow and take available space */
+}
+
+.guide-icon {
+  font-size: 2rem;
+  color: #6c757d;
+}
+
+.chat-icon {
+  cursor: pointer;
+  color: #007bff;
+  font-size: 1.5rem;
+  /* Removed margin-left: 100px; - space-between will handle positioning */
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0; /* Prevent the icon from shrinking */
+}
+
+.chat-icon:hover {
+  color: #0056b3;
+  transform: scale(1.1);
+}
+
+.mybookings-cancel-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: white;
+  color: rgb(223, 6, 6);
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-end; /* Align the button to the right within its flex parent */
+}
+
+.mybookings-cancel-button:hover {
+  background-color: #c82333;
+  color: white;
+}

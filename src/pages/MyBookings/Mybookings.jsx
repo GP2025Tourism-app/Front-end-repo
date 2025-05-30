@@ -39,7 +39,6 @@ function MyBookings() {
         const bookingsData = await bookingsRes.json();
         const tourBookingsData = await tourBookingsRes.json();
 
-        // Normalize both data types to a common format
         const normalizedBookings = bookingsData.map((b) => ({
           type: "trip",
           id: b.bookingId,
@@ -64,10 +63,12 @@ function MyBookings() {
 
         const combined = [...normalizedBookings, ...normalizedTourBookings];
 
-        // Sort by date
-        combined.sort((a, b) => a.date - b.date);
+        const now = new Date();
+        const futureBookings = combined.filter(booking => booking.date >= now);
 
-        setAllBookings(combined);
+        futureBookings.sort((a, b) => a.date - b.date);
+
+        setAllBookings(futureBookings);
       } catch (err) {
         console.error("Error fetching bookings:", err);
       } finally {
@@ -84,6 +85,13 @@ function MyBookings() {
     alert("Booking cancelled!");
   };
 
+  const isWithin12Hours = (bookingDate) => {
+    const now = new Date();
+    const diff = bookingDate.getTime() - now.getTime();
+    const hours = diff / (1000 * 60 * 60);
+    return hours <= 12 && hours >= 0;
+  };
+
   if (loading) return <LoadingScreen isLoading={loading} />;
 
   return (
@@ -95,7 +103,7 @@ function MyBookings() {
         </div>
         <div className="mybookings-page">
           {allBookings.length === 0 ? (
-            <p>No bookings found.</p>
+            <p>No upcoming bookings found.</p>
           ) : (
             <ul className="booking-list">
               {allBookings.map((booking) => (
@@ -124,7 +132,7 @@ function MyBookings() {
                     </div>
 
                     <p>
-                      <strong>Date:</strong> {booking.date.toLocaleDateString()}
+                      <strong>Date:</strong> {booking.date.toLocaleDateString('en-GB')}
                     </p>
                     {booking.time && <p><strong>Time:</strong> {booking.time}</p>}
                     <p>
@@ -150,13 +158,9 @@ function MyBookings() {
                         <p>
                           <strong>Email:</strong> {booking.guide?.email}
                         </p>
-                        {booking.guide?.phoneNumber && (
-                          <p>
-                            <strong>Phone:</strong> {booking.guide?.phoneNumber}
-                          </p>
-                        )}
+                       
                       </div>
-                      {booking.guide?.username && (
+                      {booking.guide?.username && isWithin12Hours(booking.date) && (
                         <button
                           className="chat-icon"
                           title="Chat with Guide"
@@ -165,7 +169,9 @@ function MyBookings() {
                             e.stopPropagation();
                             navigate("/TouristChat", {
                               state: {
-                                receiverUsername: booking.guide.username,
+                                receiverUsername: booking.guide.username, // Keep username for chat logic
+                                receiverFirstName: booking.guide.firstname, // Pass first name
+                                receiverLastName: booking.guide.lastname,   // Pass last name
                                 receiverRole: booking.guide.roles?.[0]?.name || "ROLE_LocalGuide",
                               },
                             });

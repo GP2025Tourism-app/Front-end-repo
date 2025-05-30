@@ -16,11 +16,11 @@ function TouristChat() {
     const [inputValue, setInputValue] = useState("");
     const messagesEndRef = useRef(null);
 
-    const defaultAvatar = 'https://via.placeholder.com/50';
+    const defaultAvatar = 'https://i.pinimg.com/474x/e6/e4/df/e6e4df26ba752161b9fc6a17321fa286.jpg';
 
-    // Get navigation state (if any)
     const location = useLocation();
-    const { receiverUsername, receiverRole } = location.state || {};
+    // Destructure the new state variables
+    const { receiverUsername, receiverRole, receiverFirstName, receiverLastName } = location.state || {};
 
     useEffect(() => {
         fetchChats();
@@ -30,18 +30,22 @@ function TouristChat() {
         scrollToBottom();
     }, [messages]);
 
-    // If navigated from MyBookings, set up the chat input for that guide
     useEffect(() => {
         if (receiverUsername && receiverRole) {
+            // Construct the display name from passed first/last names, fallback to username
+            const displayName = receiverFirstName && receiverLastName
+                ? `${receiverFirstName} ${receiverLastName}`
+                : receiverUsername;
+
             setActiveChat({
-                id: receiverUsername,
-                name: receiverUsername,
+                id: receiverUsername, // Still use username as ID for chat logic
+                name: displayName,   // Use the constructed display name
                 avatar: defaultAvatar,
                 idrole: receiverRole
             });
             setMessages([]); // No history yet
         }
-    }, [receiverUsername, receiverRole]);
+    }, [receiverUsername, receiverRole, receiverFirstName, receiverLastName]); // Add new dependencies
 
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
@@ -68,16 +72,24 @@ function TouristChat() {
                     idrole: chat.sender.role.name
                 }));
                 setChatUsers(users);
-                // If not coming from booking and no active chat is set, auto-load the first chat
-                // This ensures that if you send a message, and activeChat is already set,
-                // it remains set after fetchChats updates the sidebar.
+
                 if (!receiverUsername && !activeChat && users.length > 0) {
                     loadChat(users[0]);
                 } else if (activeChat) {
-                    // If there's an active chat, find it in the updated list and reload it
                     const updatedActiveChat = users.find(user => user.id === activeChat.id);
                     if (updatedActiveChat) {
                         setActiveChat(updatedActiveChat);
+                    } else if (receiverUsername === activeChat.id) {
+                        // If the active chat is the one from navigation, ensure its details are up-to-date
+                        // and uses the passed first/last name for display.
+                        const navDisplayName = receiverFirstName && receiverLastName
+                            ? `${receiverFirstName} ${receiverLastName}`
+                            : receiverUsername;
+                        setActiveChat(prev => ({
+                            ...prev,
+                            name: navDisplayName, // Update display name
+                            avatar: prev.avatar || defaultAvatar
+                        }));
                     }
                 }
             })
@@ -101,9 +113,7 @@ function TouristChat() {
                     dateTime: msg.dateTime
                 }));
                 setMessages(formattedMessages);
-                setActiveChat(user);
-                // After loading a chat, consider marking messages as read on the backend
-                // This is a common practice to update unread counts in the sidebar
+                setActiveChat({ ...user, avatar: user.avatar || defaultAvatar });
                 markMessagesAsRead(user.id);
             })
             .catch(error => console.error('Error fetching chat messages:', error));
@@ -118,15 +128,14 @@ function TouristChat() {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => {
-            if (response.ok) {
-                // If messages are marked as read, re-fetch chats to update unread counts in sidebar
-                fetchChats();
-            } else {
-                console.error('Failed to mark messages as read');
-            }
-        })
-        .catch(error => console.error('Error marking messages as read:', error));
+            .then(response => {
+                if (response.ok) {
+                    fetchChats();
+                } else {
+                    console.error('Failed to mark messages as read');
+                }
+            })
+            .catch(error => console.error('Error marking messages as read:', error));
     };
 
     const handleSendMessage = () => {
@@ -141,7 +150,6 @@ function TouristChat() {
 
         console.log("Sending messageData:", messageData);
 
-        // Optimistically update the UI to show the message immediately
         setMessages(prevMessages => [...prevMessages, {
             text: inputValue,
             senderUsername: currentUserUsername,
@@ -157,20 +165,17 @@ function TouristChat() {
             },
             body: JSON.stringify(messageData)
         })
-        .then(async response => {
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error('Failed to send message: ' + errorText);
-            }
-            // After successful send, reload the current chat messages to ensure consistency
-            // and then re-fetch chats to update the sidebar with the new preview and unread counts.
-            loadChat(activeChat); // Reloads the messages for the active chat
-            fetchChats(); // Updates the chat list in the sidebar
-        })
-        .catch(error => {
-            console.error('Error sending message:', error);
-            // Optionally, revert the optimistic update or show an error to the user
-        });
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error('Failed to send message: ' + errorText);
+                }
+                loadChat(activeChat);
+                fetchChats();
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+            });
     };
 
     return (
@@ -192,7 +197,7 @@ function TouristChat() {
                                 onClick={() => loadChat(user)}
                             >
                                 <img
-                                    src={user.avatar || defaultAvatar}
+                                    src={user.avatar}
                                     alt={user.name}
                                     className="touristchat-user-avatar"
                                 />
@@ -211,7 +216,7 @@ function TouristChat() {
                             <>
                                 <div className="touristchat-header">
                                     <img
-                                        src={activeChat.avatar || defaultAvatar}
+                                        src={activeChat.avatar}
                                         alt={activeChat.name}
                                         className="user-avatar"
                                     />
