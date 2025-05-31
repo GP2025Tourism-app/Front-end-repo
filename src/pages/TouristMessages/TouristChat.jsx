@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import WebsiteNavbar from '../../components/HomePageComponents/WebsiteNavbar';
 import Sidebar from '../../components/HomePageComponents/Sidebar';
-import { FaMicrophone } from 'react-icons/fa';
+import { FaMicrophone, FaCheckCircle } from 'react-icons/fa'; // Import FaCheckCircle
 import { ImAttachment } from "react-icons/im";
 import './TouristChat.css';
 import LGSidebar from '../../components/LocalGuide/LG-Sidebar';
@@ -39,7 +39,7 @@ function TouristChat() {
 
             setActiveChat({
                 id: receiverUsername, // Still use username as ID for chat logic
-                name: displayName,   // Use the constructed display name
+                name: displayName,  // Use the constructed display name
                 avatar: defaultAvatar,
                 idrole: receiverRole
             });
@@ -63,14 +63,30 @@ function TouristChat() {
         })
             .then(response => response.json())
             .then(data => {
-                const users = data.map(chat => ({
-                    id: chat.sender.username,
-                    name: `${chat.sender.firstname} ${chat.sender.lastname}`,
-                    avatar: chat.sender.profilePic || defaultAvatar,
-                    preview: chat.messages[chat.messages.length - 1]?.content || "No messages yet",
-                    unreadMessages: chat.unreadCounts,
-                    idrole: chat.sender.role.name
-                }));
+                let users = data.map(chat => {
+                    const lastMessageContent = chat.messages[chat.messages.length - 1]?.content || "No messages yet";
+                    // Split the message content into words, take the first 4, and join them back
+                    const previewText = lastMessageContent.split(/\s+/).slice(0, 4).join(' ');
+                    // Add "..." if the original message was longer than 4 words
+                    const finalPreview = lastMessageContent.split(/\s+/).length > 4 ? `${previewText}...` : previewText;
+
+                    return {
+                        id: chat.sender.username,
+                        name: `${chat.sender.firstname} ${chat.sender.lastname}`,
+                        avatar: chat.sender.profilePic || defaultAvatar,
+                        preview: finalPreview,
+                        unreadMessages: chat.unreadCounts,
+                        idrole: chat.sender.role.name
+                    };
+                });
+
+                // Sort the users array to put "Admin" first
+                users.sort((a, b) => {
+                    if (a.id === "Admin") return -1; // "Admin" comes first
+                    if (b.id === "Admin") return 1;  // "Admin" comes first
+                    return 0; // Maintain original order for others
+                });
+
                 setChatUsers(users);
 
                 if (!receiverUsername && !activeChat && users.length > 0) {
@@ -202,7 +218,20 @@ function TouristChat() {
                                     className="touristchat-user-avatar"
                                 />
                                 <div>
-                                    <p className="touristchat-user-name">{user.name}</p>
+                                    <p className="touristchat-user-name">
+                                        {user.name}
+                                        {user.id === "Admin" && ( // Conditionally render the icon
+                                            <FaCheckCircle
+                                                style={{
+                                                    marginLeft: '5px',
+                                                    color: '#34b7f1', // A common blue for verified badges
+                                                    fontSize: '12px',
+                                                    verticalAlign: 'middle'
+                                                }}
+                                                title="Verified Account"
+                                            />
+                                        )}
+                                    </p>
                                     <p className="touristchat-user-msg-preview">{user.preview}</p>
                                 </div>
                                 {user.unreadMessages > 0 && (
@@ -220,7 +249,20 @@ function TouristChat() {
                                         alt={activeChat.name}
                                         className="user-avatar"
                                     />
-                                    <p className="touristchat-user-name">{activeChat.name}</p>
+                                    <p className="touristchat-user-name">
+                                        {activeChat.name}
+                                        {activeChat.id === "Admin" && ( // Conditionally render in the header too
+                                            <FaCheckCircle
+                                                style={{
+                                                    marginLeft: '5px',
+                                                    color: '#34b7f1',
+                                                    fontSize: '16px', // Slightly larger for the header
+                                                    verticalAlign: 'middle'
+                                                }}
+                                                title="Verified Account"
+                                            />
+                                        )}
+                                    </p>
                                 </div>
 
                                 <div className="touristchat-messages">
