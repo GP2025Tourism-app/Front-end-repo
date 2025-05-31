@@ -411,7 +411,7 @@ function AIChat() {
                                             <PiSpeakerHighFill
                                                 className="speaker-icon"
                                                 onClick={() => playAudio(msg.audioData)}
-                                                style={{ cursor: 'pointer', marginLeft: '5px' }}
+                                                style={{ cursor: 'pointer', marginLeft: '5px' , alignSelf:'center'}}
                                             />
                                         )}
                                     </div>
