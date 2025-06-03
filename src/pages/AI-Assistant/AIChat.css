@@ -206,3 +206,30 @@
     height: 30px;
     border-radius: 50%;
 }
+/* AIChat.css */
+.chat-button.selected-interest {
+    background-color: #007bff; /* Or any color you prefer for selected state */
+    color: white;
+    border: 1px solid #007bff;
+}
+
+.send-interests-button {
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: none;
+    background-color: #17A2B8; /* Green for send button */
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin-left: 10px; /* Adjust spacing as needed */
+}
+
+.send-interests-button:hover:not(:disabled) {
+    background-color: #17A2B8;
+}
+
+.send-interests-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

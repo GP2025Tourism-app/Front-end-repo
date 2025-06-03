@@ -1,22 +1,12 @@
-// src/AIChat.js (or wherever your AIChat component is)
-
 import React, { useState, useEffect, useRef } from 'react';
-
 import './AIChat.css';
-
 import WebsiteNavbar from '../../components/HomePageComponents/WebsiteNavbar';
-
 import Sidebar from '../../components/HomePageComponents/Sidebar';
-
 import { FaMicrophone } from 'react-icons/fa';
-
 import { ImAttachment } from "react-icons/im";
-
 import { PiSpeakerHighFill } from "react-icons/pi";
-
 import aiAvatar from '../../assets/images/Ai-avatar.svg';
-
-import AudioPlayer from './AudioPlayer';
+import AudioPlayer from './AudioPlayer'; // Assuming AudioPlayer component is correctly implemented
 
 function AIChat() {
     const token = localStorage.getItem("authToken");
@@ -31,7 +21,7 @@ function AIChat() {
                 type: "buttons",
                 buttons: [
                     { text: "Plan a trip ✈️", action: "plan_trip" },
-                    { text: "Ask general questions 🤔", action: "ask_question" },
+                    { text: "Ask about anything 🤔", action: "ask_question" },
                     { text: "Use translation services 🌐", action: "translate" },
                 ],
             },
@@ -42,14 +32,17 @@ function AIChat() {
     const [translationMode, setTranslationMode] = useState(false);
     const [translationInputType, setTranslationInputType] = useState('');
     const [isRecording, setIsRecording] = useState(false);
-    const [isLoading, setIsLoading] = useState(false); // <-- Loading state added
+    const [isLoading, setIsLoading] = useState(false); // <-- Loading state
+    const [selectedInterests, setSelectedInterests] = useState([]); // New state for selected interests
+    const [isSelectingInterests, setIsSelectingInterests] = useState(false); // New state to manage interest selection mode
+
 
     const mediaRecorderRef = useRef(null);
     const audioChunksRef = useRef([]);
     const fileInputRef = useRef(null);
 
-    const CLOUD_NAME = "da6gcu1n9";
-    const UPLOAD_PRESET = "graduationproject";
+    const CLOUD_NAME = "da6gcu1n9"; // Replace with your Cloudinary cloud name
+    const UPLOAD_PRESET = "graduationproject"; // Replace with your Cloudinary upload preset
 
     const scrollToBottom = () => {
         const messagesContainer = document.querySelector('.AIchat-messages');
@@ -95,15 +88,205 @@ function AIChat() {
         }
     };
 
+    // --- Modified sendChatMessage Function ---
+    const sendChatMessage = async (userMessage) => {
+        setIsLoading(true); // Show loading state
+        try {
+            const response = await fetch('http://localhost:8080/ai/chat', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            const aiResponseContent = data.response;
+            // Prioritize message, then question, then plan, then a default error
+            const aiResponseText = aiResponseContent?.message || aiResponseContent?.question || aiResponseContent?.plan || "Sorry, I couldn't get a response.";
+    
+            // Handle specific question types with buttons
+            if (aiResponseContent?.response_type === "question") {
+                let buttons = [];
+                if (aiResponseContent.question.includes("Choose a price range")) {
+                    buttons = ["Low", "Mid", "Fancy"].map(budget => ({
+                        text: budget,
+                        action: `budget_${budget.toLowerCase()}`
+                    }));
+                } else if (aiResponseContent.question.includes("Select age range(s)")) {
+                    const ageRanges = ["Child", "Teen", "Adult", "Senior"];
+                    buttons = ageRanges.map(age => ({
+                        text: age,
+                        action: `age_range_${age.toLowerCase()}`
+                    }));
+                } else if (aiResponseContent.question.includes("Preferred travel month")) {
+                    const travelMonths = ["Spring", "Summer", "Autumn", "Winter"];
+                    buttons = travelMonths.map(month => ({
+                        text: month,
+                        action: `travel_month_${month.toLowerCase()}`
+                    }));
+                } else if (aiResponseContent.question.includes("Preferred transportation")) {
+                    const transportationOptions = ["Car", "Public"];
+                    buttons = transportationOptions.map(option => ({
+                        text: option,
+                        action: `transportation_${option.toLowerCase()}`
+                    }));
+                } else if (aiResponseContent.question.includes("What are your interests?")) {
+                    const interestOptions = ["Adventure", "Historical", "Entertainment", "Relaxing", "Museum", "Shopping", "Beaches", "Religious", "Cultural"];
+                    buttons = interestOptions.map(interest => ({
+                        text: interest,
+                        action: `interest_select_${interest.toLowerCase()}`
+                    })).concat({ text: "Done with Interests", action: "send_interests" }); // Add 'Done' button
+                    setIsSelectingInterests(true);
+                    setSelectedInterests([]);
+                    setInputValue('');
+                }
+                // Add the question and its associated buttons
+                setMessages(prevMessages => [...prevMessages, {
+                    text: aiResponseContent.question,
+                    type: "Ai-incoming",
+                    userId: 1,
+                    avatar: aiAvatar,
+                    content: {
+                        type: "buttons",
+                        buttons: buttons,
+                    },
+                }]);
+            }
+            // Handle trip plan generation with a follow-up question and options
+            else if (aiResponseContent?.response_type === "plan_and_question") {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    {
+                        text: aiResponseContent.plan,
+                        type: "Ai-incoming",
+                        userId: 1,
+                        avatar: aiAvatar,
+                    },
+                    {
+                        text: aiResponseContent.question,
+                        type: "Ai-incoming",
+                        userId: 1,
+                        avatar: aiAvatar,
+                        content: {
+                            type: "buttons",
+                            buttons: [
+                                { text: "Yes", action: "change_plan_yes" },
+                                { text: "No", action: "change_plan_no" },
+                                { text: "Exit", action: "exit_to_start" },
+                            ],
+                        },
+                    },
+                ]);
+            }
+            // Handle a final trip plan response (without immediate follow-up questions)
+            else if (aiResponseContent?.response_type === "final_plan") {
+                setMessages(prevMessages => [
+                    ...prevMessages,
+                    {
+                        text: aiResponseContent.plan, // Display the final plan
+                        type: "Ai-incoming",
+                        userId: 1,
+                        avatar: aiAvatar,
+                    },
+                    // You might want to add a general follow-up question here
+                    // For example: "Your plan is ready! Is there anything else I can help with?"
+                    // Or: "Would you like to save this plan?"
+                    {
+                        text: "Your trip plan is ready! What would you like to do next?",
+                        type: "Ai-incoming",
+                        userId: 1,
+                        avatar: aiAvatar,
+                       
+                    },
+                ]);
+            }
+            // Default case for simple text messages
+            else {
+                setMessages(prevMessages => [...prevMessages, {
+                    text: aiResponseText,
+                    type: "Ai-incoming",
+                    userId: 1,
+                    avatar: aiAvatar,
+                }]);
+            }
+    
+        } catch (error) {
+            console.error('Error during chat API call:', error);
+            setMessages(prevMessages => [...prevMessages, {
+                text: "Sorry, I'm having trouble connecting right now. Please try again later.",
+                type: "Ai-incoming",
+                userId: 1,
+                avatar: aiAvatar,
+            }]);
+        } finally {
+            setIsLoading(false); // Hide loading state
+        }
+    };
+  
+
     const handleButtonClick = async (action, buttonText) => {
-        const userId = 2;
+        const userId = 2; // User ID
         const newMessage = { text: buttonText, type: "Ai-outgoing", userId, status: "sent" };
+
+        if (action.startsWith("interest_select_")) {
+            // Add or remove interest from selectedInterests
+            setSelectedInterests(prevSelected => {
+                const interest = buttonText.replace("️", "").trim(); // Remove emoji if present for internal logic
+                if (prevSelected.includes(interest)) {
+                    const newSelection = prevSelected.filter(item => item !== interest);
+                    setInputValue(newSelection.join(', '));
+                    return newSelection;
+                } else {
+                    const newSelection = [...prevSelected, interest];
+                    setInputValue(newSelection.join(', '));
+                    return newSelection;
+                }
+            });
+            // Do not send message immediately, just update input field
+            return;
+        }
+
+        if (action === "send_interests") {
+            if (selectedInterests.length > 0) {
+                const interestsString = selectedInterests.join(', ');
+                setMessages(prevMessages => [...prevMessages, { text: interestsString, type: "Ai-outgoing", userId, status: "sent" }]);
+                await sendChatMessage(interestsString);
+                setSelectedInterests([]); // Clear selection after sending
+                setIsSelectingInterests(false); // Exit interest selection mode
+                setInputValue(''); // Clear input after sending
+            } else {
+                setMessages(prevMessages => [...prevMessages, { text: "No interests selected.", type: "Ai-outgoing", userId, status: "sent" }]);
+                setMessages(prevMessages => [...prevMessages, {
+                    text: "Please select at least one interest or click 'Exit' to go back.",
+                    type: "Ai-incoming",
+                    userId: 1,
+                    avatar: aiAvatar,
+                    content: {
+                        type: "buttons",
+                        buttons: [
+                            ...messages[messages.length - 1].content.buttons.filter(btn => btn.action.startsWith('interest_select_')),
+                            { text: "Done with Interests", action: "send_interests" }
+                        ]
+                    }
+                }]);
+            }
+            return;
+        }
+
         setMessages(prevMessages => [...prevMessages, newMessage]);
 
-        // Handle "Exit" button: reset chat to very first message
         if (action === "exit_to_start") {
             setTranslationMode(false);
             setTranslationInputType('');
+            setIsSelectingInterests(false); // Exit interest selection mode
+            setSelectedInterests([]); // Clear selected interests
+            setInputValue(''); // Clear input field
             setMessages([
                 {
                     type: "Ai-incoming",
@@ -159,41 +342,37 @@ function AIChat() {
             ]);
             return;
         }
+        // Handle 'Plan a trip' and 'Ask general questions' actions here
+        if (action === "plan_trip" || action === "ask_question" || action.startsWith("budget_") || action.startsWith("age_range_") || action.startsWith("change_plan_") || action.startsWith("travel_month_") || action.startsWith("transportation_")) {
+            await sendChatMessage(buttonText); // Send the button's text as the message
+            return;
+        }
 
-        // Show loading before AI response
+        // The default timeout logic for other actions remains (or can be modified/removed)
         setIsLoading(true);
-
         setTimeout(() => {
             let aiResponse = "";
             switch (action) {
-                case "plan_trip":
-                    aiResponse = "Hi there! I'd love to help you plan your perfect trip. Let's start with a few quick questions. 😊";
-                    setMessages(prevMessages => [
-                        ...prevMessages,
-                        { text: aiResponse, type: "Ai-incoming", userId: 1, avatar: aiAvatar },
-                        {
-                            type: "Ai-incoming",
-                            userId: 1,
-                            avatar: aiAvatar,
-                            text: "What’s your budget range for this trip?",
-                            content: {
-                                type: "buttons",
-                                buttons: [
-                                    { text: "In-Budget", action: "budget_in" },
-                                    { text: "Mid-Range", action: "budget_mid" },
-                                    { text: "Luxury", action: "budget_luxury" },
-                                ],
-                            },
-                        },
-                    ]);
+                case "budget_low":
+                case "budget_mid":
+                case "budget_fancy":
+                    aiResponse = `Okay, noted your ${buttonText} budget. What destinations are you considering?`;
                     break;
-                case "ask_question":
-                    aiResponse = "Great! What general question do you have for me? 🤔";
-                    setMessages(prevMessages => [...prevMessages, { text: aiResponse, type: "Ai-incoming", userId: 1, avatar: aiAvatar }]);
+                case "travel_month_spring":
+                case "travel_month_summer":
+                case "travel_month_autumn":
+                case "travel_month_winter":
+                    aiResponse = `Got it! You prefer to travel in the ${buttonText}. What kind of activities are you hoping for?`;
+                    break;
+                case "transportation_car":
+                case "transportation_public":
+                    aiResponse = `Understood. You prefer ${buttonText} for transportation. Now, let's talk about your ideal accommodation.`;
                     break;
                 default:
+                    aiResponse = "I'm not sure how to respond to that specific action. Please choose from the options.";
                     break;
             }
+            setMessages(prevMessages => [...prevMessages, { text: aiResponse, type: "Ai-incoming", userId: 1, avatar: aiAvatar }]);
             setIsLoading(false);
         }, 500);
     };
@@ -250,7 +429,7 @@ function AIChat() {
                     playAudio(data.tts_audio_base64);
                 }
 
-                setTranslationInputType('');
+                setTranslationInputType(''); // Clear translation input type after translation
                 setMessages(prevMessages => [
                     ...prevMessages,
                     {
@@ -278,12 +457,7 @@ function AIChat() {
                 setIsLoading(false);
             }
         } else if (type === 'text') {
-            setIsLoading(true);
-            setTimeout(() => {
-                const aiResponse = `You said: "${content}". How else can I help?`;
-                setMessages(prevMessages => [...prevMessages, { text: aiResponse, type: "Ai-incoming", userId: 1, avatar: aiAvatar }]);
-                setIsLoading(false);
-            }, 1000);
+            await sendChatMessage(content);
         }
     };
 
@@ -324,7 +498,7 @@ function AIChat() {
                                 ? { ...msg, audioUrl: cloudinaryUrl, status: "sent" }
                                 : msg
                         ));
-                        handleSendMessage(cloudinaryUrl, 'audio'); // Trigger translation logic
+                        handleSendMessage(cloudinaryUrl, 'audio');
                     } else {
                         setMessages(prevMessages => prevMessages.map(msg =>
                             msg.id === tempMessageId
@@ -395,14 +569,21 @@ function AIChat() {
                                     <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: msg.type === "Ai-incoming" ? 'row' : 'row-reverse', gap: '10px', marginBottom: '10px', width: 'fit-content', maxWidth: '80%' }}>
                                         {msg.type === "Ai-incoming" && msg.avatar && <img src={msg.avatar} alt="AI Avatar" className="message-avatar" />}
                                         <div className={msg.type === "Ai-incoming" ? "Ai-incoming-message" : "Ai-outgoing-message"}>
-                                            {msg.text && <div className="message-text">{msg.text}</div>}
+                                            {msg.text && <div className="message-text" dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, '<br />') }}></div>}
                                             {msg.imageUrl && <img src={msg.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', borderRadius: '8px' }} />}
                                             {/* Use the custom AudioPlayer component here */}
                                             {msg.audioUrl && <AudioPlayer audioUrl={msg.audioUrl} />}
                                             {msg.content?.type === "buttons" && msg.type === "Ai-incoming" && (
                                                 <div className="message-buttons">
                                                     {msg.content.buttons.map((button, btnIndex) => (
-                                                        <button key={btnIndex} onClick={() => handleButtonClick(button.action, button.text)} className="chat-button">{button.text}</button>
+                                                        <button
+                                                            key={btnIndex}
+                                                            onClick={() => handleButtonClick(button.action, button.text)}
+                                                            className={`chat-button ${isSelectingInterests && selectedInterests.includes(button.text.replace("️", "").trim()) ? 'selected-interest' : ''}`}
+                                                            disabled={isLoading && !button.action.startsWith("interest_select_") && button.action !== "send_interests"} // Disable other buttons during loading
+                                                        >
+                                                            {button.text}
+                                                        </button>
                                                     ))}
                                                 </div>
                                             )}
@@ -433,29 +614,40 @@ function AIChat() {
                                 className="AIchat-input"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
-                                onKeyPress={(e) => { if (e.key === 'Enter') handleSendMessage(inputValue, 'text'); }}
-                                disabled={translationMode && (translationInputType === 'audio' || translationInputType === 'image')}
+                                onKeyPress={(e) => { if (e.key === 'Enter' && !isSelectingInterests) handleSendMessage(inputValue, 'text'); }}
+                                disabled={translationMode && (translationInputType === 'audio' || translationInputType === 'image') || isLoading || isSelectingInterests} // Disable input during loading and interest selection
                             />
-
-                            {translationMode && translationInputType === 'audio' ? (
-                                isRecording ? (
-                                    <FaMicrophone className="AIchat-icon recording" onClick={stopRecording} title="Stop Recording" />
-                                ) : (
-                                    <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
-                                )
+                            {isSelectingInterests ? (
+                                <button
+                                    onClick={() => handleButtonClick("send_interests")}
+                                    className="send-interests-button"
+                                    disabled={isLoading}
+                                >
+                                    Send Interests
+                                </button>
                             ) : (
-                                <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
+                                <>
+                                    {translationMode && translationInputType === 'audio' ? (
+                                        isRecording ? (
+                                            <FaMicrophone className="AIchat-icon recording" onClick={stopRecording} title="Stop Recording" />
+                                        ) : (
+                                            <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
+                                        )
+                                    ) : (
+                                        <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
+                                    )}
+
+                                    <input
+                                        type="file"
+                                        accept={translationInputType === 'image' ? "image/*" : translationInputType === 'audio' ? "audio/*" : ""}
+                                        ref={fileInputRef}
+                                        style={{ display: 'none' }}
+                                        onChange={handleFileUpload}
+                                    />
+
+                                    <ImAttachment className="AIchat-icon" onClick={() => fileInputRef.current.click()} title="Attach File" />
+                                </>
                             )}
-
-                            <input
-                                type="file"
-                                accept={translationInputType === 'image' ? "image/*" : translationInputType === 'audio' ? "audio/*" : ""}
-                                ref={fileInputRef}
-                                style={{ display: 'none' }}
-                                onChange={handleFileUpload}
-                            />
-
-                            <ImAttachment className="AIchat-icon" onClick={() => fileInputRef.current.click()} title="Attach File" />
                         </div>
                     </div>
                 </div>
