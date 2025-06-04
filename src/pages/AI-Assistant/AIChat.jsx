@@ -6,7 +6,8 @@ import { FaMicrophone } from 'react-icons/fa';
 import { ImAttachment } from "react-icons/im";
 import { PiSpeakerHighFill } from "react-icons/pi";
 import aiAvatar from '../../assets/images/Ai-avatar.svg';
-import AudioPlayer from './AudioPlayer'; // Assuming AudioPlayer component is correctly implemented
+import AudioPlayer from './AudioPlayer';
+ // Assuming AudioPlayer component is correctly implemented
 
 function AIChat() {
     const token = localStorage.getItem("authToken");
@@ -36,13 +37,20 @@ function AIChat() {
     const [selectedInterests, setSelectedInterests] = useState([]); // New state for selected interests
     const [isSelectingInterests, setIsSelectingInterests] = useState(false); // New state to manage interest selection mode
 
+    const formatSimpleText = (text) => {
 
+        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+        formattedText = formattedText.replace(/\n/g, '<br />');
+    
+        return formattedText;
+    }
     const mediaRecorderRef = useRef(null);
     const audioChunksRef = useRef([]);
     const fileInputRef = useRef(null);
 
-    const CLOUD_NAME = "da6gcu1n9"; // Replace with your Cloudinary cloud name
-    const UPLOAD_PRESET = "graduationproject"; // Replace with your Cloudinary upload preset
+    const CLOUD_NAME = "da6gcu1n9"; 
+    const UPLOAD_PRESET = "graduationproject"; 
 
     const scrollToBottom = () => {
         const messagesContainer = document.querySelector('.AIchat-messages');
@@ -297,7 +305,7 @@ function AIChat() {
                         type: "buttons",
                         buttons: [
                             { text: "Plan a trip ✈️", action: "plan_trip" },
-                            { text: "Ask general questions 🤔", action: "ask_question" },
+                            { text: "Ask about anything 🤔", action: "ask_question" },
                             { text: "Use translation services 🌐", action: "translate" },
                         ],
                     },
@@ -569,7 +577,7 @@ function AIChat() {
                                     <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: msg.type === "Ai-incoming" ? 'row' : 'row-reverse', gap: '10px', marginBottom: '10px', width: 'fit-content', maxWidth: '80%' }}>
                                         {msg.type === "Ai-incoming" && msg.avatar && <img src={msg.avatar} alt="AI Avatar" className="message-avatar" />}
                                         <div className={msg.type === "Ai-incoming" ? "Ai-incoming-message" : "Ai-outgoing-message"}>
-                                            {msg.text && <div className="message-text" dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, '<br />') }}></div>}
+                                        {msg.text && <div className="message-text" dangerouslySetInnerHTML={{ __html: formatSimpleText(msg.text) }}></div>}
                                             {msg.imageUrl && <img src={msg.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', borderRadius: '8px' }} />}
                                             {/* Use the custom AudioPlayer component here */}
                                             {msg.audioUrl && <AudioPlayer audioUrl={msg.audioUrl} />}
