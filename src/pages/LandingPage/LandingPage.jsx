@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Header from '../../components/Header/Header'; 
 import ReusableSection from '../../components/ReuasbleSection/ReuseSection'; 
 import LeftImagesRightTextSection from '../../components/ReuasbleSection/ReuseableLeftandRight';
@@ -57,6 +57,7 @@ const cardsData = [
 function LandingPage() {
   const [showLoginPopup, setShowLoginPopup] = useState(false); // State to control popup visibility
   const [showsignupPopup, setShowsignupPopup] = useState(false);
+  const targetSectionRef = useRef(null); 
   // Function to show the login popup
   const handleLoginClick = () => {
     setShowLoginPopup(true);
@@ -70,15 +71,21 @@ function LandingPage() {
     setShowLoginPopup(false);
     setShowsignupPopup(false);
   };
+  const handleScrollToTarget = () => {
+    if (targetSectionRef.current) {
+      targetSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div>
       
-      <Header onLoginClick={handleLoginClick}  onSinupClick={handlesignupClick}/>
+      <Header onLoginClick={handleLoginClick}  onSinupClick={handlesignupClick} onExploreClick={handleScrollToTarget}/>
 
       <LoginPage show={showLoginPopup} onClose={handleClosePopup} /> 
       <SignUpPage show={showsignupPopup} onClose={handleClosePopup} /> 
       <ReusableSection
+       ref={targetSectionRef}
         title="Explore Egypt's Wonders"
         description="Experience the breathtaking landscapes and historical landmarks of Egypt."
         images={[

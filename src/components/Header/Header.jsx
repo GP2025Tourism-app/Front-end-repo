@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import backgroundImage from "../../assets/images/LandingPage1.png";
 import logo from '../../assets/images/RoamRightLogo.svg';
-function Header({ onLoginClick, onSinupClick }) {
+function Header({ onLoginClick, onSinupClick ,onExploreClick}) {
   return (
     <div
       style={{
@@ -125,6 +125,7 @@ function Header({ onLoginClick, onSinupClick }) {
             backgroundColor: "#17A2B8",
             border: "none",
           }}
+          onClick={onExploreClick}
         >
           Explore Now
         </Button>

@@ -292,9 +292,6 @@ function ActivityPage() {
               <Nav.Item>
                 <Nav.Link eventKey="restaurants">Restaurants</Nav.Link>
               </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="tour-guides">Tour Guides</Nav.Link>
-              </Nav.Item>
             </Nav>
           </div>
 

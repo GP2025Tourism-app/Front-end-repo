@@ -7,7 +7,7 @@ function TrendingPlaces() {
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
 
-  const cityId = "6769dcffd8210d27733d4d12"; 
+  const cityId = "676ab36fc0e1a97a8d82afeb"; 
   const token = localStorage.getItem("authToken"); 
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ function TrendingPlaces() {
     return <div className="error">Error: {error}</div>;
   }
   const handleCardClick = (activityId) => {
-    navigate(`/activity/${activityId}`); 
+    navigate(`/activity/${activityId}/city/:cityId`); 
   };
   return (
     <section className="trending-places">

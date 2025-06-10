@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../../assets/images/RoamRightLogo.svg';
 
 function Footer() {
   return (
@@ -19,7 +20,7 @@ function Footer() {
         }}
       >
         <div>
-          <img src="logo.png" alt="Logo" style={{ height: '30px' }} />
+          <img src={logo} alt="Logo" style={{ height: '30px' }} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <input
@@ -142,12 +143,8 @@ function Footer() {
 
       {/* Copyright */}
       <div style={{ fontSize: '14px', display: 'flex', justifyContent: 'space-between' }}>
-        <p>CompanyName © 2023. All rights reserved.</p>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <span>Eleven</span>
-          <span>Twelve</span>
-          <span>Thirteen</span>
-        </div>
+        <p>RoamRight © 2025. All rights reserved.</p>
+  
       </div>
     </footer>
   );

@@ -1,14 +1,15 @@
-import React from 'react';
+import React ,{ forwardRef }from 'react';
 
 const getTextColor = (backgroundColor) => {
   return backgroundColor === '#fff' ? '#333' : '#fff';
 };
 
-function ReusableSection({ title, description, images, backgroundColor = '#587E84' }) {
+const ReusableSection = forwardRef(({ title, description, images, backgroundColor = '#587E84' }, ref) => {
   const textColor = getTextColor(backgroundColor);
   
   return (
     <section
+      ref={ref} 
       style={{
         marginTop: '30px',
         padding: '80px 20px',
@@ -99,6 +100,6 @@ function ReusableSection({ title, description, images, backgroundColor = '#587E8
       </div>
     </section>
   );
-}
+});
 
 export default ReusableSection;
