@@ -28,7 +28,7 @@ function AIChat() {
             },
         },
     ]);
-
+    
     const [inputValue, setInputValue] = useState("");
     const [translationMode, setTranslationMode] = useState(false);
     const [translationInputType, setTranslationInputType] = useState('');
@@ -36,9 +36,12 @@ function AIChat() {
     const [isLoading, setIsLoading] = useState(false); // <-- Loading state
     const [selectedInterests, setSelectedInterests] = useState([]); // New state for selected interests
     const [isSelectingInterests, setIsSelectingInterests] = useState(false); // New state to manage interest selection mode
-
+    const [selectedAgeRanges, setSelectedAgeRanges] = useState([]); // New state for selected age ranges
+    const [isSelectingAgeRanges, setIsSelectingAgeRanges] = useState(false); // New state to manage age range selection mode
+    
+    
     const formatSimpleText = (text) => {
-
+    
         let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     
         formattedText = formattedText.replace(/\n/g, '<br />');
@@ -48,21 +51,21 @@ function AIChat() {
     const mediaRecorderRef = useRef(null);
     const audioChunksRef = useRef([]);
     const fileInputRef = useRef(null);
-
-    const CLOUD_NAME = "da6gcu1n9"; 
-    const UPLOAD_PRESET = "graduationproject"; 
-
+    
+    const CLOUD_NAME = "da6gcu1n9";
+    const UPLOAD_PRESET = "graduationproject";
+    
     const scrollToBottom = () => {
         const messagesContainer = document.querySelector('.AIchat-messages');
         if (messagesContainer) {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     };
-
+    
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
-
+    
     const playAudio = (base64Audio) => {
         if (base64Audio && base64Audio.startsWith('http')) {
             const audio = new Audio(base64Audio);
@@ -72,12 +75,12 @@ function AIChat() {
             audio.play().catch(e => console.error("Error playing audio from Base64:", e));
         }
     };
-
+    
     const uploadFileToCloudinary = async (file, resourceType) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', UPLOAD_PRESET);
-
+    
         try {
             const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, {
                 method: 'POST',
@@ -95,7 +98,7 @@ function AIChat() {
             return null;
         }
     };
-
+    
     // --- Modified sendChatMessage Function ---
     const sendChatMessage = async (userMessage) => {
         setIsLoading(true); // Show loading state
@@ -130,8 +133,12 @@ function AIChat() {
                     const ageRanges = ["Child", "Teen", "Adult", "Senior"];
                     buttons = ageRanges.map(age => ({
                         text: age,
-                        action: `age_range_${age.toLowerCase()}`
+                        action: `age_range_select_${age.toLowerCase()}` // Modified action
                     }));
+                    // REMOVED: buttons.push({ text: "Send Age Ranges", action: "send_age_ranges" });
+                    setIsSelectingAgeRanges(true); // Enter age range selection mode
+                    setSelectedAgeRanges([]); // Clear previous selection
+                    setInputValue(''); // Clear input
                 } else if (aiResponseContent.question.includes("Preferred travel month")) {
                     const travelMonths = ["Spring", "Summer", "Autumn", "Winter"];
                     buttons = travelMonths.map(month => ({
@@ -202,7 +209,7 @@ function AIChat() {
                         type: "Ai-incoming",
                         userId: 1,
                         avatar: aiAvatar,
-                       
+    
                     },
                 ]);
             }
@@ -228,12 +235,13 @@ function AIChat() {
             setIsLoading(false); // Hide loading state
         }
     };
-  
-
+    
+    
     const handleButtonClick = async (action, buttonText) => {
         const userId = 2; // User ID
+        // Declare newMessage here so it's available for all cases that use it
         const newMessage = { text: buttonText, type: "Ai-outgoing", userId, status: "sent" };
-
+    
         if (action.startsWith("interest_select_")) {
             // Add or remove interest from selectedInterests
             setSelectedInterests(prevSelected => {
@@ -251,7 +259,7 @@ function AIChat() {
             // Do not send message immediately, just update input field
             return;
         }
-
+    
         if (action === "send_interests") {
             if (selectedInterests.length > 0) {
                 const interestsString = selectedInterests.join(', ');
@@ -261,31 +269,114 @@ function AIChat() {
                 setIsSelectingInterests(false); // Exit interest selection mode
                 setInputValue(''); // Clear input after sending
             } else {
+                // No interests selected, provide feedback
                 setMessages(prevMessages => [...prevMessages, { text: "No interests selected.", type: "Ai-outgoing", userId, status: "sent" }]);
                 setMessages(prevMessages => [...prevMessages, {
                     text: "Please select at least one interest or click 'Exit' to go back.",
                     type: "Ai-incoming",
                     userId: 1,
                     avatar: aiAvatar,
+                    // Re-add interest buttons for the user to select
                     content: {
                         type: "buttons",
                         buttons: [
-                            ...messages[messages.length - 1].content.buttons.filter(btn => btn.action.startsWith('interest_select_')),
-                            {action: "send_interests" }
+                            { text: "Adventure", action: "interest_select_adventure" },
+                            { text: "Historical", action: "interest_select_historical" },
+                            { text: "Entertainment", action: "interest_select_entertainment" },
+                            { text: "Relaxing", action: "interest_select_relaxing" },
+                            { text: "Museum", action: "interest_select_museum" },
+                            { text: "Shopping", action: "interest_select_shopping" },
+                            { text: "Beaches", action: "interest_select_beaches" },
+                            { text: "Religious", action: "interest_select_religious" },
+                            { text: "Cultural", action: "interest_select_cultural" },
+                            { action: "exit_to_start", text: "Exit" }
                         ]
                     }
                 }]);
             }
             return;
         }
-
+    
+        // --- Age Range Selection Logic ---
+        if (action.startsWith("age_range_select_")) {
+            setSelectedAgeRanges(prevSelected => {
+                const ageRange = buttonText.trim();
+                if (prevSelected.includes(ageRange)) {
+                    const newSelection = prevSelected.filter(item => item !== ageRange);
+                    setInputValue(newSelection.join(', '));
+                    return newSelection;
+                } else {
+                    const newSelection = [...prevSelected, ageRange];
+                    setInputValue(newSelection.join(', '));
+                    return newSelection;
+                }
+            });
+            return; // Do not send message immediately, just update input field
+        }
+    
+        if (action === "send_age_ranges") {
+            if (selectedAgeRanges.length === 0) {
+                setMessages(prevMessages => [...prevMessages, { text: "No age ranges selected.", type: "Ai-outgoing", userId, status: "sent" }]);
+                setMessages(prevMessages => [...prevMessages, {
+                    text: "Please select at least one age range.",
+                    type: "Ai-incoming",
+                    userId: 1,
+                    avatar: aiAvatar,
+                    // Re-add age range buttons for the user to select
+                    content: {
+                        type: "buttons",
+                        buttons: [
+                            { text: "Child", action: "age_range_select_child" },
+                            { text: "Teen", action: "age_range_select_teen" },
+                            { text: "Adult", action: "age_range_select_adult" },
+                            { text: "Senior", action: "age_range_select_senior" },
+                            
+                        ]
+                    }
+                }]);
+            } else if (selectedAgeRanges.includes("Child") && selectedAgeRanges.length === 1) {
+                setMessages(prevMessages => [...prevMessages, { text: "Selected: Child", type: "Ai-outgoing", userId, status: "sent" }]);
+                setMessages(prevMessages => [...prevMessages, {
+                    text: "Child can't be selected only, you must also select at least one other age range.",
+                    type: "Ai-incoming",
+                    userId: 1,
+                    avatar: aiAvatar,
+                    // Re-add age range buttons for the user to select
+                    content: {
+                        type: "buttons",
+                        buttons: [
+                            { text: "Child", action: "age_range_select_child" },
+                            { text: "Teen", action: "age_range_select_teen" },
+                            { text: "Adult", action: "age_range_select_adult" },
+                            { text: "Senior", action: "age_range_select_senior" },
+                           
+                        ]
+                    }
+                }]);
+            } else {
+                const ageRangesString = selectedAgeRanges.join(', ');
+                setMessages(prevMessages => [...prevMessages, { text: ageRangesString, type: "Ai-outgoing", userId, status: "sent" }]);
+                await sendChatMessage(ageRangesString);
+                setSelectedAgeRanges([]); // Clear selection after sending
+                setIsSelectingAgeRanges(false); // Exit age range selection mode
+                setInputValue(''); // Clear input after sending
+            }
+            return;
+        }
+        // --- End Age Range Selection Logic ---
+    
+        // For regular button clicks that are NOT multi-select specific actions
+        // This line is now safe because newMessage is declared at the top
         setMessages(prevMessages => [...prevMessages, newMessage]);
-
+    
+    
         if (action === "exit_to_start") {
             setTranslationMode(false);
             setTranslationInputType('');
             setIsSelectingInterests(false); // Exit interest selection mode
             setSelectedInterests([]); // Clear selected interests
+            setIsSelectingAgeRanges(false); // Exit age range selection mode
+            setSelectedAgeRanges([]); // Clear selected age ranges
             setInputValue(''); // Clear input field
             setMessages([
                 {
@@ -305,7 +396,7 @@ function AIChat() {
             ]);
             return;
         }
-
+    
         if (action === "translate") {
             setTranslationMode(true);
             setMessages(prevMessages => [
@@ -328,7 +419,7 @@ function AIChat() {
             ]);
             return;
         }
-
+    
         if (translationMode && (action === "translate_text" || action === "translate_image" || action === "translate_audio")) {
             setTranslationInputType(action.split('_')[1]);
             setMessages(prevMessages => [
@@ -347,7 +438,7 @@ function AIChat() {
             await sendChatMessage(buttonText); // Send the button's text as the message
             return;
         }
-
+    
         // The default timeout logic for other actions remains (or can be modified/removed)
         setIsLoading(true);
         setTimeout(() => {
@@ -376,7 +467,6 @@ function AIChat() {
             setIsLoading(false);
         }, 500);
     };
-
     const handleSendMessage = async (content, type) => {
         if (content.trim() === "" && type === "text") return;
 
@@ -574,19 +664,29 @@ function AIChat() {
                                             {/* Use the custom AudioPlayer component here */}
                                             {msg.audioUrl && <AudioPlayer audioUrl={msg.audioUrl} />}
                                             {msg.content?.type === "buttons" && msg.type === "Ai-incoming" && (
-                                                <div className="message-buttons">
-                                                    {msg.content.buttons.map((button, btnIndex) => (
-                                                        <button
-                                                            key={btnIndex}
-                                                            onClick={() => handleButtonClick(button.action, button.text)}
-                                                            className={`chat-button ${isSelectingInterests && selectedInterests.includes(button.text.replace("️", "").trim()) ? 'selected-interest' : ''}`}
-                                                            disabled={isLoading && !button.action.startsWith("interest_select_") && button.action !== "send_interests"} // Disable other buttons during loading
-                                                        >
-                                                            {button.text}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            )}
+    <div className="message-buttons">
+        {msg.content.buttons.map((button, btnIndex) => (
+            <button
+                key={btnIndex}
+                onClick={() => handleButtonClick(button.action, button.text)}
+                className={`
+                    chat-button
+                    ${isSelectingInterests && selectedInterests.includes(button.text.replace("️", "").trim()) ? 'selected-interest' : ''}
+                    ${isSelectingAgeRanges && selectedAgeRanges.includes(button.text.trim()) ? 'selected-age-range' : ''}
+                `}
+                disabled={
+                    isLoading &&
+                    !button.action.startsWith("interest_select_") &&
+                    !button.action.startsWith("age_range_select_") && // Don't disable age range selection buttons during loading
+                    button.action !== "send_interests" &&
+                    button.action !== "send_age_ranges" // Don't disable send age range button during loading
+                }
+            >
+                {button.text}
+            </button>
+        ))}
+    </div>
+)}
                                         </div>
                                         {msg.type === "Ai-incoming" && msg.audioData && (
                                             <PiSpeakerHighFill
@@ -608,46 +708,61 @@ function AIChat() {
                         </div>
 
                         <div className="AIchat-input-area">
-                            <input
-                                type="text"
-                                placeholder="Type a message...."
-                                className="AIchat-input"
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                onKeyPress={(e) => { if (e.key === 'Enter' && !isSelectingInterests) handleSendMessage(inputValue, 'text'); }}
-                                disabled={translationMode && (translationInputType === 'audio' || translationInputType === 'image') || isLoading || isSelectingInterests} // Disable input during loading and interest selection
-                            />
-                            {isSelectingInterests ? (
-                                <button
-                                    onClick={() => handleButtonClick("send_interests")}
-                                    className="send-interests-button"
-                                    disabled={isLoading}
-                                >
-                                    Send Interests
-                                </button>
-                            ) : (
-                                <>
-                                    {translationMode && translationInputType === 'audio' ? (
-                                        isRecording ? (
-                                            <FaMicrophone className="AIchat-icon recording" onClick={stopRecording} title="Stop Recording" />
-                                        ) : (
-                                            <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
-                                        )
-                                    ) : (
-                                        <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
-                                    )}
+    <input
+        type="text"
+        placeholder="Type a message...."
+        className="AIchat-input"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyPress={(e) => { 
+            // Disable Enter key for multi-select modes
+            if (e.key === 'Enter' && !isSelectingInterests && !isSelectingAgeRanges) {
+                handleSendMessage(inputValue, 'text'); 
+            }
+        }}
+        // Disable input during loading and both multi-selection modes
+        disabled={translationMode && (translationInputType === 'audio' || translationInputType === 'image') || isLoading || isSelectingInterests || isSelectingAgeRanges}
+    />
+    {isSelectingInterests ? (
+        <button
+            onClick={() => handleButtonClick("send_interests", "Send Selected Interests")} // Added buttonText
+            className="send-interests-button"
+            disabled={isLoading}
+        >
+            Send Interests
+        </button>
+    ) : isSelectingAgeRanges ? ( // Add this new condition for age range selection
+        <button
+            onClick={() => handleButtonClick("send_age_ranges", "Send Selected Age Ranges")} // Added buttonText
+            className="send-age-ranges-button"
+            disabled={isLoading}
+        >
+            Send Age Ranges
+        </button>
+    ) : (
+        <>
+            {translationMode && translationInputType === 'audio' ? (
+                isRecording ? (
+                    <FaMicrophone className="AIchat-icon recording" onClick={stopRecording} title="Stop Recording" />
+                ) : (
+                    <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
+                )
+            ) : (
+                <FaMicrophone className="AIchat-icon" onClick={startRecording} title="Start Recording" />
+            )}
 
-                                    <input
-                                        type="file"
-                                        accept={translationInputType === 'image' ? "image/*" : translationInputType === 'audio' ? "audio/*" : ""}
-                                        ref={fileInputRef}
-                                        style={{ display: 'none' }}
-                                        onChange={handleFileUpload}
-                                    />
+            <input
+                type="file"
+                accept={translationInputType === 'image' ? "image/*" : translationInputType === 'audio' ? "audio/*" : ""}
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileUpload}
+            />
 
-                                    <ImAttachment className="AIchat-icon" onClick={() => fileInputRef.current.click()} title="Attach File" />
-                                </>
-                            )}
+            <ImAttachment className="AIchat-icon" onClick={() => fileInputRef.current.click()} title="Attach File" />
+        </>
+    )}
+
                         </div>
                     </div>
                 </div>
