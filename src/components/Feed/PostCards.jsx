@@ -10,6 +10,7 @@ const PostCard = ({ selectedCategory }) => {
   const [likedPosts, setLikedPosts] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
   const [likedComments, setLikedComments] = useState({});
+  const avatar = localStorage.getItem("profilePic");
   
   useEffect(() => {
     if (selectedCategory && selectedCategory.length > 0) {
@@ -321,7 +322,7 @@ const PostCard = ({ selectedCategory }) => {
                 </div>
               ))}
               <div className="comment-input-container">
-              <img src={post.user.profilePic} alt="User Avatar" className="comment-avatar" />
+              <img src={avatar} alt="User Avatar" className="comment-avatar" />
               <input
                 type="text"
                 placeholder="Write a comment..."

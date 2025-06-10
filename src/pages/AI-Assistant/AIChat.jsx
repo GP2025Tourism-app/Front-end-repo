@@ -149,7 +149,7 @@ function AIChat() {
                     buttons = interestOptions.map(interest => ({
                         text: interest,
                         action: `interest_select_${interest.toLowerCase()}`
-                    })).concat({ text: "Done with Interests", action: "send_interests" }); // Add 'Done' button
+                    }))
                     setIsSelectingInterests(true);
                     setSelectedInterests([]);
                     setInputValue('');
@@ -181,14 +181,6 @@ function AIChat() {
                         type: "Ai-incoming",
                         userId: 1,
                         avatar: aiAvatar,
-                        content: {
-                            type: "buttons",
-                            buttons: [
-                                { text: "Yes", action: "change_plan_yes" },
-                                { text: "No", action: "change_plan_no" },
-                                { text: "Exit", action: "exit_to_start" },
-                            ],
-                        },
                     },
                 ]);
             }
@@ -279,7 +271,7 @@ function AIChat() {
                         type: "buttons",
                         buttons: [
                             ...messages[messages.length - 1].content.buttons.filter(btn => btn.action.startsWith('interest_select_')),
-                            { text: "Done with Interests", action: "send_interests" }
+                            {action: "send_interests" }
                         ]
                     }
                 }]);
@@ -574,7 +566,7 @@ function AIChat() {
                         <div className="AIchat-messages">
                             {messages.map((msg, index) => (
                                 <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: msg.type === "Ai-incoming" ? 'flex-start' : 'flex-end' }}>
-                                    <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: msg.type === "Ai-incoming" ? 'row' : 'row-reverse', gap: '10px', marginBottom: '10px', width: 'fit-content', maxWidth: '80%' }}>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: msg.type === "Ai-incoming" ? 'row' : 'row-reverse', gap: '10px', marginBottom: '10px', maxWidth: '80%'}}>
                                         {msg.type === "Ai-incoming" && msg.avatar && <img src={msg.avatar} alt="AI Avatar" className="message-avatar" />}
                                         <div className={msg.type === "Ai-incoming" ? "Ai-incoming-message" : "Ai-outgoing-message"}>
                                         {msg.text && <div className="message-text" dangerouslySetInnerHTML={{ __html: formatSimpleText(msg.text) }}></div>}
