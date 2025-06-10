@@ -442,7 +442,6 @@ function ActivityPage() {
                   </div>
                 </div>
                 <div className='ReviewsButton'>
-                  <button className="filter-button">Filter</button>
                   <button className="write-review-button" onClick={handleOpenModal}>
                     Write a Review
                   </button>
