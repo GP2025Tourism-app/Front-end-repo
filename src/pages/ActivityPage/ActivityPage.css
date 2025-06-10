@@ -293,14 +293,12 @@
 .nearby-item {
   display: flex; /* Use flexbox to align image and text */
   align-items: center; /* Center align items vertically */
-  margin-bottom: 10px; /* Space between items */
 }
 
 .nearby-image {
   width: 50px; /* Adjust width as needed */
   height: 50px; /* Adjust height as needed */
   border-radius: 5px; /* Optional: Rounded corners for images */
-  margin-right: 10px; /* Space between image and text */
 }
 
 .nearby-details {
@@ -368,4 +366,23 @@
   color: #ccc; 
   clip-path: inset(0 50% 0 0); 
   z-index: -1; 
+}
+.nearby-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.nearby-item {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.nearby-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

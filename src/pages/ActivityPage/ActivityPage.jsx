@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams ,Link} from 'react-router-dom';
 import WebsiteNavbar from '../../components/HomePageComponents/WebsiteNavbar';
 import Sidebar from '../../components/HomePageComponents/Sidebar';
 import CalendarIcon from "../../assets/images/Icons/calendar-event.svg";
@@ -386,13 +386,19 @@ function ActivityPage() {
                     <div className="nearby-section">
                       <p className='nearby-distance'>{nearbyRestaurants.length} within 15 miles</p>
                       {nearbyRestaurants.map((item, index) => (
-                        <div key={index} className="nearby-item">
+                        <Link
+                        to={`/activity/${item.activityId}/city/:cityId`}
+                        key={index}
+                        className="nearby-item-link"
+                      > 
+                      <div className='nearby-item'>
                           <img src={item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/150'} alt={item.name} className="nearby-image" />
                           <div className="nearby-details">
                             <p className='nearby-attraction-name' >{item.name}</p>
                             <p className='nearby-attraction-category'>{item.category}</p>
                           </div>
-                        </div>
+                          </div>
+                        </Link>
                       ))}
                      
                     </div>
@@ -402,14 +408,20 @@ function ActivityPage() {
                       
                       <p className='nearby-distance'>{nearbyPlacesAttractions.length} within 30 miles</p>
                       {nearbyPlacesAttractions.map((item, index) => (
-                        <div key={index} className="nearby-item">
+                         <Link
+                         to={`/activity/${item.activityId}/city/:cityId`}
+                         key={index}
+                         className="nearby-item-link"
+                       >
+                        <div className='nearby-item'>
                           <img src={item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/150'} alt={item.name} className="nearby-image" />
                           <div className="nearby-details">
                             <p className='nearby-attraction-name'>{item.name}</p>
                             <p className='nearby-attraction-category'>{item.category}</p>
                             
                           </div>
-                        </div>
+                          </div>
+                        </Link>
                       ))}
 
                     </div>
