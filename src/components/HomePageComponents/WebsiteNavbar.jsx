@@ -74,7 +74,7 @@ function WebsiteNavbar() {
               </div>
               <span>Posts</span>
             </li>
-            <li>
+            <li onClick={() => navigate("/my-bookings")}>
               <div className="icon-container list">
                 <FaRegClipboard className="icon list-icon" />
               </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './TourBookingCard.css';
+import './TourBookingCard.css'; // Ensure this path is correct relative to TourBookingCard.js
 
 function TourBookingCard({activityId}) {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -8,7 +8,7 @@ function TourBookingCard({activityId}) {
     const [showPeopleDropdown, setShowPeopleDropdown] = useState(false);
     const peopleDropdownRef = useRef(null);
     const [messageBox, setMessageBox] = useState({ visible: false, message: '', type: '' });
-    const [loading, setLoading] = useState(false); // New state for loading
+    const [loading, setLoading] = useState(false); // State for loading
     const token = localStorage.getItem("authToken");
 
     const startingTime = "09:00 AM"; 
@@ -35,7 +35,10 @@ function TourBookingCard({activityId}) {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (peopleDropdownRef.current && !peopleDropdownRef.current.contains(event.target)) {
+            // Close dropdown if click is outside, but not if it's the message box itself
+            // This prevents the dropdown from closing if clicking on the message box or its content
+            if (peopleDropdownRef.current && !peopleDropdownRef.current.contains(event.target) &&
+                !event.target.closest('.message-box')) {
                 setShowPeopleDropdown(false);
             }
         };
@@ -54,7 +57,7 @@ function TourBookingCard({activityId}) {
         setMessageBox({ visible: false, message: '', type: '' });
     };
 
-    const handleBookNow = async () => { // Made async
+    const handleBookNow = async () => {
         if (numberOfAdults === 0 && numberOfChildren === 0) {
             showMessage('Please select at least one adult or child to book.', 'error');
             return;
@@ -85,7 +88,7 @@ function TourBookingCard({activityId}) {
             }
 
             const data = await response.json();
-            showMessage(`Booking successful!  Total Price: ${totalPrice} EGP.`, 'success');
+            showMessage(`Booking successful! Total Price: ${totalPrice} EGP.`, 'success');
             // Optionally, clear the form or redirect the user
         } catch (error) {
             console.error('Booking error:', error);
@@ -157,10 +160,13 @@ function TourBookingCard({activityId}) {
                 </button>
             </div>
 
+            {/* Overlay and Message Box */}
             {messageBox.visible && (
-                <div className={`message-box ${messageBox.type}`}>
-                    <p>{messageBox.message}</p>
-                    <button onClick={hideMessageBox}>Close</button>
+                <div className="overlay">
+                    <div className={`message-box ${messageBox.type}`}>
+                        <p>{messageBox.message}</p>
+                        <button onClick={hideMessageBox}>Done</button>
+                    </div>
                 </div>
             )}
         </div>

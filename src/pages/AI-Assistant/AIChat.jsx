@@ -22,7 +22,7 @@ function AIChat() {
                 type: "buttons",
                 buttons: [
                     { text: "Plan a trip ✈️", action: "plan_trip" },
-                    { text: "Ask about anything 🤔", action: "ask_question" },
+                    { text: "I have a question 🤔", action: "ask_question" },
                     { text: "Use translation services 🌐", action: "translate" },
                 ],
             },
@@ -388,7 +388,7 @@ function AIChat() {
                         type: "buttons",
                         buttons: [
                             { text: "Plan a trip ✈️", action: "plan_trip" },
-                            { text: "Ask about anything 🤔", action: "ask_question" },
+                            { text: "I have a question 🤔", action: "ask_question" },
                             { text: "Use translation services 🌐", action: "translate" },
                         ],
                     },

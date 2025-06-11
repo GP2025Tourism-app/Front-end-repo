@@ -45,7 +45,7 @@ const BookingCard = ({ trip, onBookClick }) => {
             onChange={(e) => setNumberOfPeople(parseInt(e.target.value))}
           >
             {[...Array(trip.noOfSeatsLeft > 0 ? trip.noOfSeatsLeft : 0).keys()].map(i => (
-              <option key={i + 1} value={i + 1}>Adult ({i + 1})</option>
+              <option key={i + 1} value={i + 1}>Person ({i + 1})</option>
             ))}
             {/* If no seats are left, ensure the option for 0 adults is displayed and disabled */}
             {trip.noOfSeatsLeft === 0 && <option value={0} disabled>Adult (0)</option>}
@@ -56,7 +56,7 @@ const BookingCard = ({ trip, onBookClick }) => {
         <div className="detail-item">
           <span>Price Per Person</span>
           {/* Display the original string value for the user */}
-          <span className="price-with-icon">{trip.pricePerPerson || 'N/A'} EGP</span>
+          <span className="price-with-icon">{trip.pricePerPerson || 'N/A'} </span>
         </div>
         <div className="detail-item total-price">
           <span>Total Price</span>
@@ -70,7 +70,7 @@ const BookingCard = ({ trip, onBookClick }) => {
         )}
       </div>
       <button
-        className="book-now-button"
+        className="book-now-button-LG-tour"
         onClick={handleBookNow}
         disabled={trip.noOfSeatsLeft === 0 || numberOfPeople === 0 || numericPricePerPerson === 0} // Disable if price is 0
       >
@@ -95,6 +95,7 @@ function LGViewTrips() {
 
   // State to manage showing full description for activities
   const [showFullDescriptions, setShowFullDescriptions] = useState({});
+  
 
   useEffect(() => {
     const storedRolesString = localStorage.getItem("userRole");

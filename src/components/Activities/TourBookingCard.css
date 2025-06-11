@@ -1,5 +1,66 @@
+/* Custom Message Box Styles */
+.message-box {
+    position: fixed; /* Keep it fixed to the viewport */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white; /* Solid white for readability */
+    padding: 25px;
+    border-radius: 8px;
+    z-index: 1001; /* Ensure it's on top of the overlay */
+    text-align: center;
+    min-width: 250px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Add some shadow for pop-up effect */
+}
+
+.message-box.success {
+    color: #0f0f0f;
+}
+
+.message-box.error {
+    color: #dc3545;
+}
+
+.message-box p {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.message-box button {
+    background-color: #17A2B8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.message-box button:hover {
+    background-color: #76a7ae;
+}
+
+/* Overlay Styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Take full viewport width */
+    height: 100vh; /* Take full viewport height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    backdrop-filter: blur(0px); /* Apply blur to the background */
+    -webkit-backdrop-filter: blur(0px); /* Safari support */
+    z-index: 1000; /* Ensure it's below the message box but above other content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Existing styles for TourBookingCard.css remain as is */
 .tour-booking-card-container {
-    background-color: #e0f2f7; /* Light blue from your image */
+    background-color: #f3f8f9; /* Light blue from your image */
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 30px; /* Space between this card and reviews */
@@ -8,9 +69,8 @@
     flex-direction: column;
     align-items: center; /* Center content horizontally */
     width: 100%; /* Ensure it takes full width of its parent */
-    /* Optional: limit max width for larger screens */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    position: relative; /* Needed for absolute positioning of message box */
+    position: relative; /* Needed for dropdown positioning, but message box is now fixed */
 }
 
 .tour-booking-card-title {
@@ -49,7 +109,7 @@
     width: 100%; /* Make inputs fill their parent group */
     padding: 8px 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 16px;
     background-color: white;
     cursor: pointer;
@@ -61,7 +121,7 @@
     width: 100%;
     padding: 8px 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 16px;
     background-color: white;
     cursor: pointer;
@@ -134,13 +194,16 @@
     background-color: #17A2B8; /* Green color for done button */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     padding: 8px 15px;
     cursor: pointer;
     font-size: 14px;
-    width: 100%;
+    width: 50%;
     margin-top: 10px;
     transition: background-color 0.2s ease;
+    margin-left: auto; /* Center the button */
+    margin-right: auto;
+    display: block; /* Ensure block-level for margin auto to work */
 }
 
 .dropdown-done-button:hover {
@@ -169,11 +232,12 @@
 }
 
 .book-now-button {
+    width: 30%;
     background-color: white;
-    color: #007bff; /* A light blue color */
+    color: #17A2B8; /* A light blue color */
     border: 1px solid #17A2B8;
     padding: 10px 25px;
-    border-radius: 25px; /* Rounded corners */
+    border-radius: 20px; /* Rounded corners */
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
@@ -183,54 +247,8 @@
 }
 
 .book-now-button:hover {
-    background-color: #007bff;
+    background-color: #17A2B8;
     color: white;
-}
-
-/* Custom Message Box Styles */
-.message-box {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000; /* Ensure it's on top of everything */
-    text-align: center;
-    min-width: 250px;
-}
-
-.message-box.success {
-    border: 2px solid #17A2B8;
-    color: #0f0f0f;
-}
-
-.message-box.error {
-    border: 2px solid #dc3545;
-    color: #dc3545;
-}
-
-.message-box p {
-    margin-bottom: 15px;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.message-box button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.2s ease;
-}
-
-.message-box button:hover {
-    background-color: #b65555;
 }
 
 /* Responsive adjustments for smaller screens */

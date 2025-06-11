@@ -392,10 +392,10 @@
   padding-top: 20px; /* Increased padding */
 }
 
-.book-now-button {
+.book-now-button-LG-tour {
   width: 100%;
   padding: 12px 20px;
-  background-color: #20b2aa; /* Teal/blue from your design */
+  background-color: #17A2B8; /* Teal/blue from your design */
   color: white;
   border: none;
   border-radius: 8px; /* More rounded corners */
@@ -405,11 +405,11 @@
   transition: background-color 0.3s ease;
 }
 
-.book-now-button:hover:not(:disabled) {
+.book-now-button-LG-tour:hover:not(:disabled) {
   background-color: #1a8e86; /* Darker teal on hover */
 }
 
-.book-now-button:disabled {
+.book-now-button-LG-tour:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }

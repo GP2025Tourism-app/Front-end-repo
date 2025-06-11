@@ -73,7 +73,24 @@ function DiscoverCityDetails() {
     return totalScore / reviews.length; 
   };
 
-
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/user/clients/favorites", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error("Failed to fetch favorites");
+        const data = await response.json();
+        const activityIds = data.favoriteActivities.map(act => act.activityId);
+        setFavorites(activityIds);
+        localStorage.setItem("favorites", JSON.stringify(activityIds));
+      } catch (err) {
+        console.error("Error fetching favorites:", err);
+      }
+    };
+  
+    fetchFavorites();
+  }, []);
   const fetchWeather = async () => {
     if (city) {
       try {
