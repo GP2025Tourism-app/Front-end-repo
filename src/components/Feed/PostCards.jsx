@@ -11,6 +11,7 @@ const PostCard = ({ selectedCategory }) => {
   const [commentInputs, setCommentInputs] = useState({});
   const [likedComments, setLikedComments] = useState({});
   const avatar = localStorage.getItem("profilePic");
+  const defaultAvatar = 'https://i.pinimg.com/474x/e6/e4/df/e6e4df26ba752161b9fc6a17321fa286.jpg';
   
   useEffect(() => {
     if (selectedCategory && selectedCategory.length > 0) {
@@ -239,7 +240,7 @@ const PostCard = ({ selectedCategory }) => {
           <div key={post.id} className="post-card">
             <div className="post-header">
               <div className="post-user">
-                <img src={post.user.profilePic} alt="User Avatar" className="avatar" />
+              <img src={post.user?.profilePic || defaultAvatar} alt="User Avatar" className="avatar" />
                 <div className="user-info">
                   <h4 className="user-fullname">
                     {post.user?.firstname && post.user?.lastname
