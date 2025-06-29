@@ -10,6 +10,7 @@ function WebsiteNavbar() {
   const navigate = useNavigate(); 
   const userData = JSON.parse(localStorage.getItem("userData")) || {}; 
   const avatar = localStorage.getItem("profilePic");
+ const userRoles = JSON.parse(localStorage.getItem("userRole")) || []; 
   const firstName = userData.firstname || "";
   const lastName = userData.lastname || "";
 
@@ -61,26 +62,32 @@ function WebsiteNavbar() {
               <button className="profile-btn" onClick={() => navigate("/ViewTouristProfile")}>View Profile</button>
               <button className="profile-btn" onClick={() => navigate("/EditTouristProfile")}>Edit Profile</button>
             </div>
-            <ul className="navbar-dropdown-options">
-            <li onClick={() => navigate("/favourites")}>
-              <div className="icon-container heart">
-                <FaRegHeart className="icon heart-icon" />
-              </div>
-              <span>Favourites</span>
-            </li>
-            <li>
-              <div className="icon-container pen">
-                <FaRegPenToSquare className="icon post-icon" />
-              </div>
-              <span>Posts</span>
-            </li>
-            <li onClick={() => navigate("/my-bookings")}>
-              <div className="icon-container list">
-                <FaRegClipboard className="icon list-icon" />
-              </div>
-              <span>My Bookings</span>
-            </li> 
-          </ul>
+<ul className="navbar-dropdown-options">
+  {!userRoles.includes("ROLE_LocalGuide") && (
+    <>
+      <li onClick={() => navigate("/favourites")}>
+        <div className="icon-container heart">
+          <FaRegHeart className="icon heart-icon" />
+        </div>
+        <span>Favourites</span>
+      </li>
+      <li>
+        <div className="icon-container pen">
+          <FaRegPenToSquare className="icon post-icon" />
+        </div>
+        <span>Posts</span>
+      </li>
+      <li onClick={() => navigate("/my-bookings")}>
+        <div className="icon-container list">
+          <FaRegClipboard className="icon list-icon" />
+        </div>
+        <span>My Bookings</span>
+      </li>
+    </>
+  )}
+</ul>
+
+
           </div>
          
         )}

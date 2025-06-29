@@ -12,88 +12,78 @@ function SignUpPage({ show, onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
+
   const [firstnameError, setFirstnameError] = useState("");
   const [lastnameError, setLastnameError] = useState("");
   const [usernameError, setUsernameError] = useState(""); 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  
+
   const [loading, setLoading] = useState(false);
   const [showLocationPopup, setShowLocationPopup] = useState(false);
   const [clientId, setclientId] = useState(null);
-  const [isTourGuide, setIsTourGuide] = useState(false); // This is the checkbox state
+  const [isTourGuide, setIsTourGuide] = useState(false);
 
-  const token = localStorage.getItem("authToken");
+  const [storedToken, setStoredToken] = useState(null);
+  const [storedRoles, setStoredRoles] = useState([]);
+
   const navigate = useNavigate(); 
 
   useEffect(() => {
-    if (show) {
-      document.body.style.overflow = "hidden"; 
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = show ? "hidden" : "auto";
   }, [show]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     setFirstnameError("");
     setLastnameError("");
     setUsernameError("");
     setEmailError("");
     setPasswordError("");
     setConfirmPasswordError("");
-  
+
     if (!firstname) setFirstnameError("First name is required.");
     if (!lastname) setLastnameError("Last name is required.");
     if (!username) setUsernameError("Username is required.");
     if (!email) setEmailError("Email is required.");
     if (!password) setPasswordError("Password is required.");
     if (password !== confirmPassword) setConfirmPasswordError("Passwords do not match.");
-  
+
     if (!firstname || !lastname || !username || !email || !password || password !== confirmPassword) {
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
-      // Step 1: Sign up the user
       const signupResponse = await axios.post("http://localhost:8080/api/auth/signup", {
         firstname,
         lastname,
         username,
         email,
         password,
-        roles: isTourGuide ? ["ROLE_LocalGuide"] : [], // Add role if checkbox is checked
+        roles: isTourGuide ? ["ROLE_LocalGuide"] : ["ROLE_CLIENT"],
       });
-  
+
       if (signupResponse.status === 200) {
         console.log("User registered successfully:", signupResponse.data);
-  
-        // Step 2: Log in the user immediately after signing up
+
         const loginResponse = await axios.post("http://localhost:8080/api/auth/signin", {
           username,
           password,
         });
-  
+
         if (loginResponse.status === 200) {
-          const authToken = loginResponse.data.token; // Extract the token
-          localStorage.setItem("authToken", authToken); // Store it in localStorage
+          const authToken = loginResponse.data.token;
+          localStorage.setItem("authToken", authToken);
           console.log("User logged in successfully:", authToken);
-  
-          setShowLocationPopup(true); // Show location request popup
-  
-          // Step 3: Navigate to the appropriate page
-          if (isTourGuide) {
-            // If user is a local guide, navigate to the tour guide homepage
-            navigate("/tour-guide-homepage");
-          } else {
-            // If user is not a local guide, navigate to another page (e.g., questionnaire)
-            navigate("/questionnaire");
-          }
+
+          // Store token and roles for location popup
+          setStoredToken(authToken);
+          setStoredRoles(isTourGuide ? ["ROLE_LocalGuide"] : ["ROLE_CLIENT"]);
+          setShowLocationPopup(true);
         }
       }
     } catch (err) {
@@ -110,56 +100,48 @@ function SignUpPage({ show, onClose }) {
       setLoading(false);
     }
   };
-  
-  
 
-  const requestLocation = async () => {
-    const authToken = localStorage.getItem("authToken"); // Retrieve the token
-  
-    if (!authToken) {
-      console.error("No auth token found. Please log in.");
-      return;
-    }
-  
+  const requestLocation = (authToken, roles) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-  
+
           try {
             const params = new URLSearchParams();
             params.append("latitude", latitude);
             params.append("longitude", longitude);
-  
+
             await axios.put("http://localhost:8080/api/user/location", params, {
               headers: {
                 Authorization: `Bearer ${authToken}`,
                 "Content-Type": "application/x-www-form-urlencoded",
               },
             });
-  
+
             console.log("Location sent successfully");
-            setShowLocationPopup(false);
-            navigate("/questionnaire");
+
+            if (roles.includes("ROLE_LocalGuide")) {
+              navigate("/tour-guide-homepage");
+            } else {
+              navigate("/questionnaire");
+            }
           } catch (err) {
             console.error("Error sending location:", err);
+            navigate(roles.includes("ROLE_LocalGuide") ? "/tour-guide-homepage" : "/questionnaire");
           }
         },
         (error) => {
           console.error("Error getting location:", error);
-          setShowLocationPopup(false);
-          navigate("/questionnaire");
+          navigate(roles.includes("ROLE_LocalGuide") ? "/tour-guide-homepage" : "/questionnaire");
         }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
-      setShowLocationPopup(false);
-      navigate("/questionnaire");
+      navigate(roles.includes("ROLE_LocalGuide") ? "/tour-guide-homepage" : "/questionnaire");
     }
   };
-  
-  
-  
+
   if (!show) return null;
 
   return (
@@ -180,7 +162,7 @@ function SignUpPage({ show, onClose }) {
             />
             {firstnameError && <div className="error-message">{firstnameError}</div>}
           </div>
-          
+
           <div className="form-row">
             <Form.Label>Last Name</Form.Label>
             <Form.Control
@@ -242,9 +224,9 @@ function SignUpPage({ show, onClose }) {
               id="tour-guide-checkbox"
               checked={isTourGuide}
               onChange={(e) => setIsTourGuide(e.target.checked)}
+              label="Sign up as a Local Guide"
               style={{ marginRight: "8px" }} 
             />
-            <label htmlFor="tour-guide-checkbox">Sign up as Tour Guide</label>
           </div>
 
           <Button variant="primary" type="submit" className="signup-button" disabled={loading}>
@@ -258,7 +240,7 @@ function SignUpPage({ show, onClose }) {
           <div className="popup-card">
             <h4>Allow Location Access?</h4>
             <p>We need your live location to enhance your experience.</p>
-            <Button variant="success" onClick={requestLocation}>Allow</Button>
+            <Button variant="success" onClick={() => requestLocation(storedToken, storedRoles)}>Allow</Button>
             <Button variant="danger" onClick={() => { setShowLocationPopup(false); navigate("/questionnaire"); }}>
               Deny
             </Button>
