@@ -228,9 +228,6 @@ const PostCard = ({ selectedCategory }) => {
   };
   
 
-  
-
-
   return (
     <div className="feed-container">
       <div className="feed-content">
@@ -240,7 +237,7 @@ const PostCard = ({ selectedCategory }) => {
           <div key={post.id} className="post-card">
             <div className="post-header">
               <div className="post-user">
-              <img src={post.user?.profilePic || defaultAvatar} alt="User Avatar" className="avatar" />
+               <img src={post.user?.profilePic || defaultAvatar} alt="User Avatar" className="avatar" />
                 <div className="user-info">
                   <h4 className="user-fullname">
                     {post.user?.firstname && post.user?.lastname
